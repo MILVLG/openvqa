@@ -1,3 +1,9 @@
+# --------------------------------------------------------
+# OpenVQA
+# Licensed under The MIT License [see LICENSE for details]
+# Written by Yuhao Cui https://github.com/cuiyuhao1996
+# --------------------------------------------------------
+
 import os, copy
 from openvqa.datasets.dataset_loader import DatasetLoader
 from utils.train_engine import train_engine

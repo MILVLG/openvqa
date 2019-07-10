@@ -1,3 +1,9 @@
+# --------------------------------------------------------
+# OpenVQA
+# Licensed under The MIT License [see LICENSE for details]
+# Written by Yuhao Cui https://github.com/cuiyuhao1996
+# --------------------------------------------------------
+
 import json, pickle
 import numpy as np
 from collections import defaultdict

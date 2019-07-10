@@ -1,3 +1,9 @@
+# --------------------------------------------------------
+# OpenVQA
+# Licensed under The MIT License [see LICENSE for details]
+# Written by Yuhao Cui https://github.com/cuiyuhao1996
+# --------------------------------------------------------
+
 from importlib import import_module
 
 
