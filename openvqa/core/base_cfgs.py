@@ -63,26 +63,6 @@ class BaseCfgs(PATH):
         # (use in ensemble)
         self.TEST_SAVE_PRED = False
 
-        # Define the 'train' 'val' 'test' run split
-        # (EVAL_EVERY_EPOCH triggered when set {'train': 'train'})
-        # self.SPLITS = {
-        #     'vqa': {
-        #         'train': '',
-        #         'val': 'val',
-        #         'test': 'test',
-        #     },
-        #     'gqa': {
-        #         'train': '',
-        #         'val': 'testdev',
-        #         'test': 'test',
-        #     },
-        #     'clevr': {
-        #         'train': '',
-        #         'val': 'val',
-        #         'test': 'test',
-        #     },
-        #
-        # }
 
         # A external method to set train split
         # will override the SPLIT['train']
@@ -95,20 +75,6 @@ class BaseCfgs(PATH):
         # Word embedding matrix size
         # (token size x WORD_EMBED_SIZE)
         self.WORD_EMBED_SIZE = 300
-
-        # Max length of question sentences
-        # self.MAX_TOKEN = 14
-
-        # Filter the answer by occurrence
-        # (filter the answers which occurrence bigger than ANS_FREQ)
-        # self.ANS_FREQ = 8
-
-        # Max length of extracted faster-rcnn 2048D features
-        # (bottom-up and Top-down: https://github.com/peteanderson80/bottom-up-attention)
-        # self.IMG_FEAT_PAD_SIZE = 100
-
-        # Faster-rcnn 2048D features
-        # self.IMG_FEAT_SIZE = 2048
 
         # Default training batch size: 64
         self.BATCH_SIZE = 64
@@ -125,38 +91,6 @@ class BaseCfgs(PATH):
         # Gradient accumulate can split batch to reduce gpu memory usage
         # (Warning: BATCH_SIZE should be divided by GRAD_ACCU_STEPS)
         self.GRAD_ACCU_STEPS = 1
-
-        # Set 'external': use external shuffle method to implement training shuffle
-        # Set 'internal': use pytorch dataloader default shuffle method
-        # self.SHUFFLE_MODE = 'external'
-
-
-        # ------------------------
-        # ---- Network Params ----
-        # ------------------------
-
-        # Model deeps
-        # (Encoder and Decoder will be same deeps)
-        # self.LAYER = 6
-
-        # Model hidden size
-        # (512 as default, bigger will be a sharp increase of gpu memory usage)
-        # self.HIDDEN_SIZE = 512
-
-        # Multi-head number in MCA layers
-        # (Warning: HIDDEN_SIZE should be divided by MULTI_HEAD)
-        # self.MULTI_HEAD = 8
-
-        # Dropout rate for all layers
-        # (dropout can prevent overfitting： [Dropout: a simple way to prevent neural networks from overfitting])
-        # self.DROPOUT_R = 0.1
-
-        # MLP size in flatten layers
-        # self.FLAT_MLP_SIZE = 512
-
-        # Flatten the last hidden to vector with {n} attention glimpses
-        # self.FLAT_GLIMPSES = 1
-        # self.FLAT_OUT_SIZE = 1024
 
 
         # --------------------------
@@ -264,14 +198,6 @@ class BaseCfgs(PATH):
         # Set small eval batch size will reduce gpu memory usage
         self.EVAL_BATCH_SIZE = int(self.SUB_BATCH_SIZE / 2)
 
-
-        # ------------ Networks setup
-        # MLP size in every MCA layer
-        # self.FF_SIZE = int(self.HIDDEN_SIZE * 4)
-
-        # A pipe line hidden size in attention compute
-        # assert self.HIDDEN_SIZE % self.MULTI_HEAD == 0
-        # self.HIDDEN_SIZE_HEAD = int(self.HIDDEN_SIZE / self.MULTI_HEAD)
 
 
     def __str__(self):
