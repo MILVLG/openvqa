@@ -17,8 +17,7 @@ def parse_args():
 
     parser.add_argument('--RUN', dest='RUN_MODE',
                       help='{train, val, test}',
-                      type=str, default='train')
-                      # type=str, required=True)
+                      type=str, required=True)
 
     parser.add_argument('--MODEL', dest='MODEL',
                       help='{'
@@ -31,8 +30,7 @@ def parse_args():
                            'butd'
                            '}'
                         ,
-                      type=str, default='mcan_small')
-                      # type=str, required=True)
+                      type=str, required=True)
 
     parser.add_argument('--DATASET', dest='DATASET',
                       help='{'
@@ -41,8 +39,7 @@ def parse_args():
                            'clevr'
                            '}'
                         ,
-                      type=str, default='clevr')
-                      # type=str, required=True)
+                      type=str, required=True)
 
     parser.add_argument('--SPLIT', dest='TRAIN_SPLIT',
                       help="set training split, "
