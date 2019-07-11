@@ -248,7 +248,7 @@ def train_engine(__C, dataset, dataset_eval=None):
                 __C,
                 dataset_eval,
                 state_dict=net.state_dict(),
-                valid=True
+                validation=True
             )
 
         # if self.__C.VERBOSE:

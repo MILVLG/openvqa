@@ -13,7 +13,7 @@ from openvqa.datasets.dataset_loader import EvalLoader
 
 
 # Evaluation
-def test_engine(__C, dataset, state_dict=None, valid=False):
+def test_engine(__C, dataset, state_dict=None, validation=False):
 
     # Load parameters
     if __C.CKPT_PATH is not None:
@@ -119,7 +119,7 @@ def test_engine(__C, dataset, state_dict=None, valid=False):
     ans_ix_list = np.array(ans_ix_list).reshape(-1)
 
 
-    if valid:
+    if validation:
         if __C.RUN_MODE not in ['train']:
             result_eval_file = __C.CACHE_PATH + '/result_run_' + __C.CKPT_VERSION
         else:
@@ -142,129 +142,4 @@ def test_engine(__C, dataset, state_dict=None, valid=False):
     else:
         log_file = __C.LOG_PATH + '/log_run_' + __C.VERSION + '.txt'
 
-    EvalLoader(__C).eval(dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, log_file, valid)
-
-
-    # result = [{
-    #     'answer': dataset.ix_to_ans[ans_ix_list[qix]],
-    #     'question_id': int(qid_list[qix])
-    # } for qix in range(qid_list.__len__())]
-
-    # Write the results to result file
-    # if valid:
-    #     if __C.RUN_MODE not in ['train']:
-    #         result_eval_file = \
-    #             __C.CACHE_PATH + \
-    #             '/result_run_' + __C.CKPT_VERSION + \
-    #             '.json'
-    #     else:
-    #         result_eval_file = \
-    #             __C.CACHE_PATH + \
-    #             '/result_run_' + __C.VERSION + \
-    #             '.json'
-    #
-    # else:
-    #     if __C.CKPT_PATH is not None:
-    #         result_eval_file = \
-    #             __C.RESULT_PATH + \
-    #             '/result_run_' + __C.CKPT_VERSION + \
-    #             '.json'
-    #     else:
-    #         result_eval_file = \
-    #             __C.RESULT_PATH + \
-    #             '/result_run_' + __C.CKPT_VERSION + \
-    #             '_epoch' + str(__C.CKPT_EPOCH) + \
-    #             '.json'
-    #
-    #     print('Save the result to file: {}'.format(result_eval_file))
-    #
-    # json.dump(result, open(result_eval_file, 'w'))
-
-    # Save the whole prediction vector
-    # if __C.TEST_SAVE_PRED:
-    #
-    #     if __C.CKPT_PATH is not None:
-    #         ensemble_file = \
-    #             __C.PRED_PATH + \
-    #             '/result_run_' + __C.CKPT_VERSION + \
-    #             '.json'
-    #     else:
-    #         ensemble_file = \
-    #             __C.PRED_PATH + \
-    #             '/result_run_' + __C.CKPT_VERSION + \
-    #             '_epoch' + str(__C.CKPT_EPOCH) + \
-    #             '.json'
-    #
-    #     print('Save the prediction vector to file: {}'.format(ensemble_file))
-    #
-    #     pred_list = np.array(pred_list).reshape(-1, ans_size)
-    #     result_pred = [{
-    #         'pred': pred_list[qix],
-    #         'question_id': int(qid_list[qix])
-    #     } for qix in range(qid_list.__len__())]
-    #
-    #     pickle.dump(result_pred, open(ensemble_file, 'wb+'), protocol=-1)
-
-    # Run validation script
-    # if valid:
-    #     # create vqa object and vqaRes object
-    #     ques_file_path = __C.QUESTION_PATH['val']
-    #     ans_file_path = __C.ANSWER_PATH['val']
-    #
-    #     vqa = VQA(ans_file_path, ques_file_path)
-    #     vqaRes = vqa.loadRes(result_eval_file, ques_file_path)
-    #
-    #     # create vqaEval object by taking vqa and vqaRes
-    #     vqaEval = VQAEval(vqa, vqaRes, n=2)  # n is precision of accuracy (number of places after decimal), default is 2
-    #
-    #     # evaluate results
-    #     """
-    #     If you have a list of question ids on which you would like to evaluate your results, pass it as a list to below function
-    #     By default it uses all the question ids in annotation file
-    #     """
-    #     vqaEval.evaluate()
-    #
-    #     # print accuracies
-    #     print("\n")
-    #     print("Overall Accuracy is: %.02f\n" % (vqaEval.accuracy['overall']))
-    #     # print("Per Question Type Accuracy is the following:")
-    #     # for quesType in vqaEval.accuracy['perQuestionType']:
-    #     #     print("%s : %.02f" % (quesType, vqaEval.accuracy['perQuestionType'][quesType]))
-    #     # print("\n")
-    #     print("Per Answer Type Accuracy is the following:")
-    #     for ansType in vqaEval.accuracy['perAnswerType']:
-    #         print("%s : %.02f" % (ansType, vqaEval.accuracy['perAnswerType'][ansType]))
-    #     print("\n")
-    #
-    #     if __C.RUN_MODE not in ['train']:
-    #         print('Write to log file: {}'.format(
-    #             __C.LOG_PATH +
-    #             '/log_run_' + __C.CKPT_VERSION + '.txt',
-    #             'a+')
-    #         )
-    #
-    #         logfile = open(
-    #             __C.LOG_PATH +
-    #             '/log_run_' + __C.CKPT_VERSION + '.txt',
-    #             'a+'
-    #         )
-    #
-    #     else:
-    #         print('Write to log file: {}'.format(
-    #             __C.LOG_PATH +
-    #             '/log_run_' + __C.VERSION + '.txt',
-    #             'a+')
-    #         )
-    #
-    #         logfile = open(
-    #             __C.LOG_PATH +
-    #             '/log_run_' + __C.VERSION + '.txt',
-    #             'a+'
-    #         )
-    #
-    #     logfile.write("Overall Accuracy is: %.02f\n" % (vqaEval.accuracy['overall']))
-    #     for ansType in vqaEval.accuracy['perAnswerType']:
-    #         logfile.write("%s : %.02f " % (ansType, vqaEval.accuracy['perAnswerType'][ansType]))
-    #     logfile.write("\n\n")
-    #     logfile.close()
-
+    EvalLoader(__C).eval(dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, log_file, validation)

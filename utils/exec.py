@@ -33,7 +33,7 @@ class Execution:
             train_engine(self.__C, self.dataset, self.dataset_eval)
 
         elif run_mode == 'val':
-            test_engine(self.__C, self.dataset, valid=True)
+            test_engine(self.__C, self.dataset, validation=True)
 
         elif run_mode == 'test':
             test_engine(self.__C, self.dataset)
