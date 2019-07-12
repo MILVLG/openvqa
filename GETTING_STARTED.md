@@ -72,7 +72,7 @@ We recommend to use the GPU with at least 8 GB memory, but if you don't have suc
 **Warning**: If you train the model use ```--MODEL``` args or multi-gpu training, it should be also set in evaluation.
 
 
-#### Offline Evaluation
+### Offline Evaluation
 
 Offline evaluation only support the VQA 2.0 *val* split. If you want to evaluate on the VQA 2.0 *test-dev* or *test-std* split, please see [Online Evaluation](#Online-Evaluation).
 
@@ -91,9 +91,11 @@ $ python3 run.py --RUN='val' --CKPT_PATH=str
 ```
 
 
-#### Online Evaluation
+### Online Evaluation
 
-The evaluations of both the VQA 2.0 *test-dev* and *test-std* splits are run as follows:
+VQA-v2 and GQA support online evaluation.
+
+For VQA-v2, *test-dev* and *test-std* splits are run as follows:
 
 ```bash
 $ python3 run.py --RUN='test' --CKPT_V=str --CKPT_E=int
@@ -103,29 +105,4 @@ Result files are stored in ```results/result_test/result_run_<'PATH+random numbe
 
 You can upload the obtained result json file to [Eval AI](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* and *test-std* splits.
 
-
-## Pretrained models
-
-We provide two pretrained models, namely the `small` model and the `large` model. The small model corrresponds to the one describe in our paper with slightly higher performance (the overall accuracy on the *test-dev* split is 70.63% in our paper) due to different pytorch versions. The large model uses a 2x larger `HIDDEN_SIZE=1024` compared to the small model with `HIDDEN_SIZE=512`. 
-
-The performance of the two models on *test-dev* split is reported as follows:
-
-_Model_ | Overall | Yes/No | Number | Other
-:-: | :-: | :-: | :-: | :-:
-_Small_ | 70.7 | 86.91 | **53.42** | 60.75| 
-_Large_ | **70.93**| **87.39** | 52.78 | **60.98**|
-
-
-These two models can be downloaded from [OneDrive](https://awma1-my.sharepoint.com/:f:/g/personal/yuz_l0_tn/EtNU5OG1dNhMq8M1pgeuQZwBgcj2RQCVnzLGDeDfnejPMQ?e=ynYhvk) or [BaiduYun](https://pan.baidu.com/s/1GW_SFErXSIBJ2Ojg2qaRmw#list/path=%2F), and you should unzip and put them to the correct folders as follows:
-
-```angular2html
-|-- ckpts
-	|-- ckpt_small
-	|  |-- epoch13.pkl
-	|-- ckpt_large
-	|  |-- epoch13.pkl
-
-```
-
-Set ```--CKPT={'small', 'large'} --CKPT_E=13``` to testing or resume training, details can be found in [Training](#Training) and [Validation and Testing](#Validation-and-Testing). 
- 
+For GQA, 

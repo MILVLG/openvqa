@@ -1,8 +1,8 @@
 # Installation
 
-This page provides basic prerequisites to run OpenVQA, including the setups of softwares and the datasets.
+This page provides basic prerequisites to run OpenVQA, including the setups of hardware, software, and datasets.
 
-## Software Setup
+## Hardware & Software Setup
 
 You may need a machine with at least **1 GPU (>= 8GB)**, **20GB memory** and **50GB free disk space**.  We strongly recommend to use a SSD drive to guarantee high-speed I/O.
 
