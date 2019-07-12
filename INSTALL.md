@@ -21,7 +21,9 @@ $ pip install en_vectors_web_lg-2.1.0.tar.gz
 
 ## Dataset Setup
 
-The following datasets should be prepared before running the experiments. **Note that if you only want to run experiments on one (or two) specific dataset, you can focus on the setup for that (those) one and skip the rest.** 
+The following datasets should be prepared before running the experiments. 
+
+**Note that if you only want to run experiments on one specific dataset, you can focus on the setup for that and skip the rest.** 
 
 ### VQA-v2
 
