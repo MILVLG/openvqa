@@ -10,6 +10,13 @@ The following script will start training with the default hyperparameters:
 ```bash
 $ python3 run.py --RUN='train' --MODEL='mcan_small' --DATASET='vqa'
 ```
+
+```--RUN={'train','val','test'}``` to set the mode to be executed.
+
+```--MODEL=str```, e.g., to assign the model to be executed.
+
+```--DATASET={'vqa','gqa','clevr'}``` to choose the dataset to be executed.
+
 All checkpoint files will be saved to:
 
 ```
@@ -24,11 +31,11 @@ results/log/log_run_<VERSION>.txt
 
 To add：
 
-1. ```--VERSION=str```, e.g.```--VERSION='small_model'``` to assign a name for your this model.
+1. ```--VERSION=str```, e.g., ```--VERSION='v1'``` to assign a name for your this model.
 
-2. ```--GPU=str```, e.g.```--GPU='2'``` to train the model on specified GPU device.
+2. ```--GPU=str```, e.g., ```--GPU='2'``` to train the model on specified GPU device.
 
-3. ```--NW=int```, e.g.```--NW=8``` to accelerate I/O speed.
+3. ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
 
 4. ```--MODEL={'small', 'large'}```  ( Warning: The large model will consume more GPU memory, maybe [Multi-GPU Training and Gradient Accumulation](#Multi-GPU-Training-and-Gradient-Accumulation) can help if you want to train the model with limited GPU memory.)
 
@@ -37,8 +44,6 @@ To add：
 6. ```--RESUME=True``` to start training with saved checkpoint parameters. In this stage, you should assign the checkpoint version```--CKPT_V=str``` and the resumed epoch number ```CKPT_E=int```.
 
 7. ```--MAX_EPOCH=int``` to stop training at a specified epoch number.
-
-8. ```--PRELOAD=True``` to pre-load all the image features into memory during the initialization stage (Warning: needs extra 25~30GB memory and 30min loading time from an HDD drive).
 
 
 ####  Multi-GPU Training and Gradient Accumulation
