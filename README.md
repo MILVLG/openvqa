@@ -32,6 +32,10 @@ Results and models are available in the [MODEL_ZOO.md](MODEL_ZOO.md).
 | [MCAN](https://arxiv.org/abs/1906.10770)      | ✓        |         |         | 
 
 
+## Installation
+
+Please refer to [INSTALL.md](INSTALL.md) for installation and dataset preparation.
+
 ## Get Started
 
 Please see [GETTING_STARTED.md](GETTING_STARTED.md) for the basic usage of OpenVQA.
