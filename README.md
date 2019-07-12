@@ -19,7 +19,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 ## Benchmark and Model Zoo
 
 Supported methods and benchmark datasets are shown in the below table.
-Results and models are available in the [Model zoo](MODEL_ZOO.md).
+Results and models are available in the [MODEL_ZOO.md](MODEL_ZOO.md).
 
 |                    | [VQA-v2](https://visualqa.org/)   | [GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html)  | [CLEVR](https://cs.stanford.edu/people/jcjohns/clevr/)  |
 |--------------------|:--------:|:--------:|:--------:|
