@@ -35,11 +35,11 @@ To add：
 
 2. ```--GPU=str```, e.g., ```--GPU='2'``` to train the model on specified GPU device.
 
-3. ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
+3. ```--SEED=int```, e.g., ```--SEED='123'``` to use a fixed seed to initialize the model, which obtains exactly the same model. Unset it results in random seeds.
 
-4. ```--MODEL={'small', 'large'}```  ( Warning: The large model will consume more GPU memory, maybe [Multi-GPU Training and Gradient Accumulation](#Multi-GPU-Training-and-Gradient-Accumulation) can help if you want to train the model with limited GPU memory.)
+4. ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
 
-5. ```--SPLIT={'train', 'train+val', 'train+val+vg'}``` can combine the training datasets as you want. The default training split is ```'train+val+vg'```.  Setting ```--SPLIT='train'```  will trigger the evaluation script to run the validation score after every epoch automatically.
+5. ```--SPLIT=str``` to set the training sets as you want.  Setting ```--SPLIT='train'```  will trigger the evaluation script to run the validation score after every epoch automatically.
 
 6. ```--RESUME=True``` to start training with saved checkpoint parameters. In this stage, you should assign the checkpoint version```--CKPT_V=str``` and the resumed epoch number ```CKPT_E=int```.
 
