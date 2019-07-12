@@ -11,11 +11,11 @@ The following script will start training with the default hyperparameters:
 $ python3 run.py --RUN='train' --MODEL='mcan_small' --DATASET='vqa'
 ```
 
-```--RUN={'train','val','test'}``` to set the mode to be executed.
+- ```--RUN={'train','val','test'}``` to set the mode to be executed.
 
-```--MODEL=str```, e.g., to assign the model to be executed.
+- ```--MODEL=str```, e.g., to assign the model to be executed.
 
-```--DATASET={'vqa','gqa','clevr'}``` to choose the dataset to be executed.
+- ```--DATASET={'vqa','gqa','clevr'}``` to choose the dataset to be executed.
 
 All checkpoint files will be saved to:
 
@@ -31,26 +31,26 @@ results/log/log_run_<VERSION>.txt
 
 To add：
 
-1. ```--VERSION=str```, e.g., ```--VERSION='v1'``` to assign a name for your this model.
+- ```--VERSION=str```, e.g., ```--VERSION='v1'``` to assign a name for your this model.
 
-2. ```--GPU=str```, e.g., ```--GPU='2'``` to train the model on specified GPU device.
+- ```--GPU=str```, e.g., ```--GPU='2'``` to train the model on specified GPU device.
 
-3. ```--SEED=int```, e.g., ```--SEED='123'``` to use a fixed seed to initialize the model, which obtains exactly the same model. Unset it results in random seeds.
+- ```--SEED=int```, e.g., ```--SEED='123'``` to use a fixed seed to initialize the model, which obtains exactly the same model. Unset it results in random seeds.
 
-4. ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
+- ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
 
-5. ```--SPLIT=str``` to set the training sets as you want.  Setting ```--SPLIT='train'```  will trigger the evaluation script to run the validation score after every epoch automatically.
+- ```--SPLIT=str``` to set the training sets as you want.  Setting ```--SPLIT='train'```  will trigger the evaluation script to run the validation score after every epoch automatically.
 
-6. ```--RESUME=True``` to start training with saved checkpoint parameters. In this stage, you should assign the checkpoint version```--CKPT_V=str``` and the resumed epoch number ```CKPT_E=int```.
+- ```--RESUME=True``` to start training with saved checkpoint parameters. In this stage, you should assign the checkpoint version```--CKPT_V=str``` and the resumed epoch number ```CKPT_E=int```.
 
-7. ```--MAX_EPOCH=int``` to stop training at a specified epoch number.
+- ```--MAX_EPOCH=int``` to stop training at a specified epoch number.
 
 
 ####  Multi-GPU Training and Gradient Accumulation
 
-We recommend to use the GPU with at least 8 GB memory, but if you don't have such device, don't worry, we provide two ways to deal with it:
+We recommend to use the GPU with at least 8 GB memory, but if you don't have such device,  we provide two solutions to deal with it:
 
-1. _Multi-GPU Training_: 
+- _Multi-GPU Training_: 
 
     If you want to accelerate training or train the model on a device with limited GPU memory, you can use more than one GPUs:
 
@@ -58,7 +58,7 @@ We recommend to use the GPU with at least 8 GB memory, but if you don't have suc
 
     The batch size on each GPU will be adjusted to `BATCH_SIZE`/#GPUs automatically.
 
-2. _Gradient Accumulation_: 
+- _Gradient Accumulation_: 
 
     If you only have one GPU less than 8GB, an alternative strategy is provided to use the gradient accumulation during training:
 	
