@@ -1,3 +1,11 @@
+ckpts/
+*.pkl
+results/cache/*.json
+results/result_test/*.json
+.idea/
+*.txt
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
