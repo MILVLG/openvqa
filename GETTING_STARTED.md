@@ -35,7 +35,7 @@ To add：
 
 - ```--GPU=str```, e.g., ```--GPU='2'``` to train the model on specified GPU device.
 
-- ```--SEED=int```, e.g., ```--SEED='123'``` to use a fixed seed to initialize the model, which obtains exactly the same model. Unset it results in random seeds.
+- ```--SEED=int```, e.g., ```--SEED=123``` to use a fixed seed to initialize the model, which obtains exactly the same model. Unset it results in random seeds.
 
 - ```--NW=int```, e.g., ```--NW=8``` to accelerate I/O speed.
 
