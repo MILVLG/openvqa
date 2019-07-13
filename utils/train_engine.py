@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -125,7 +124,7 @@ def train_engine(__C, dataset, dataset_eval=None):
         for step, (
                 frcn_feat_iter,
                 grid_feat_iter,
-                spat_feat_iter,
+                bbox_feat_iter,
                 ques_ix_iter,
                 ans_iter
         ) in enumerate(dataloader):
@@ -134,7 +133,7 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             frcn_feat_iter = frcn_feat_iter.cuda()
             grid_feat_iter = grid_feat_iter.cuda()
-            spat_feat_iter = spat_feat_iter.cuda()
+            bbox_feat_iter = bbox_feat_iter.cuda()
             ques_ix_iter = ques_ix_iter.cuda()
             ans_iter = ans_iter.cuda()
 
@@ -146,8 +145,8 @@ def train_engine(__C, dataset, dataset_eval=None):
                 sub_grid_feat_iter = \
                     grid_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
                                   (accu_step + 1) * __C.SUB_BATCH_SIZE]
-                sub_spat_feat_iter = \
-                    spat_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
+                sub_bbox_feat_iter = \
+                    bbox_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
                                   (accu_step + 1) * __C.SUB_BATCH_SIZE]
                 sub_ques_ix_iter = \
                     ques_ix_iter[accu_step * __C.SUB_BATCH_SIZE:
@@ -159,7 +158,7 @@ def train_engine(__C, dataset, dataset_eval=None):
                 pred = net(
                     sub_frcn_feat_iter,
                     sub_grid_feat_iter,
-                    sub_spat_feat_iter,
+                    sub_bbox_feat_iter,
                     sub_ques_ix_iter
                 )
 
