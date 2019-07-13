@@ -81,26 +81,26 @@ class Net(nn.Module):
             batch_first=True
         )
 
-        if __C.FEATURE['FRCN_FEATURE']:
-            frcn_linear_size = __C.FEATURE['FRCNFEAT_SIZE']
-            if __C.FEATURE['SPATIAL_FEATURE']:
-                self.spatfeat_linear = nn.Linear(5, __C.FEATURE['SPATFEAT_EMB_SIZE'])
-                frcn_linear_size += __C.FEATURE['SPATFEAT_EMB_SIZE']
-            self.frcnfeat_linear = nn.Linear(frcn_linear_size, __C.HIDDEN_SIZE)
+        # if __C.FEATURE['FRCN_FEATURE']:
+        #     frcn_linear_size = __C.FEATURE['FRCNFEAT_SIZE']
+        #     if __C.FEATURE['SPATIAL_FEATURE']:
+        #         self.spatfeat_linear = nn.Linear(5, __C.FEATURE['SPATFEAT_EMB_SIZE'])
+        #         frcn_linear_size += __C.FEATURE['SPATFEAT_EMB_SIZE']
+        #     self.frcnfeat_linear = nn.Linear(frcn_linear_size, __C.HIDDEN_SIZE)
 
-        if __C.FEATURE['GRID_FEATURE']:
-            self.gridfeat_linear = nn.Linear(__C.FEATURE['GRIDFEAT_SIZE'], __C.HIDDEN_SIZE)
+        # if __C.FEATURE['GRID_FEATURE']:
+        #     self.gridfeat_linear = nn.Linear(__C.FEATURE['GRIDFEAT_SIZE'], __C.HIDDEN_SIZE)
 
         self.backbone = BAN(__C)
 
         # Flatten to vector
-        self.attflat_ques = AttFlat(__C)
+        self.attflat_lang = AttFlat(__C)
 
         # Classification layers
         layers = [
             weight_norm(nn.Linear(__C.FLAT_OUT_SIZE, __C.FLAT_OUT_SIZE), dim=None),
             nn.ReLU(),
-            nn.Dropout(dropout, inplace=True),
+            nn.Dropout(__C.CLASSIFER_DROPOUT_R, inplace=True),
             weight_norm(nn.Linear(__C.FLAT_OUT_SIZE, answer_size), dim=None)
         ]
         self.classifer = nn.Sequential(*layers)
@@ -113,36 +113,36 @@ class Net(nn.Module):
         lang_feat = self.embedding(ques_ix)
         lang_feat, _ = self.rnn(lang_feat)
 
-        # Pre-process Image Feature
-        frcnfeat_mask = None
-        if self.__C.FEATURE['FRCN_FEATURE']:
-            frcnfeat_mask = self.make_mask(frcn_feat)
-            if self.__C.FEATURE['SPATIAL_FEATURE']:
-                spat_feat = self.spatfeat_linear(spat_feat)
-                frcn_feat = torch.cat((frcn_feat, spat_feat), dim=-1)
-            frcn_feat = self.frcnfeat_linear(frcn_feat)
+        # # Pre-process Image Feature
+        # frcnfeat_mask = None
+        # if self.__C.FEATURE['FRCN_FEATURE']:
+        #     frcnfeat_mask = self.make_mask(frcn_feat)
+        #     if self.__C.FEATURE['SPATIAL_FEATURE']:
+        #         spat_feat = self.spatfeat_linear(spat_feat)
+        #         frcn_feat = torch.cat((frcn_feat, spat_feat), dim=-1)
+        #     frcn_feat = self.frcnfeat_linear(frcn_feat)
 
-        gridfeat_mask = None
-        if self.__C.FEATURE['GRID_FEATURE']:
-            gridfeat_mask = self.make_mask(grid_feat)
-            grid_feat = self.gridfeat_linear(grid_feat)
+        # gridfeat_mask = None
+        # if self.__C.FEATURE['GRID_FEATURE']:
+        #     gridfeat_mask = self.make_mask(grid_feat)
+        #     grid_feat = self.gridfeat_linear(grid_feat)
 
-        if self.__C.FEATURE['FRCN_FEATURE']:
-            if self.__C.FEATURE['GRID_FEATURE']:
-                img_feat = torch.cat((frcn_feat, grid_feat), dim=1)
-                img_feat_mask = torch.cat((frcnfeat_mask, gridfeat_mask), dim=-1)
-            else:
-                img_feat = frcn_feat
-                img_feat_mask = frcnfeat_mask
-        else:
-            img_feat = grid_feat
-            img_feat_mask = gridfeat_mask
+        # if self.__C.FEATURE['FRCN_FEATURE']:
+        #     if self.__C.FEATURE['GRID_FEATURE']:
+        #         img_feat = torch.cat((frcn_feat, grid_feat), dim=1)
+        #         img_feat_mask = torch.cat((frcnfeat_mask, gridfeat_mask), dim=-1)
+        #     else:
+        #         img_feat = frcn_feat
+        #         img_feat_mask = frcnfeat_mask
+        # else:
+        #     img_feat = grid_feat
+        #     img_feat_mask = gridfeat_mask
 
 
         # Backbone Framework
         lang_feat = self.backbone(
             lang_feat,
-            img_feat
+            frcn_feat
         )
 
         # Flatten to vector

@@ -50,24 +50,19 @@ class BC(nn.Module):
         super(BC, self).__init__()
 
         self.__C = __C
-
+        self.v_net = MLP([__C.FEATURE['FRCNFEAT_SIZE'],
+                          __C.BA_HIDDEN_SIZE], dropout_r=__C.DROPOUT_R)
+        self.q_net = MLP([__C.HIDDEN_SIZE,
+                          __C.BA_HIDDEN_SIZE], dropout_r=__C.DROPOUT_R)
         if not atten:
-            self.v_net = MLP([__C.FEATURE['FRCNFEAT_SIZE'],
-                              __C.HIDDEN_SIZE], dropout=__C.DROPOUT_R)
-            self.q_net = MLP([__C.WORD_EMBED_SIZE,
-                              __C.HIDDEN_SIZE], dropout=__C.DROPOUT_R)
             self.p_net = nn.AvgPool1d(__C.K_TIMES, stride=__C.K_TIMES)
-        else:
-            self.v_net = MLP([__C.FEATURE['FRCNFEAT_SIZE'],
-                              __C.BA_HIDDEN_SIZE], dropout=__C.DROPOUT_R)
-            self.q_net = MLP([__C.WORD_EMBED_SIZE,
-                              __C.BA_HIDDEN_SIZE], dropout=__C.DROPOUT_R)
-        self.dropout = nn.Dropout(__C.CLASSIFER_DROPOUT_R)  # attention
+        else:            
+            self.dropout = nn.Dropout(__C.CLASSIFER_DROPOUT_R)  # attention
 
-        self.h_mat = nn.Parameter(torch.Tensor(
-            1, __C.GLIMPSE, 1, __C.BA_HIDDEN_SIZE).normal_())
-        self.h_bias = nn.Parameter(
-            torch.Tensor(1, __C.GLIMPSE, 1, 1).normal_())
+            self.h_mat = nn.Parameter(torch.Tensor(
+                1, __C.GLIMPSE, 1, __C.BA_HIDDEN_SIZE).normal_())
+            self.h_bias = nn.Parameter(
+                torch.Tensor(1, __C.GLIMPSE, 1, 1).normal_())
 
     def forward(self, v, q):
         # low-rank bilinear pooling using einsum
@@ -95,7 +90,7 @@ class BiAttention(nn.Module):
         super(BiAttention, self).__init__()
 
         self.__C = __C
-        self.logits = weight_norm(BC(__C, True))
+        self.logits = weight_norm(BC(__C, True), name='h_mat', dim=None)
 
     def forward(self, v, q, v_mask=True, logit=False, mask_with=-float('inf')):
         v_num = v.size(1)
@@ -136,7 +131,7 @@ class BAN(nn.Module):
     def forward(self, x, y):
         att, logits = self.BiAtt(y, x)  # b x g x v x q
 
-        for g in range(self.glimpse):
+        for g in range(self.__C.GLIMPSE):
             bi_emb = self.b_net[g].forward_with_weights(
                 y, x, att[:, g, :, :])  # b x l x h
             x = self.q_prj[g](bi_emb.unsqueeze(1)) + x
