@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -89,30 +88,6 @@ class PATH:
                 'test': 'test',
             },
 
-        }
-
-        self.FEATURES = {
-            'vqa': {
-                'FRCN_FEATURE': True,
-                'SPATIAL_FEATURE': False,
-                'GRID_FEATURE': False,
-                'FRCNFEAT_SIZE': 2048,
-                'SPATFEAT_EMB_SIZE': 2048,
-            },
-            'gqa': {
-                'FRCN_FEATURE': True,
-                'SPATIAL_FEATURE': True,
-                'GRID_FEATURE': True,
-                'FRCNFEAT_SIZE': 2048,
-                'SPATFEAT_EMB_SIZE': 2048,
-                'GRIDFEAT_SIZE': 2048,
-            },
-            'clevr': {
-                'FRCN_FEATURE': False,
-                'SPATIAL_FEATURE': False,
-                'GRID_FEATURE': True,
-                'GRIDFEAT_SIZE': 1024,
-            },
         }
 
 

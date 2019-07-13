@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -75,6 +74,22 @@ class BaseCfgs(PATH):
         # Word embedding matrix size
         # (token size x WORD_EMBED_SIZE)
         self.WORD_EMBED_SIZE = 300
+
+        # All features size
+        self.FEAT_SIZE = {
+            'vqa': {
+                'FRCN_FEAT_SIZE': 2048,
+                'BBOX_FEAT_SIZE': 5,
+            },
+            'gqa': {
+                'FRCN_FEAT_SIZE': 2048,
+                'GRID_FEAT_SIZE': 2048,
+                'BBOX_FEAT_SIZE': 5,
+            },
+            'clevr': {
+                'GRID_FEAT_SIZE': 1024,
+            },
+        }
 
         # Default training batch size: 64
         self.BATCH_SIZE = 64
@@ -187,8 +202,8 @@ class BaseCfgs(PATH):
         if self.RUN_MODE not in ['test']:
             self.TEST_SAVE_PRED = False
 
-        # ------------ Feature setup
-        self.FEATURE = self.FEATURES[self.DATASET]
+        # # ------------ Feature setup
+        # self.FEATURE = self.FEATURES[self.DATASET]
 
 
         # ------------ Gradient accumulate setup
