@@ -5,9 +5,6 @@ OpenVQA is a general platform for visual question ansering (VQA) research, with 
 
 <p align="center">
 	<img src="misc/openvqa_overall.png" width="550">
-	<p align="center">
-		Diagram of OpenVQA
-	</p>
 </p>
 
 ## News & Updates
