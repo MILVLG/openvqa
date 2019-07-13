@@ -12,7 +12,7 @@ class Execution:
     def __init__(self, __C):
         self.__C = __C
 
-        print('Loading train dataset........')
+        print('Loading training set........')
         self.dataset = DatasetLoader(__C).DataSet()
 
         # If trigger the evaluation after every epoch
@@ -22,7 +22,7 @@ class Execution:
             __C_eval = copy.deepcopy(__C)
             setattr(__C_eval, 'RUN_MODE', 'val')
 
-            print('Loading val dataset for per-epoch evaluation........')
+            print('Loading validation set for per-epoch evaluation........')
             self.dataset_eval = DatasetLoader(__C_eval).DataSet()
 
 

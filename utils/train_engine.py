@@ -3,7 +3,7 @@
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
-import os, torch, datetime, shutil
+import os, torch, datetime, shutil, time
 import numpy as np
 import torch.nn as nn
 import torch.utils.data as Data
@@ -120,6 +120,7 @@ def train_engine(__C, dataset, dataset_eval=None):
         # if __C.SHUFFLE_MODE == 'external':
         #     dataset.shuffle_list(dataset.ans_list)
 
+        time_start = time.time()
         # Iteration
         for step, (
                 frcn_feat_iter,
@@ -208,7 +209,8 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             optim.step()
 
-        print('')
+        print('Finished in {}s'.format(int(time_end-time_start)))
+        #print('')
         epoch_finish = epoch + 1
 
         # Save checkpoint
