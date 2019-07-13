@@ -52,9 +52,9 @@ def train_engine(__C, dataset, dataset_eval=None):
                    '/epoch' + str(__C.CKPT_EPOCH) + '.pkl'
 
         # Load the network parameters
-        print('Loading the {}'.format(path))
+        print('Loading ckpt from {}'.format(path))
         ckpt = torch.load(path)
-        print('Finish loading ckpt !!!')
+        print('Finish!')
         net.load_state_dict(ckpt['state_dict'])
         start_epoch = ckpt['epoch']
 

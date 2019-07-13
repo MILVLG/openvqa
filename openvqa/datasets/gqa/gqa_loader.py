@@ -61,7 +61,7 @@ class DataSet(BaseDataSet):
 
         # Define run data size
         self.data_size = self.ques_dict.__len__()
-        print(' ========== run data size:', self.data_size)
+        print(' ========== Dataset size:', self.data_size)
 
 
         # ------------------------
@@ -78,18 +78,18 @@ class DataSet(BaseDataSet):
         # Tokenize
         self.token_to_ix, self.pretrained_emb, max_token = self.tokenize(stat_ques_dict, __C.USE_GLOVE)
         self.token_size = self.token_to_ix.__len__()
-        print(' ========== question token size:', self.token_size)
+        print(' ========== Question token vocab size:', self.token_size)
 
         self.max_token = -1
         if self.max_token == -1:
             self.max_token = max_token
-        print('Max token length:', max_token, 'Cutting to:', self.max_token)
+        print('Max token length:', max_token, 'Trimmed to:', self.max_token)
 
         # Answers statistic
         self.ans_to_ix, self.ix_to_ans = self.ans_stat(stat_ans_dict)
         self.ans_size = self.ans_to_ix.__len__()
-        print(' ========== answer size:', self.ans_size)
-        print('Loading finished !!!')
+        print(' ========== Answer token vocab size:', self.ans_size)
+        print('Finished!')
         print('')
 
 

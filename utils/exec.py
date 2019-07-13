@@ -12,7 +12,7 @@ class Execution:
     def __init__(self, __C):
         self.__C = __C
 
-        print('Loading dataset ........')
+        print('Loading train dataset........')
         self.dataset = DatasetLoader(__C).DataSet()
 
         # If trigger the evaluation after every epoch
@@ -22,7 +22,7 @@ class Execution:
             __C_eval = copy.deepcopy(__C)
             setattr(__C_eval, 'RUN_MODE', 'val')
 
-            print('Loading eval every epoch dataset ........')
+            print('Loading val dataset for per-epoch evaluation........')
             self.dataset_eval = DatasetLoader(__C_eval).DataSet()
 
 
@@ -42,8 +42,8 @@ class Execution:
 
 
     def empty_log(self, version):
-        print('Empty the log file ........')
+        print('Initializing log file........')
         if (os.path.exists(self.__C.LOG_PATH + '/log_run_' + version + '.txt')):
             os.remove(self.__C.LOG_PATH + '/log_run_' + version + '.txt')
-        print('Finished !!!')
+        print('Finished!')
         print('')
