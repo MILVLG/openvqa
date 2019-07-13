@@ -1,12 +1,13 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
+from openvqa.utils.make_mask import make_mask
 from openvqa.ops.fc import FC, MLP
 from openvqa.ops.layer_norm import LayerNorm
 from openvqa.models.mcan.mca import MCA_ED
+from openvqa.models.mcan.adapter import Adapter
 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -80,15 +81,7 @@ class Net(nn.Module):
             batch_first=True
         )
 
-        if __C.FEATURE['FRCN_FEATURE']:
-            frcn_linear_size = __C.FEATURE['FRCNFEAT_SIZE']
-            if __C.FEATURE['SPATIAL_FEATURE']:
-                self.spatfeat_linear = nn.Linear(5, __C.FEATURE['SPATFEAT_EMB_SIZE'])
-                frcn_linear_size += __C.FEATURE['SPATFEAT_EMB_SIZE']
-            self.frcnfeat_linear = nn.Linear(frcn_linear_size, __C.HIDDEN_SIZE)
-
-        if __C.FEATURE['GRID_FEATURE']:
-            self.gridfeat_linear = nn.Linear(__C.FEATURE['GRIDFEAT_SIZE'], __C.HIDDEN_SIZE)
+        self.adapter = Adapter(__C)
 
         self.backbone = MCA_ED(__C)
 
@@ -101,38 +94,14 @@ class Net(nn.Module):
         self.proj = nn.Linear(__C.FLAT_OUT_SIZE, answer_size)
 
 
-    def forward(self, frcn_feat, grid_feat, spat_feat, ques_ix):
+    def forward(self, frcn_feat, grid_feat, bbox_feat, ques_ix):
 
         # Pre-process Language Feature
-        lang_feat_mask = self.make_mask(ques_ix.unsqueeze(2))
+        lang_feat_mask = make_mask(ques_ix.unsqueeze(2))
         lang_feat = self.embedding(ques_ix)
         lang_feat, _ = self.lstm(lang_feat)
 
-        # Pre-process Image Feature
-        frcnfeat_mask = None
-        if self.__C.FEATURE['FRCN_FEATURE']:
-            frcnfeat_mask = self.make_mask(frcn_feat)
-            if self.__C.FEATURE['SPATIAL_FEATURE']:
-                spat_feat = self.spatfeat_linear(spat_feat)
-                frcn_feat = torch.cat((frcn_feat, spat_feat), dim=-1)
-            frcn_feat = self.frcnfeat_linear(frcn_feat)
-
-        gridfeat_mask = None
-        if self.__C.FEATURE['GRID_FEATURE']:
-            gridfeat_mask = self.make_mask(grid_feat)
-            grid_feat = self.gridfeat_linear(grid_feat)
-
-        if self.__C.FEATURE['FRCN_FEATURE']:
-            if self.__C.FEATURE['GRID_FEATURE']:
-                img_feat = torch.cat((frcn_feat, grid_feat), dim=1)
-                img_feat_mask = torch.cat((frcnfeat_mask, gridfeat_mask), dim=-1)
-            else:
-                img_feat = frcn_feat
-                img_feat_mask = frcnfeat_mask
-        else:
-            img_feat = grid_feat
-            img_feat_mask = gridfeat_mask
-
+        img_feat, img_feat_mask = self.adapter(frcn_feat, grid_feat, bbox_feat)
 
         # Backbone Framework
         lang_feat, img_feat = self.backbone(
@@ -160,10 +129,3 @@ class Net(nn.Module):
 
         return proj_feat
 
-
-    # Masking the sequence
-    def make_mask(self, feature):
-        return (torch.sum(
-            torch.abs(feature),
-            dim=-1
-        ) == 0).unsqueeze(1).unsqueeze(2)
