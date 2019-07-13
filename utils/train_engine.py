@@ -3,7 +3,7 @@
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
-import os, torch, datetime, shutil
+import os, torch, datetime, shutil, time
 import numpy as np
 import torch.nn as nn
 import torch.utils.data as Data
@@ -52,9 +52,9 @@ def train_engine(__C, dataset, dataset_eval=None):
                    '/epoch' + str(__C.CKPT_EPOCH) + '.pkl'
 
         # Load the network parameters
-        print('Loading the {}'.format(path))
+        print('Loading ckpt from {}'.format(path))
         ckpt = torch.load(path)
-        print('Finish loading ckpt !!!')
+        print('Finish!')
         net.load_state_dict(ckpt['state_dict'])
         start_epoch = ckpt['epoch']
 
@@ -120,6 +120,7 @@ def train_engine(__C, dataset, dataset_eval=None):
         # if __C.SHUFFLE_MODE == 'external':
         #     dataset.shuffle_list(dataset.ans_list)
 
+        time_start = time.time()
         # Iteration
         for step, (
                 frcn_feat_iter,
@@ -208,7 +209,8 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             optim.step()
 
-        print('')
+        print('Finished in {}s'.format(int(time_end-time_start)))
+        #print('')
         epoch_finish = epoch + 1
 
         # Save checkpoint

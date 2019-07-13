@@ -51,7 +51,7 @@ class DataSet(BaseDataSet):
         else:
             self.data_size = self.ques_list.__len__()
 
-        print(' ========== run data size:', self.data_size)
+        print(' ========== Dataset size:', self.data_size)
 
 
         # ------------------------
@@ -67,13 +67,13 @@ class DataSet(BaseDataSet):
         # Tokenize
         self.token_to_ix, self.pretrained_emb = self.tokenize(stat_ques_list, __C.USE_GLOVE)
         self.token_size = self.token_to_ix.__len__()
-        print(' ========== question token size:', self.token_size)
+        print(' ========== Question token vocab size:', self.token_size)
 
         # Answers statistic
         self.ans_to_ix, self.ix_to_ans = self.ans_stat(stat_ans_list, ans_freq=8)
         self.ans_size = self.ans_to_ix.__len__()
-        print(' ========== answer occurred more than {} times:'.format(8), self.ans_size)
-        print('Loading finished !!!')
+        print(' ========== Answer token vocab size (occur more than {} times):'.format(8), self.ans_size)
+        print('Finished!')
         print('')
 
 
