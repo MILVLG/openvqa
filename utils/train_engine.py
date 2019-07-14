@@ -209,6 +209,7 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             optim.step()
 
+        time_end = time.time()
         print('Finished in {}s'.format(int(time_end-time_start)))
         #print('')
         epoch_finish = epoch + 1
