@@ -50,7 +50,7 @@ class BC(nn.Module):
         super(BC, self).__init__()
 
         self.__C = __C
-        self.v_net = MLP([__C.FEATURE['FRCNFEAT_SIZE'],
+        self.v_net = MLP([__C.IMG_FEAT_SIZE,
                           __C.BA_HIDDEN_SIZE], dropout_r=__C.DROPOUT_R)
         self.q_net = MLP([__C.HIDDEN_SIZE,
                           __C.BA_HIDDEN_SIZE], dropout_r=__C.DROPOUT_R)
