@@ -210,8 +210,8 @@ def train_engine(__C, dataset, dataset_eval=None):
             optim.step()
 
         time_end = time.time()
-        elapse_time = int(time_end-tine_start)
-        print('Finished in {}s'.format(elapse_time))
+        elapse_time = time_end-time_start
+        print('Finished in {}s'.format(int(elapse_time)))
         #print('')
         epoch_finish = epoch + 1
 
@@ -237,11 +237,11 @@ def train_engine(__C, dataset, dataset_eval=None):
             'a+'
         )
         logfile.write(
-            'Epoch = ' + str(epoch_finish) +
-            '  Loss = ' + str(loss_sum / data_size) +
-            '\n' +
-            'Lr = ' + str(optim._rate) + '\n' +
-            'Elapsed time = ' + str(elapse_time) +
+            'Epoch: ' + str(epoch_finish) +
+            ', Loss: ' + str(loss_sum / data_size) +
+            ', Lr: ' + str(optim._rate) + '\n' +
+            'Elapsed time: ' + str(int(elapse_time)) + 
+            ', Speed(s/batch): ' + str(elapse_time/step) + 
             '\n\n'
         )
         logfile.close()
