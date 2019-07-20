@@ -24,6 +24,7 @@ class MHAtt(nn.Module):
         self.linear_v = nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE)
         self.linear_k = nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE)
         self.linear_q = nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE)
+        self.linear_h = nn.Linear(__C.MULTI_HEAD, __C.HIDDEN_SIZE)
         self.linear_merge = nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE)
 
         self.dropout = nn.Dropout(__C.DROPOUT_R)
@@ -31,6 +32,7 @@ class MHAtt(nn.Module):
     def forward(self, v, k, q, mask):
         n_batches = q.size(0)
 
+        origin_v = v.unsqueeze(1)
         v = self.linear_v(v).view(
             n_batches,
             -1,
@@ -52,7 +54,7 @@ class MHAtt(nn.Module):
             int(self.__C.HIDDEN_SIZE / self.__C.MULTI_HEAD)
         ).transpose(1, 2)
 
-        att_map, atted = self.att(v, k, q, mask)
+        atted, att_map = self.att(v, k, q, mask)
         atted = atted.transpose(1, 2).contiguous().view(
             n_batches,
             -1,
@@ -64,9 +66,10 @@ class MHAtt(nn.Module):
         #relation part
         att_map = att_map.permute(0, 2, 3, 1)
         relation = self.linear_h(att_map)
-        relation_kq = relation.transpose(1, 2)
-        log_beta = relation_kq.mul(origin_v).sum(3) / math.sqrt(d_k)
-        beta = F.softmax(log_beta, dim=2).transpose(1, 2).unsqueeze(2)
+        #relation_kq = relation.transpose(1, 2)
+        log_beta = relation.mul(origin_v).sum(
+            3) / math.sqrt(self.__C.HIDDEN_SIZE)
+        beta = F.softmax(log_beta, dim=2).unsqueeze(2)
 
         E = torch.matmul(beta, relation).view(
             n_batches, -1, self.__C.HIDDEN_SIZE)

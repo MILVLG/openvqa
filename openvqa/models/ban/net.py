@@ -94,11 +94,11 @@ class Net(nn.Module):
         self.backbone = BAN(__C)
 
         # Flatten to vector
-        self.attflat_lang = AttFlat(__C)
+        #self.attflat_lang = AttFlat(__C)
 
         # Classification layers
         layers = [
-            weight_norm(nn.Linear(__C.FLAT_OUT_SIZE, __C.FLAT_OUT_SIZE), dim=None),
+            weight_norm(nn.Linear(__C.HIDDEN_SIZE, __C.FLAT_OUT_SIZE), dim=None),
             nn.ReLU(),
             nn.Dropout(__C.CLASSIFER_DROPOUT_R, inplace=True),
             weight_norm(nn.Linear(__C.FLAT_OUT_SIZE, answer_size), dim=None)
@@ -146,13 +146,13 @@ class Net(nn.Module):
         )
 
         # Flatten to vector
-        fuse_feat = self.attflat_lang(
-            lang_feat,
-            lang_feat_mask
-        )
+        #fuse_feat = self.attflat_lang(
+        #    lang_feat,
+        #    lang_feat_mask
+        #)
 
         # Classification layers
-        proj_feat = self.classifer(fuse_feat)
+        proj_feat = self.classifer(lang_feat.sum(1))
 
         return proj_feat
 
