@@ -47,12 +47,12 @@ class BaseCfgs(PATH):
         # ---- Data Provider Params ----
         # ------------------------------
 
-        self.MODEL = 'mcan_small'
+        self.MODEL = ''
 
-        self.DATASET = 'vqa'
+        self.DATASET = ''
 
         # Run as 'train' 'val' or 'test'
-        self.RUN_MODE = 'train'
+        self.RUN_MODE = ''
 
         # Set True to evaluate offline when an epoch finished
         # (only work when train with 'train' split)
@@ -131,10 +131,29 @@ class BaseCfgs(PATH):
         # (default: -1 means not using)
         self.GRAD_NORM_CLIP = -1
 
-        # Adam optimizer betas and eps
-        self.OPT_BETAS_0 = 0.9
-        self.OPT_BETAS_1 = 0.98
-        self.OPT_EPS = 1e-9
+        # Optimizer
+        '''
+        Support(case-sensitive): 
+        'Adam': default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0, amsgrad:False}
+        'Adamax': default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0}
+        'RMSprop': default -> {alpha:0.99, eps:1e-8, weight_decay:0, momentum:0, centered:False}
+        'SGD': default -> {momentum:0, dampening:0, weight_decay:0, nesterov:False}
+        'Adadelta': default -> {rho:0.9, eps:1e-6, weight_decay:0}
+        'Adagrad': default -> {lr_decay:0, weight_decay:0, initial_accumulator_value:0}
+        
+        In YML files:
+        If you want to self-define the optimizer parameters, set a dict named OPT_PARAMS contains the keys you want to modify.
+         !!! Warning: keys: ['params, 'lr'] should not be set. 
+         !!! Warning: To avoid ambiguity, the value of keys should be defined as string type.
+        If you not define the OPT_PARAMS, all parameters of optimizer will be set as default.
+        Example:
+        mcan_small.yml ->
+            OPT: Adam
+            OPT_PARAMS: {betas: '(0.9, 0.98)', eps: '1e-9'}
+        '''
+        # case-sensitive
+        self.OPT = 'Adam'
+        self.OPT_PARAMS = {}
 
 
     def parse_to_dict(self, args):
@@ -186,14 +205,12 @@ class BaseCfgs(PATH):
         random.seed(self.SEED)
 
         if self.CKPT_PATH is not None:
-            print('Warning: you are now using CKPT_PATH args, '
-                  'CKPT_VERSION and CKPT_EPOCH will not work')
+            print("Warning: you are now using 'CKPT_PATH' args, "
+                  "'CKPT_VERSION' and 'CKPT_EPOCH' will not work")
             self.CKPT_VERSION = self.CKPT_PATH.split('/')[-1] + '_' + str(random.randint(0, 9999999))
 
 
         # ------------ Split setup
-        # if not training or train split include val dataset
-        # will not trigger the EVAL_EVERY_EPOCH
         self.SPLIT = self.SPLITS[self.DATASET]
         self.SPLIT['train'] = self.TRAIN_SPLIT
         if self.SPLIT['val'] in self.SPLIT['train'].split('+') or self.RUN_MODE not in ['train']:
@@ -202,9 +219,6 @@ class BaseCfgs(PATH):
         if self.RUN_MODE not in ['test']:
             self.TEST_SAVE_PRED = False
 
-        # # ------------ Feature setup
-        # self.FEATURE = self.FEATURES[self.DATASET]
-
 
         # ------------ Gradient accumulate setup
         assert self.BATCH_SIZE % self.GRAD_ACCU_STEPS == 0
@@ -212,6 +226,28 @@ class BaseCfgs(PATH):
 
         # Set small eval batch size will reduce gpu memory usage
         self.EVAL_BATCH_SIZE = int(self.SUB_BATCH_SIZE / 2)
+
+
+        # ------------ Optimizer parameters process
+        assert self.OPT in ['Adam', 'Adamax', 'RMSprop', 'SGD', 'Adadelta', 'Adagrad']
+        optim = getattr(torch.optim, self.OPT)
+        default_params_dict = dict(zip(optim.__init__.__code__.co_varnames[3: optim.__init__.__code__.co_argcount],
+                                       optim.__init__.__defaults__[1:]))
+
+        def all(iterable):
+            for element in iterable:
+                if not element:
+                    return False
+            return True
+        assert all(list(map(lambda x: x in default_params_dict, self.OPT_PARAMS)))
+
+        for key in self.OPT_PARAMS:
+            if isinstance(self.OPT_PARAMS[key], str):
+                self.OPT_PARAMS[key] = eval(self.OPT_PARAMS[key])
+            else:
+                print("To avoid ambiguity, set the value of 'OPT_PARAMS' to string type")
+                exit(-1)
+        self.OPT_PARAMS = {**default_params_dict, **self.OPT_PARAMS}
 
 
 
