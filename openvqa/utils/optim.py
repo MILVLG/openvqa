@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -53,18 +52,21 @@ def get_optim(__C, model, data_size, lr_base=None):
     if lr_base is None:
         lr_base = __C.LR_BASE
 
-    return WarmupOptimizer(
+    std_optim = getattr(Optim, __C.OPT)
+    params = filter(lambda p: p.requires_grad, model.parameters())
+    eval_str = 'params, lr=0'
+    for key in __C.OPT_PARAMS:
+        eval_str += ' ,' + key + '=' + str(__C.OPT_PARAMS[key])
+
+    optim = WarmupOptimizer(
         lr_base,
-        Optim.Adam(
-            filter(lambda p: p.requires_grad, model.parameters()),
-            lr=0,
-            betas=(__C.OPT_BETAS_0, __C.OPT_BETAS_1),
-            eps=__C.OPT_EPS
-        ),
+        eval('std_optim' + '(' + eval_str + ')'),
         data_size,
         __C.BATCH_SIZE,
         __C.WARMUP_EPOCH
     )
+
+    return optim
 
 
 def adjust_lr(optim, decay_r):

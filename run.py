@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -16,32 +15,45 @@ def parse_args():
     parser = argparse.ArgumentParser(description='OpenVQA Args')
 
     parser.add_argument('--RUN', dest='RUN_MODE',
+                      choices=['train', 'val', 'test'],
                       help='{train, val, test}',
                       type=str, required=True)
 
     parser.add_argument('--MODEL', dest='MODEL',
-                      help='{'
-                           'mcan_small'
-                           'mcan_large'
-                           'ban_4'
-                           'ban_8'
-                           'mfb'
-                           'mfh'
+                      choices=[
+                           'mcan_small',
+                           'mcan_large',
+                           'ban_4',
+                           'ban_8',
+                           'mfb',
+                           'mfh',
                            'butd'
+                           ]
+                        ,
+                      help='{'
+                           'mcan_small,'
+                           'mcan_large,'
+                           'ban_4,'
+                           'ban_8,'
+                           'mfb,'
+                           'mfh,'
+                           'butd,'
                            '}'
                         ,
                       type=str, required=True)
 
     parser.add_argument('--DATASET', dest='DATASET',
+                      choices=['vqa', 'gqa', 'clevr'],
                       help='{'
-                           'vqa'
-                           'gqa'
-                           'clevr'
+                           'vqa,'
+                           'gqa,'
+                           'clevr,'
                            '}'
                         ,
                       type=str, required=True)
 
     parser.add_argument('--SPLIT', dest='TRAIN_SPLIT',
+                      choices=['train', 'train+val', 'train+val+vg'],
                       help="set training split, "
                            "vqa: {'train', 'train+val', 'train+val+vg'}"
                            "gqa: {'train', 'train+val'}"

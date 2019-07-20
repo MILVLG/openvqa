@@ -1,10 +1,9 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
-import os, torch, datetime, shutil
+import os, torch, datetime, shutil, time
 import numpy as np
 import torch.nn as nn
 import torch.utils.data as Data
@@ -53,9 +52,9 @@ def train_engine(__C, dataset, dataset_eval=None):
                    '/epoch' + str(__C.CKPT_EPOCH) + '.pkl'
 
         # Load the network parameters
-        print('Loading the {}'.format(path))
+        print('Loading ckpt from {}'.format(path))
         ckpt = torch.load(path)
-        print('Finish loading ckpt !!!')
+        print('Finish!')
         net.load_state_dict(ckpt['state_dict'])
         start_epoch = ckpt['epoch']
 
@@ -121,11 +120,12 @@ def train_engine(__C, dataset, dataset_eval=None):
         # if __C.SHUFFLE_MODE == 'external':
         #     dataset.shuffle_list(dataset.ans_list)
 
+        time_start = time.time()
         # Iteration
         for step, (
                 frcn_feat_iter,
                 grid_feat_iter,
-                spat_feat_iter,
+                bbox_feat_iter,
                 ques_ix_iter,
                 ans_iter
         ) in enumerate(dataloader):
@@ -134,7 +134,7 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             frcn_feat_iter = frcn_feat_iter.cuda()
             grid_feat_iter = grid_feat_iter.cuda()
-            spat_feat_iter = spat_feat_iter.cuda()
+            bbox_feat_iter = bbox_feat_iter.cuda()
             ques_ix_iter = ques_ix_iter.cuda()
             ans_iter = ans_iter.cuda()
 
@@ -146,8 +146,8 @@ def train_engine(__C, dataset, dataset_eval=None):
                 sub_grid_feat_iter = \
                     grid_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
                                   (accu_step + 1) * __C.SUB_BATCH_SIZE]
-                sub_spat_feat_iter = \
-                    spat_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
+                sub_bbox_feat_iter = \
+                    bbox_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
                                   (accu_step + 1) * __C.SUB_BATCH_SIZE]
                 sub_ques_ix_iter = \
                     ques_ix_iter[accu_step * __C.SUB_BATCH_SIZE:
@@ -159,7 +159,7 @@ def train_engine(__C, dataset, dataset_eval=None):
                 pred = net(
                     sub_frcn_feat_iter,
                     sub_grid_feat_iter,
-                    sub_spat_feat_iter,
+                    sub_bbox_feat_iter,
                     sub_ques_ix_iter
                 )
 
@@ -209,7 +209,10 @@ def train_engine(__C, dataset, dataset_eval=None):
 
             optim.step()
 
-        print('')
+        time_end = time.time()
+        elapse_time = time_end-time_start
+        print('Finished in {}s'.format(int(elapse_time)))
+        #print('')
         epoch_finish = epoch + 1
 
         # Save checkpoint
@@ -234,10 +237,11 @@ def train_engine(__C, dataset, dataset_eval=None):
             'a+'
         )
         logfile.write(
-            'epoch = ' + str(epoch_finish) +
-            '  loss = ' + str(loss_sum / data_size) +
-            '\n' +
-            'lr = ' + str(optim._rate) +
+            'Epoch: ' + str(epoch_finish) +
+            ', Loss: ' + str(loss_sum / data_size) +
+            ', Lr: ' + str(optim._rate) + '\n' +
+            'Elapsed time: ' + str(int(elapse_time)) + 
+            ', Speed(s/batch): ' + str(elapse_time/step) + 
             '\n\n'
         )
         logfile.close()

@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Yuhao Cui https://github.com/cuiyuhao1996
 # --------------------------------------------------------
 
@@ -13,6 +12,7 @@ class Cfgs(BaseCfgs):
 
         self.LAYER = 6
         self.HIDDEN_SIZE = 512
+        self.BBOXFEAT_EMB_SIZE = 2048
         self.FF_SIZE = 2048
         self.MULTI_HEAD = 8
         self.DROPOUT_R = 0.1
