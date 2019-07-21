@@ -101,7 +101,7 @@ def train_engine(__C, dataset, dataset_eval=None):
         '/log_run_' + __C.VERSION + '.txt',
         'a+'
     )
-    logfile.write(__C)
+    logfile.write(str(__C))
     logfile.close()
 
     # Training script
