@@ -249,14 +249,14 @@ class BaseCfgs(PATH):
                 exit(-1)
         self.OPT_PARAMS = {**default_params_dict, **self.OPT_PARAMS}
 
-
-
     def __str__(self):
+        __C_str = ''
         for attr in dir(self):
             if not attr.startswith('__') and not isinstance(getattr(self, attr), MethodType):
-                print('{ %-17s }->' % attr, getattr(self, attr))
+                __C_str += '{ %-17s }->' % attr + str(getattr(self, attr)) + '\n'
 
-        return ''
+        return __C_str
+
 
 #
 #
