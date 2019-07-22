@@ -96,6 +96,14 @@ def train_engine(__C, dataset, dataset_eval=None):
         drop_last=True
     )
 
+    logfile = open(
+        __C.LOG_PATH +
+        '/log_run_' + __C.VERSION + '.txt',
+        'a+'
+    )
+    logfile.write(str(__C))
+    logfile.close()
+
     # Training script
     for epoch in range(start_epoch, __C.MAX_EPOCH):
 
@@ -106,7 +114,7 @@ def train_engine(__C, dataset, dataset_eval=None):
             'a+'
         )
         logfile.write(
-            'nowTime: ' +
+            '=====================================\nnowTime: ' +
             datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') +
             '\n'
         )
