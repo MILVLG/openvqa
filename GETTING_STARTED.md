@@ -101,7 +101,7 @@ For VQA-v2, *test-dev* and *test-std* splits are run as follows:
 $ python3 run.py --RUN='test' --CKPT_V=str --CKPT_E=int
 ```
 
-Result files are stored in ```results/result_test/result_run_<'PATH+random number' or 'VERSION+EPOCH'>.json```
+Result files are stored in ```results/result_test/result_run_<VERSION+EPOCH>.json```
 
 You can upload the obtained result json file to [Eval AI](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* and *test-std* splits.
 
