@@ -114,7 +114,7 @@ class PATH:
 
 
     def check_path(self, dataset=None):
-        print('Check dataset ........')
+        print('Checking dataset ........')
 
 
         if dataset:
@@ -141,6 +141,6 @@ class PATH:
                         print(self.RAW_PATH[dataset][item], 'NOT EXIST')
                         exit(-1)
 
-        print('Check successfully ........')
+        print('Finished!')
         print('')
 

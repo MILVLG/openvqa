@@ -28,9 +28,9 @@ def test_engine(__C, dataset, state_dict=None, validation=False):
     # val_ckpt_flag = False
     if state_dict is None:
         # val_ckpt_flag = True
-        print('Loading the {}'.format(path))
+        print('Loading ckpt from: {}'.format(path))
         state_dict = torch.load(path)['state_dict']
-        print('Finish loading ckpt !!!')
+        print('Finish!')
 
     # Store the prediction list
     # qid_list = [ques['question_id'] for ques in dataset.ques_list]
