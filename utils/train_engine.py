@@ -62,12 +62,14 @@ def train_engine(__C, dataset, dataset_eval=None):
         optim = get_optim(__C, net, data_size, ckpt['lr_base'])
         optim._step = int(data_size / __C.BATCH_SIZE * start_epoch)
         optim.optimizer.load_state_dict(ckpt['optimizer'])
+        
+        if ('ckpt_' + __C.VERSION) not in os.listdir(__C.CKPTS_PATH):
+            os.mkdir(__C.CKPTS_PATH + '/ckpt_' + __C.VERSION)
 
     else:
-        if ('ckpt_' + __C.VERSION) in os.listdir(__C.CKPTS_PATH):
-            shutil.rmtree(__C.CKPTS_PATH + '/ckpt_' + __C.VERSION)
-
-        os.mkdir(__C.CKPTS_PATH + '/ckpt_' + __C.VERSION)
+        if ('ckpt_' + __C.VERSION) not in os.listdir(__C.CKPTS_PATH):
+            #shutil.rmtree(__C.CKPTS_PATH + '/ckpt_' + __C.VERSION)
+            os.mkdir(__C.CKPTS_PATH + '/ckpt_' + __C.VERSION)
 
         optim = get_optim(__C, net, data_size)
         start_epoch = 0
