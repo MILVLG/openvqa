@@ -5,7 +5,7 @@ For installation instructions, please see [INSTALL.md](INSTALL.md).
 
 ## Training
 
-The following script will start training with the default hyperparameters:
+The following script will start training a `mcan_small` model on the `VQA-v2` dataset:
 
 ```bash
 $ python3 run.py --RUN='train' --MODEL='mcan_small' --DATASET='vqa'
@@ -45,6 +45,14 @@ To add：
 
 - ```--MAX_EPOCH=int``` to stop training at a specified epoch number.
 
+If you want to resume training from an existing checkpoint, you can use the following script:
+
+```bash
+$ python3 run.py --RUN='train' --MODEL='mcan_small' --DATASET='vqa' --CKPT_V=str --CKPT_E=int
+```
+
+where the args `CKPT_V` and `CKPT_E` must be specified, corresponding to the version and epoch number of the loaded model.
+
 
 ####  Multi-GPU Training and Gradient Accumulation
 
@@ -69,40 +77,39 @@ We recommend to use the GPU with at least 8 GB memory, but if you don't have suc
 
 ## Validation and Testing
 
-**Warning**: If you train the model use ```--MODEL``` args or multi-gpu training, it should be also set in evaluation.
+**Warning**:  The args ```--MODEL``` and `--DATASET` should be set to the same values as those in the training stage.
 
 
-### Offline Evaluation
+### Validation on Local Machine
 
-Offline evaluation only support the VQA 2.0 *val* split. If you want to evaluate on the VQA 2.0 *test-dev* or *test-std* split, please see [Online Evaluation](#Online-Evaluation).
+Offline evaluation on local machine only support the evaluations on the *val* split. If you want to evaluate the *test* split, please see [Evaluation on online server](#Evaluation on online server).
 
 There are two ways to start:
 
 (Recommend)
 
 ```bash
-$ python3 run.py --RUN='val' --CKPT_V=str --CKPT_E=int
+$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_V=str --CKPT_E=int
 ```
 
 or use the absolute path instead:
 
 ```bash
-$ python3 run.py --RUN='val' --CKPT_PATH=str
+$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_PATH=str
 ```
 
 
-### Online Evaluation
+### Testing on Online Server
 
-VQA-v2 and GQA support online evaluation.
-
-For VQA-v2, *test-dev* and *test-std* splits are run as follows:
+All the evaluations on the test split of VQA-v2, GQA and CLEVR benchmarks can be achieved by using 
 
 ```bash
-$ python3 run.py --RUN='test' --CKPT_V=str --CKPT_E=int
+$ python3 run.py --RUN='test' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_V=str --CKPT_E=int
 ```
 
-Result files are stored in ```results/result_test/result_run_<VERSION+EPOCH>.json```
+Result file are saved at: ```results/result_test/result_run_<CKPT_V>_<CKPT_E>.json```
 
-You can upload the obtained result json file to [Eval AI](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* and *test-std* splits.
+- For VQA-v2, the result file is uploaded the [VQA challenge website](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* and *test-std* splits.
 
-For GQA, 
+- For GQA,  the result file is uploaded to the [GQA Challenge website](<https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview>) to evaluate the scores on *test* split. Note that the scores on the *test-dev* split can be evaluated offline since the ground-truth annotations are provided.
+- For CLEVR, the result file can be evaluated via sending an email to the author [Justin Johnson](<https://cs.stanford.edu/people/jcjohns/>) with attaching this file, and he will reply the scores via email too.   

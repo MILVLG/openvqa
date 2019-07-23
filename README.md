@@ -1,4 +1,4 @@
-# OpenVQA (In Construction)
+# OpenVQA
 OpenVQA is a general platform for visual question ansering (VQA) research, with implementing state-of-the-art approaches (e.g., [BUTD](https://arxiv.org/abs/1707.07998), [MFH](https://arxiv.org/abs/1708.03619), [BAN](https://arxiv.org/abs/1805.07932) and [MCAN](https://arxiv.org/abs/1906.10770)) on different benchmark datasets like [VQA-v2](https://visualqa.org/), [GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html) and [CLEVR](https://cs.stanford.edu/people/jcjohns/clevr/). 
 
 
@@ -22,7 +22,6 @@ Results and models are available in [MODEL_ZOO.md](MODEL_ZOO.md).
 |--------------------|:--------:|:--------:|:--------:|
 | [BUTD](https://arxiv.org/abs/1707.07998)      |         |         |         |
 | [MLB](https://arxiv.org/abs/1610.04325)      |         |         |         |
-| [MUTAN](https://arxiv.org/abs/1705.06676)      |         |         |         |
 | [MFB](https://arxiv.org/abs/1708.01471v1)       |         |         |         | 
 | [MFH](https://arxiv.org/abs/1708.03619)       |         |         |         | 
 | [BAN](https://arxiv.org/abs/1805.07932)       |         |        |          | 
