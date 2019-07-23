@@ -13,7 +13,7 @@ We use the following environment to run all the experiments in this page.
 
 We provide two groups of results (including the accuracies of *Overall*, *Yes/No*, *Number* and *Other*) for each model on VQA-v2 using different training schemas: 1) Model training on the `train` split and evaluated on the `val` split (Train -> Val); 2) Model training on the `train+val+vg` splits and evaluated on the `test-dev` split (Train+val+vg -> Test-dev). We only provide pre-trained models for the latter schema. 
 
-**Note that for one model, the used base learning rate in the two schemas may be different, you should modify this setting in the config file to reimplement the results.**.
+**Note that for one model, the used base learning rate in the two schemas may be different, you should modify this setting in the config file to reimplement the results.**
 
 #### Train -> Val
 
