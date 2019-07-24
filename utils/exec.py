@@ -12,7 +12,7 @@ class Execution:
     def __init__(self, __C):
         self.__C = __C
 
-        print('Loading training set........')
+        print('Loading dataset........')
         self.dataset = DatasetLoader(__C).DataSet()
 
         # If trigger the evaluation after every epoch
