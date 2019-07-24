@@ -1,8 +1,7 @@
 # --------------------------------------------------------
 # OpenVQA
 # Written by Zhenwei Shao https://github.com/ParadoxZW
-# Based on the implementation of paper "Bilinear Attention Neworks",
-# NeurIPS 2018 https://github.com/jnhwkim/ban-vqa)
+# Based on the implementation of paper "Bilinear Attention Neworks", NeurIPS 2018 https://github.com/jnhwkim/ban-vqa)
 # --------------------------------------------------------
 
 import torch.nn as nn
