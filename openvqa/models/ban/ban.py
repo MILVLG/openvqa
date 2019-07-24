@@ -1,7 +1,6 @@
 # --------------------------------------------------------
 # OpenVQA
 # Written by Zhenwei Shao https://github.com/ParadoxZW
-# Based on https://arxiv.org/abs/1805.07932
 # Based on the implementation of paper "Bilinear Attention Neworks",
 # NeurIPS 2018 https://github.com/jnhwkim/ban-vqa)
 # --------------------------------------------------------
