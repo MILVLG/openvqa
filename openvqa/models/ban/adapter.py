@@ -1,6 +1,5 @@
 # --------------------------------------------------------
 # OpenVQA
-# Licensed under The MIT License [see LICENSE for details]
 # Written by Zhenwei Shao https://github.com/ParadoxZW
 # --------------------------------------------------------
 
