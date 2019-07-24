@@ -131,6 +131,9 @@ class BaseCfgs(PATH):
         # (default: -1 means not using)
         self.GRAD_NORM_CLIP = -1
 
+        # Loss function while training
+        self.LOSS = 'BCE'
+
         # Optimizer
         '''
         Support(case-sensitive): 

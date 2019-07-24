@@ -6,6 +6,7 @@
 import os, torch, datetime, shutil, time
 import numpy as np
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.utils.data as Data
 from openvqa.models.model_loader import ModelLoader
 from openvqa.utils.optim import get_optim, adjust_lr
@@ -35,7 +36,11 @@ def train_engine(__C, dataset, dataset_eval=None):
     if __C.DATASET in ['gqa', 'clevr']:
         loss_fn = torch.nn.CrossEntropyLoss(reduction='sum').cuda()
     else:
-        loss_fn = torch.nn.BCELoss(reduction='sum').cuda()
+        print('__C.LOSS: ', __C.LOSS)
+        if __C.LOSS == 'KLDiv':
+            loss_fn = torch.nn.KLDivLoss(reduction='sum').cuda()
+        else:
+            loss_fn = torch.nn.BCELoss(reduction='sum').cuda()
 
     # Load checkpoint if resume training
     if __C.RESUME:
@@ -176,7 +181,11 @@ def train_engine(__C, dataset, dataset_eval=None):
                 if __C.DATASET in ['gqa', 'clevr']:
                     loss = loss_fn(pred, sub_ans_iter.view(-1))
                 else:
-                    loss = loss_fn(torch.sigmoid(pred), sub_ans_iter)
+                    print(__C.LOSS)
+                    if __C.LOSS == 'KLDiv':
+                        loss = loss_fn(F.log_softmax(pred), sub_ans_iter)
+                    else:
+                        loss = loss_fn(torch.sigmoid(pred), sub_ans_iter)
 
                 loss /= __C.GRAD_ACCU_STEPS
                 loss.backward()
