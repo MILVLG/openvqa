@@ -20,6 +20,8 @@ We provide two groups of results (including the accuracies of *Overall*, *Yes/No
 
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 :-: | :-: | :-: | :-: | :-: | :-: 
+[BAN-4](https://github.com/MILVLG/openvqa/blob/576876f284af27281ae0e22a9f4c63b7f61da4da/configs/vqa/ban_4.yml) |2e-3| 65.86 | 83.53 | 46.36 | 57.56 |
+[BAN-8](https://github.com/MILVLG/openvqa/blob/576876f284af27281ae0e22a9f4c63b7f61da4da/configs/vqa/ban_8.yml) |1e-4| 66.00 | 83.61 | 47.04 | 57.62 |
 [MCAN-small](https://github.com/MILVLG/openvqa/blob/576876f284af27281ae0e22a9f4c63b7f61da4da/configs/vqa/mcan_small.yml) |1e-4| 67.17 | 84.82 | 49.31 | 58.48 | 
 [MCAN-large](https://github.com/MILVLG/openvqa/blob/576876f284af27281ae0e22a9f4c63b7f61da4da/configs/vqa/mcan_large.yml) |7e-5| 67.50 | 85.14 | 49.66 | 58.80 | 
 
