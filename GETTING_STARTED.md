@@ -98,6 +98,7 @@ or use the absolute path instead:
 $ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_PATH=str
 ```
 
+- For VQA-v2, the results on *val* split
 
 ### Testing on Online Server
 
@@ -109,7 +110,7 @@ $ python3 run.py --RUN='test' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_V=s
 
 Result file are saved at: ```results/result_test/result_run_<CKPT_V>_<CKPT_E>.json```
 
-- For VQA-v2, the result file is uploaded the [VQA challenge website](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* and *test-std* splits.
+- For VQA-v2, the result file is uploaded the [VQA challenge website](https://evalai.cloudcv.org/web/challenges/challenge-page/163/overview) to evaluate the scores on *test-dev* or *test-std* split.
 
-- For GQA,  the result file is uploaded to the [GQA Challenge website](<https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview>) to evaluate the scores on *test* split. Note that the scores on the *test-dev* split can be evaluated offline since the ground-truth annotations are provided.
+- For GQA,  the result file is uploaded to the [GQA Challenge website](<https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview>) to evaluate the scores on *test* or *test-dev* split. 
 - For CLEVR, the result file can be evaluated via sending an email to the author [Justin Johnson](<https://cs.stanford.edu/people/jcjohns/>) with attaching this file, and he will reply the scores via email too.   
