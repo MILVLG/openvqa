@@ -24,7 +24,7 @@ Results and models are available in [MODEL_ZOO.md](MODEL_ZOO.md).
 | [MLB](https://arxiv.org/abs/1610.04325)      |         |         |         |
 | [MFB](https://arxiv.org/abs/1708.01471v1)       |         |         |         | 
 | [MFH](https://arxiv.org/abs/1708.03619)       |         |         |         | 
-| [BAN](https://arxiv.org/abs/1805.07932)       |         |        |          | 
+| [BAN](https://arxiv.org/abs/1805.07932)       |  ✓       |        |          | 
 | [MCAN](https://arxiv.org/abs/1906.10770)      | ✓        |         |         | 
 
 
