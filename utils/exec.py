@@ -28,7 +28,8 @@ class Execution:
 
     def run(self, run_mode):
         if run_mode == 'train':
-            self.empty_log(self.__C.VERSION)
+            if self.__C.RESUME is False:
+                self.empty_log(self.__C.VERSION)
             train_engine(self.__C, self.dataset, self.dataset_eval)
 
         elif run_mode == 'val':
