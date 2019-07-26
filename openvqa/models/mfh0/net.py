@@ -71,23 +71,17 @@ class Net(nn.Module):
             embedding_dim=__C.WORD_EMBED_SIZE
         )
 
-        self.lstm = nn.LSTM(
-            input_size=__C.WORD_EMBED_SIZE,
-            hidden_size=__C.HIDDEN_SIZE,
-            num_layers=1,
-            bidirectional=False
-        )
         # Loading the GloVe embedding weights
         if __C.USE_GLOVE:
             self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
 
         self.question_attention = QuestionAttention(__C)
         self.image_attention = ImageAttention(__C)
-        self.mfh1 = MFH(__C, __C.IMAGE_CHANNEL*__C.NUM_IMG_GLIMPSE, __C.HIDDEN_SIZE*__C.NUM_QUESTION_GLIMPSE, 0.1, True)
-        self.mfh2 = MFH(__C, __C.IMAGE_CHANNEL*__C.NUM_IMG_GLIMPSE, __C.HIDDEN_SIZE*__C.NUM_QUESTION_GLIMPSE, 0.1, False)
+        self.mfh1 = MFH(__C)
+        self.mfh2 = MFH(__C)
 
         # Full Connection Layer
-        self.linear = nn.Linear(2*__C.MFB_OUT_DIM, answer_size)
+        self.fc = FC(2*__C.MFB_OUT_DIM, answer_size, dropout_r=0, use_relu=False)
 
     def forward(self, frcn_feat, grid_feat, bbox_feat, ques_ix):
         # print('** frcn_feat:', frcn_feat.shape)         # N x 100 x 2048
@@ -98,9 +92,9 @@ class Net(nn.Module):
         img_feat, img_feat_mask = self.adapter(frcn_feat, grid_feat, bbox_feat)  # N x 100 x 2048
 
         # Pre-process Language Feature
-        que_feat = self.embedding(ques_ix)                # N x T x 300
-        que_feat = torch.transpose(que_feat, 1, 0)        # T x N x 300
-        # que_feat, _ = self.lstm(que_feat)		          # N x T x 1024
+        que_feat_mask = self.make_mask(ques_ix.unsqueeze(2))
+        que_feat = torch.transpose(ques_ix, 1, 0)       # T x N
+        que_feat = self.embedding(que_feat)             # T x N x 300
         # que_feat = torch.tanh(que_feat)                 # T x N x 300
         # que_feat, _ = self.lstm(que_feat)               # T x N x 1024
         # que_feat = self.dropout_lstm(que_feat)          # T x N x 1024
@@ -110,10 +104,17 @@ class Net(nn.Module):
         # print('** img_feat:', img_feat.shape)
 
         que_feat = self.question_attention(que_feat)            # N x 2048
-        fuse_feat = self.image_attention(img_feat, que_feat)    # N x 4096
-        z1, exp1 = self.mfh1(fuse_feat.unsqueeze(1), que_feat.unsqueeze(1))        # N x 1000  N x 5000
-        z2, exp2 = self.mfh2(fuse_feat.unsqueeze(1), que_feat.unsqueeze(1), exp1)  # N x 1000  N x 5000
-        out_feat = torch.cat((z1.squeeze(1), z2.squeeze(1)), 1)                       # N x 2000
-        out_feat = self.linear(out_feat)                            # N x 3129
+        fuse_feat = self.image_attention(que_feat, img_feat)    # N x 4096
+        z1, exp1 = self.mfh1(que_feat, fuse_feat, 1)            # N x 1000  N x 5000
+        z2, exp2 = self.mfh2(que_feat, fuse_feat, exp1)         # N x 1000  N x 5000
+        out_feat = torch.cat((z1, z2), 1)                       # N x 2000
+        out_feat = self.fc(out_feat)                            # N x 3129
         return out_feat
+        # return F.log_softmax(out_feat)
 
+    # Masking the sequence
+    def make_mask(self, feature):
+        return (torch.sum(
+            torch.abs(feature),
+            dim=-1
+        ) == 0).unsqueeze(1).unsqueeze(2)

@@ -4,7 +4,6 @@
 # Written by Pengbing Gao https://github.com/nbgao
 # --------------------------------------------------------
 
-from openvqa.ops.fc import FC
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -15,124 +14,132 @@ import torch.autograd as autograd
 # ---- Multi-Model Hign-order Bilinear Pooling Co-Attention----
 # -------------------------------------------------------------
 
+class FC(nn.Module):
+    def __init__(self, in_features, out_features, dropout_ratio):
+        super(FC, self).__init__()
+        self.linear = nn.Linear(in_features, out_features)
+        # init.xavier_normal_(self.linear.state_dict()['weight'])
+        self.dropout = nn.Dropout(dropout_ratio)
 
-# MFB Module
-class MFB(nn.Module):
-    def __init__(self, __C):
-        super(MFB, self).__init__()
+    def forward(self, x):
+        x = self.dropout(F.relu(self.linear(x)))
+        return x
+
+
+class ProdAttn(nn.Module):
+    def __init__(self, __C, feat_size, hidden_size, dropout_ratio):
+        super(ProdAttn, self).__init__()
         self.__C = __C
-        self.JOINT_EMB_SIZE = __C.MFB_FACTOR_NUM * __C.MFB_OUT_DIM                            # 5*1000=5000
-        self.FC_q = nn.Linear(__C.HIDDEN_SIZE*__C.NUM_QUESTION_GLIMPSE, self.JOINT_EMB_SIZE)  # 1024*2 -> 5000
-        self.FC_i = nn.Linear(__C.IMAGE_CHANNEL, self.JOINT_EMB_SIZE)                         # 2048 -> 5000
-        self.dropout = nn.Dropout(p=__C.MFB_DROPOUT_RATIO)
-        self.sumpool = nn.AvgPool1d(__C.MFB_FACTOR_NUM, stride=__C.MFB_FACTOR_NUM)
+        self.FC_i = nn.Linear(feat_size, __C.MFB_FACTOR_NUM*__C.MFB_OUT_DIM)
+        self.FC_q = nn.Linear(hidden_size, __C.MFB_FACTOR_NUM*__C.MFB_OUT_DIM)
+        # init.xavier_normal_(self.FC_i.state_dict()['weight'])
+        # init.xavier_normal_(self.FC_q.state_dict()['weight'])
+        self.dropout = nn.Dropout(dropout_ratio)
+        self.pool = nn.AvgPool1d(__C.MFB_FACTOR_NUM, stride=__C.MFB_FACTOR_NUM)
 
-    def forward(self, que_feat, img_feat):
-        # que_feat: N x 100 x 2048
-        # img_feat: N x 100 x 2048
-        batch_size = que_feat.shape[0]     # batch_size = N
-
-        que_feat = self.FC_q(que_feat)                      # N x 100 x 5000
-        img_feat = self.FC_i(img_feat)                      # N x 100 x 5000
-
-        z = que_feat * img_feat                             # N x 100 x 5000
-        z = self.dropout(z)                                 # N x 100 x 5000
-        z = self.sumpool(z) * self.__C.MFB_FACTOR_NUM       # N x 100 x 1000
-        z = torch.sqrt(F.relu(z)) - torch.sqrt(F.relu(-z))  # N x 1000 x 100
-        z = F.normalize(z.view(batch_size, -1))             # N x 100000
-        z = z.view(batch_size, self.__C.IMG_FEAT_SIZE, self.__C.MFB_OUT_DIM)  # N x 100 x 1000
+    def forward(self, outs_i, outs_q):
+        '''
+            outs_q.size() -> (batch, C, hidden)
+            outs_i.size() -> (batch, C, feat)
+            z.size() -> (batch, C, hidden)
+            output.size() -> (batch, C, hidden)
+        '''
+        batch_size = outs_i.shape[0]
+        # z = self.pool(self.dropout(F.relu(self.FC_i(outs_i)) )
+        z = self.pool(self.dropout(self.FC_i(outs_i) * self.FC_q(outs_q))) * self.__C.MFB_FACTOR_NUM
+        z = torch.sqrt(F.relu(z)) - torch.sqrt(F.relu(-z))
+        z = F.normalize(z.view(batch_size, -1)).view(batch_size, -1, self.__C.MFB_OUT_DIM)
         return z
 
 
-# MFH Module
 class MFH(nn.Module):
-    def __init__(self, __C):
+    def __init__(self, __C, feat_size, hidden_size, dropout_ratio, is_first):
         super(MFH, self).__init__()
         self.__C = __C
-        self.JOINT_EMB_SIZE = __C.MFB_FACTOR_NUM * __C.MFB_OUT_DIM      # 5*1000=5000
-        self.FC_q = nn.Linear(__C.HIDDEN_SIZE*__C.NUM_QUESTION_GLIMPSE, self.JOINT_EMB_SIZE)    # 1024*2 -> 5000
-        self.FC_i = nn.Linear(__C.IMAGE_CHANNEL*__C.NUM_IMG_GLIMPSE, self.JOINT_EMB_SIZE)       # 2048*2 -> 5000
-        self.dropout = nn.Dropout(p=__C.MFB_DROPOUT_RATIO)
-        self.sumpool = nn.AvgPool1d(__C.MFB_FACTOR_NUM, stride=__C.MFB_FACTOR_NUM)
+        self.is_first = is_first
+        self.FC_i = nn.Linear(feat_size, __C.MFB_FACTOR_NUM*__C.MFB_OUT_DIM)
+        self.FC_q = nn.Linear(hidden_size, __C.MFB_FACTOR_NUM*__C.MFB_OUT_DIM)
+        # init.xavier_normal_(self.FC_i.state_dict()['weight'])
+        # init.xavier_normal_(self.FC_q.state_dict()['weight'])
+        self.dropout = nn.Dropout(dropout_ratio)
+        self.pool = nn.AvgPool1d(__C.MFB_FACTOR_NUM, stride=__C.MFB_FACTOR_NUM)
 
-    def forward(self, que_feat, img_feat, exp_in):
-        # que_feat: N x 2048
-        # img_feat: N x 4096
-        batch_size = que_feat.shape[0]      # batch_size = N
-        que_feat = self.FC_q(que_feat)      # N x 5000
-        img_feat = self.FC_i(img_feat)      # N x 5000
-        exp_out = que_feat * img_feat       # N x 5000
-        exp_out = self.dropout(exp_out)     # N x 5000
-        z = exp_out * exp_in                # N x 5000
-        z = z.unsqueeze(1)                  # N x 1 x 5000
-        z = self.sumpool(z) * self.__C.MFB_FACTOR_NUM       # N x 1 x 1000
-        z = torch.sqrt(F.relu(z)) - torch.sqrt(F.relu(-z))  # N x 1 x 1000
-        z = F.normalize(z.view(batch_size, -1))             # N x 1000
-        return z, exp_out
+    def forward(self, outs_i, outs_q, exp_last = 0):
+        '''
+            outs_q.size() -> (batch, C, hidden)
+            outs_i.size() -> (batch, C, feat)
+            z.size() -> (batch, C, hidden)
+            output.size() -> (batch, C, hidden)
+        '''
+        batch_size = outs_i.shape[0]
+        # z = self.pool(self.dropout(F.relu(self.FC_i(outs_i)) * F.relu(self.FC_q(outs_q))))
+        exp = self.dropout(self.FC_i(outs_i) * self.FC_q(outs_q)) if self.is_first else self.dropout(self.FC_i(outs_i) * self.FC_q(outs_q) * exp_last)
+        z = self.pool(exp) * self.__C.MFB_FACTOR_NUM
+        z = torch.sqrt(F.relu(z)) - torch.sqrt(F.relu(-z))
+        z = F.normalize(z.view(batch_size, -1)).view(batch_size, -1, self.__C.MFB_OUT_DIM)
+        return z, exp
 
 
-# Question Attention Module
 class QuestionAttention(nn.Module):
     def __init__(self, __C):
-        self.__C = __C
         super(QuestionAttention, self).__init__()
+        self.__C = __C
         self.dropout = nn.Dropout(0.1)
-        self.lstm = nn.LSTM(__C.WORD_EMBED_SIZE, __C.HIDDEN_SIZE, num_layers=1, bidirectional=False)
-        self.dropout_lstm = nn.Dropout(0.1)
+        self.lstm = nn.LSTM(input_size=__C.EMBEDDING_SIZE, hidden_size=__C.HIDDEN_SIZE, num_layers=1, bidirectional=False)
+        self.dropout2 = nn.Dropout(0.1)
         self.fc = FC(__C.HIDDEN_SIZE, 512, 0.1)
         self.linear = nn.Linear(512, __C.NUM_QUESTION_GLIMPSE)
+        # init.xavier_normal_(self.linear.state_dict()['weight'])
 
-    def forward(self, que_feat):
-        # que_feat:  T x N x 300
-        batch_size = que_feat.shape[1]     # batch_size = N
-
-        que_feat = self.dropout(que_feat)                       # T x N x 300
+    def forward(self, x):
+        '''
+            x.size() -> (seq, batch, embed)
+            h_state.size() -> (1, batch, hidden)
+            outs.size() -> (seq, batch, hidden)
+            attn.size() -> (seq, batch, Qhead)
+            x_attn.size() -> (batch, hidden * Qhead)
+            output.size() -> (batch, hidden * Qhead)
+        '''
+        batch_size = x.shape[1]
+        x = self.dropout(x)
         h_state = autograd.Variable(torch.zeros(1, batch_size, self.__C.HIDDEN_SIZE)).cuda()
         c_state = autograd.Variable(torch.zeros(1, batch_size, self.__C.HIDDEN_SIZE)).cuda()
-        que_feat, _ = self.lstm(que_feat, (h_state, c_state))   # T x N x 1024
-        que_feat = self.dropout_lstm(que_feat)
-
-        que_att_feat = self.fc(que_feat)                        # T x N x 512
-        que_att_feat = self.linear(que_att_feat)                # T x N x 2
-        que_att_feat = F.softmax(que_att_feat, dim=0)           # T x N x 2
-        que_att_feat_list = []
+        outs, _ = self.lstm(x, (h_state, c_state))
+        outs = self.dropout2(outs)
+        attn = self.fc(outs)
+        attn = F.softmax(self.linear(attn), dim=0)
+        attn_list = []
         for i in range(self.__C.NUM_QUESTION_GLIMPSE):
-            mask = que_att_feat[:, :, i:i+1]                        # T x N x 1
-            mask = mask * que_feat                              # T x N x 1024
-            mask = mask.sum(dim=0)                              # N x 1024
-            que_att_feat_list.append(mask)
-        que_att_feat = torch.cat(que_att_feat_list, dim=1)      # N x 2048
-
-        return que_att_feat
+            attn_list.append(torch.sum(attn[:, :, i:i+1] * outs, dim=0))
+        x_attn = torch.cat(attn_list, dim=1)
+        return x_attn
 
 
-# Image Attention Module
 class ImageAttention(nn.Module):
     def __init__(self, __C):
         super(ImageAttention, self).__init__()
         self.__C = __C
         self.dropout = nn.Dropout(0.1)
-        self.mfb = MFB(__C)
+        self.prodattn = ProdAttn(__C, __C.IMAGE_CHANNEL, __C.HIDDEN_SIZE * __C.NUM_QUESTION_GLIMPSE, 0.1)
         self.fc = FC(__C.MFB_OUT_DIM, 512, 0.1)
         self.linear = nn.Linear(512, __C.NUM_IMG_GLIMPSE)
+        # init.xavier_normal_(self.linear.state_dict()['weight'])
 
-    def forward(self, que_feat, img_feat):
-        # que_feat: N x 2048
-        # img_feat: N x 100 x 2048
-
-        que_feat = que_feat.unsqueeze(1).repeat(1, img_feat.size()[1], 1)  # N x 100 x 2048
-        img_feat = self.dropout(img_feat)                   # N x 100 x 2048
-        img_att_feat = self.mfb(que_feat, img_feat)         # N x 100 x 1000
-        img_att_feat = self.fc(img_att_feat)                # N x 100 x 512
-        img_att_feat = self.linear(img_att_feat)            # N X 100 X 2
-        img_att_feat = F.softmax(img_att_feat, dim=1)       # N x 100 x 2
-        img_att_feat_list = []
+    def forward(self, x, outs_q):
+        '''
+            x.size() -> (batch, topk, feat)
+            outs_q.size() -> (batch, hidden * Qhead)
+            attn.size() -> (batch, topk, Ihead)
+            x_attn.size() -> (batch, hidden * Ihead)
+            output.size() -> (batch, hidden * Ihead)
+        '''
+        x = self.dropout(x)
+        attn = self.prodattn(x, outs_q.unsqueeze(1).repeat(1, x.size()[1], 1))
+        attn = self.fc(attn)
+        attn = F.softmax(self.linear(attn), dim=1)
+        attn_list = []
         for i in range(self.__C.NUM_IMG_GLIMPSE):
-            mask = img_att_feat[:, :, i:i+1]                # N x 100 x 1
-            mask = mask * img_feat                          # N x 100 x 2048
-            mask = mask.sum(dim=1)                          # N x 2048
-            img_att_feat_list.append(mask)
-        img_att_feat = torch.cat(img_att_feat_list, dim=1)  # N x 4096
-
-        return img_att_feat
+            attn_list.append(torch.sum(attn[:, :, i:i+1] * x, dim=1))
+        x_attn = torch.cat(attn_list, dim=1)
+        return x_attn
 
