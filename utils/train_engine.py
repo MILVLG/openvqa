@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.utils.data as Data
 from openvqa.models.model_loader import ModelLoader
 from openvqa.utils.optim import get_optim, adjust_lr
-from utils.test_engine import test_engine
+from utils.test_engine import test_engine, ckpt_proc
 
 
 def train_engine(__C, dataset, dataset_eval=None):
@@ -55,7 +55,11 @@ def train_engine(__C, dataset, dataset_eval=None):
         print('Loading ckpt from {}'.format(path))
         ckpt = torch.load(path)
         print('Finish!')
-        net.load_state_dict(ckpt['state_dict'])
+
+        if __C.N_GPU > 1:
+            net.load_state_dict(ckpt_proc(ckpt['state_dict']))
+        else:
+            net.load_state_dict(ckpt['state_dict'])
         start_epoch = ckpt['epoch']
 
         # Load the optimizer paramters
@@ -148,7 +152,9 @@ def train_engine(__C, dataset, dataset_eval=None):
             ques_ix_iter = ques_ix_iter.cuda()
             ans_iter = ans_iter.cuda()
 
+            loss_tmp = 0
             for accu_step in range(__C.GRAD_ACCU_STEPS):
+                loss_tmp = 0
 
                 sub_frcn_feat_iter = \
                     frcn_feat_iter[accu_step * __C.SUB_BATCH_SIZE:
@@ -180,25 +186,27 @@ def train_engine(__C, dataset, dataset_eval=None):
 
                 loss /= __C.GRAD_ACCU_STEPS
                 loss.backward()
+
+                loss_tmp += loss.cpu().data.numpy() * __C.GRAD_ACCU_STEPS
                 loss_sum += loss.cpu().data.numpy() * __C.GRAD_ACCU_STEPS
 
-                if __C.VERBOSE:
-                    if dataset_eval is not None:
-                        mode_str = __C.SPLIT['train'] + '->' + __C.SPLIT['val']
-                    else:
-                        mode_str = __C.SPLIT['train'] + '->' + __C.SPLIT['test']
+            if __C.VERBOSE:
+                if dataset_eval is not None:
+                    mode_str = __C.SPLIT['train'] + '->' + __C.SPLIT['val']
+                else:
+                    mode_str = __C.SPLIT['train'] + '->' + __C.SPLIT['test']
 
-                    print("\r[Version %s][Model %s][Dataset %s][Epoch %2d][Step %4d/%4d][%s] Loss: %.4f, Lr: %.2e" % (
-                        __C.VERSION,
-                        __C.MODEL_USE,
-                        __C.DATASET,
-                        epoch + 1,
-                        step,
-                        int(data_size / __C.BATCH_SIZE),
-                        mode_str,
-                        loss.cpu().data.numpy() / __C.SUB_BATCH_SIZE,
-                        optim._rate
-                    ), end='          ')
+                print("\r[Version %s][Model %s][Dataset %s][Epoch %2d][Step %4d/%4d][%s] Loss: %.4f, Lr: %.2e" % (
+                    __C.VERSION,
+                    __C.MODEL_USE,
+                    __C.DATASET,
+                    epoch + 1,
+                    step,
+                    int(data_size / __C.BATCH_SIZE),
+                    mode_str,
+                    loss_tmp / __C.SUB_BATCH_SIZE,
+                    optim._rate
+                ), end='          ')
 
             # Gradient norm clipping
             if __C.GRAD_NORM_CLIP > 0:
@@ -226,12 +234,20 @@ def train_engine(__C, dataset, dataset_eval=None):
         epoch_finish = epoch + 1
 
         # Save checkpoint
-        state = {
-            'state_dict': net.state_dict(),
-            'optimizer': optim.optimizer.state_dict(),
-            'lr_base': optim.lr_base,
-            'epoch': epoch_finish
-        }
+        if __C.N_GPU > 1:
+            state = {
+                'state_dict': net.module.state_dict(),
+                'optimizer': optim.optimizer.state_dict(),
+                'lr_base': optim.lr_base,
+                'epoch': epoch_finish
+            }
+        else:
+            state = {
+                'state_dict': net.state_dict(),
+                'optimizer': optim.optimizer.state_dict(),
+                'lr_base': optim.lr_base,
+                'epoch': epoch_finish
+            }
         torch.save(
             state,
             __C.CKPTS_PATH +
@@ -251,7 +267,7 @@ def train_engine(__C, dataset, dataset_eval=None):
             ', Loss: ' + str(loss_sum / data_size) +
             ', Lr: ' + str(optim._rate) + '\n' +
             'Elapsed time: ' + str(int(elapse_time)) + 
-            ', Speed(s/batch): ' + str(elapse_time/step) + 
+            ', Speed(s/batch): ' + str(elapse_time / step) +
             '\n\n'
         )
         logfile.close()
