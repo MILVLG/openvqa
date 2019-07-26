@@ -62,11 +62,13 @@ def parse_args():
                       type=str)
 
     parser.add_argument('--EVAL_EE', dest='EVAL_EVERY_EPOCH',
+                      choices=['True', 'False'],
                       help='True: evaluate the val split when an epoch finished,'
                            'False: do not evaluate on local',
                       type=str)
 
     parser.add_argument('--SAVE_PRED', dest='TEST_SAVE_PRED',
+                      choices=['True', 'False'],
                       help='True: save the prediction vectors,'
                            'False: do not save the prediction vectors',
                       type=str)
@@ -88,6 +90,7 @@ def parse_args():
                       type=str)
 
     parser.add_argument('--RESUME', dest='RESUME',
+                      choices=['True', 'False'],
                       help='True: use checkpoint to resume training,'
                            'False: start training with random init',
                       type=str)
@@ -117,10 +120,12 @@ def parse_args():
                       type=int)
 
     parser.add_argument('--PINM', dest='PIN_MEM',
+                      choices=['True', 'False'],
                       help='True: use pin memory, False: not use pin memory',
                       type=str)
 
     parser.add_argument('--VERB', dest='VERBOSE',
+                      choices=['True', 'False'],
                       help='True: verbose print, False: simple print',
                       type=str)
 
@@ -146,7 +151,6 @@ if __name__ == '__main__':
 
     print('Hyper Parameters:')
     print(__C)
-
 
     execution = Execution(__C)
     execution.run(__C.RUN_MODE)

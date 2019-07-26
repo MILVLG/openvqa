@@ -143,8 +143,6 @@ def train_engine(__C, dataset, dataset_eval=None):
                 ques_ix_iter,
                 ans_iter
         ) in enumerate(dataloader):
-            if step == 10:
-                break
 
             optim.zero_grad()
 
