@@ -156,6 +156,22 @@ class BaseCfgs(PATH):
         self.OPT_PARAMS = {}
 
 
+    def str_to_bool(self, args):
+        bool_list = [
+            'EVAL_EVERY_EPOCH',
+            'TEST_SAVE_PRED',
+            'RESUME',
+            'PIN_MEM',
+            'VERBOSE',
+        ]
+
+        for arg in dir(args):
+            if arg in bool_list and getattr(args, arg) is not None:
+                setattr(args, arg, eval(getattr(args, arg)))
+
+        return args
+
+
     def parse_to_dict(self, args):
         args_dict = {}
         for arg in dir(args):

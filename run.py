@@ -62,14 +62,14 @@ def parse_args():
                       type=str)
 
     parser.add_argument('--EVAL_EE', dest='EVAL_EVERY_EPOCH',
-                      help='set True to evaluate the '
-                           'val split when an epoch finished',
-                      type=bool)
+                      help='True: evaluate the val split when an epoch finished,'
+                           'False: do not evaluate on local',
+                      type=str)
 
     parser.add_argument('--SAVE_PRED', dest='TEST_SAVE_PRED',
-                      help='set True to save the '
-                           'prediction vectors',
-                      type=bool)
+                      help='True: save the prediction vectors,'
+                           'False: do not save the prediction vectors',
+                      type=str)
 
     parser.add_argument('--BS', dest='BATCH_SIZE',
                       help='batch size in training',
@@ -88,8 +88,9 @@ def parse_args():
                       type=str)
 
     parser.add_argument('--RESUME', dest='RESUME',
-                      help='use checkpoint to resume training',
-                      type=bool)
+                      help='True: use checkpoint to resume training,'
+                           'False: start training with random init',
+                      type=str)
 
     parser.add_argument('--CKPT_V', dest='CKPT_VERSION',
                       help='checkpoint version',
@@ -116,21 +117,23 @@ def parse_args():
                       type=int)
 
     parser.add_argument('--PINM', dest='PIN_MEM',
-                      help='use pin memory',
-                      type=bool)
+                      help='True: use pin memory, False: not use pin memory',
+                      type=str)
 
     parser.add_argument('--VERB', dest='VERBOSE',
-                      help='verbose print',
-                      type=bool)
+                      help='True: verbose print, False: simple print',
+                      type=str)
 
 
     args = parser.parse_args()
     return args
 
 
+
 if __name__ == '__main__':
     args = parse_args()
     __C = CfgLoader(args.MODEL.split('_')[0]).load()
+    args = __C.str_to_bool(args)
     args_dict = __C.parse_to_dict(args)
 
     cfg_file = "configs/{}/{}.yml".format(args.DATASET, args.MODEL)
