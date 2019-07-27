@@ -6,6 +6,7 @@
 import os, torch, datetime, shutil, time
 import numpy as np
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.utils.data as Data
 from openvqa.models.model_loader import ModelLoader
 from openvqa.utils.optim import get_optim, adjust_lr
@@ -31,11 +32,8 @@ def train_engine(__C, dataset, dataset_eval=None):
     if __C.N_GPU > 1:
         net = nn.DataParallel(net, device_ids=__C.DEVICES)
 
-    # Binary cross entropy loss
-    if __C.DATASET in ['gqa', 'clevr']:
-        loss_fn = torch.nn.CrossEntropyLoss(reduction='sum').cuda()
-    else:
-        loss_fn = torch.nn.BCELoss(reduction='sum').cuda()
+    # Define Loss Function
+    loss_fn = eval('torch.nn.' + __C.LOSS_FUNC_NAME_DICT[__C.LOSS_FUNC] + "(reduction='" + __C.LOSS_REDUCTION + "').cuda()")
 
     # Load checkpoint if resume training
     if __C.RESUME:
@@ -179,11 +177,15 @@ def train_engine(__C, dataset, dataset_eval=None):
                     sub_ques_ix_iter
                 )
 
-                if __C.DATASET in ['gqa', 'clevr']:
-                    loss = loss_fn(pred, sub_ans_iter.view(-1))
-                else:
-                    loss = loss_fn(torch.sigmoid(pred), sub_ans_iter)
+                loss_item = [pred, sub_ans_iter]
+                loss_nonlinear_list = __C.LOSS_FUNC_NONLINEAR[__C.LOSS_FUNC]
+                for item_ix, loss_nonlinear in enumerate(loss_nonlinear_list):
+                    if loss_nonlinear in ['flat']:
+                        loss_item[item_ix] = loss_item[item_ix].view(-1)
+                    elif loss_nonlinear:
+                        loss_item[item_ix] = eval('F.' + loss_nonlinear + '(loss_item[item_ix], dim=1)')
 
+                loss = loss_fn(loss_item[0], loss_item[1])
                 loss /= __C.GRAD_ACCU_STEPS
                 loss.backward()
 
@@ -230,7 +232,6 @@ def train_engine(__C, dataset, dataset_eval=None):
         time_end = time.time()
         elapse_time = time_end-time_start
         print('Finished in {}s'.format(int(elapse_time)))
-        #print('')
         epoch_finish = epoch + 1
 
         # Save checkpoint
