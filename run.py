@@ -61,14 +61,6 @@ def parse_args():
                         ,
                       type=str)
 
-    parser.add_argument('--LOSS', dest='LOSS FUNCTION',
-                        choices=['BCE', 'KLDiv'],
-                        help='{'
-                             'BCE,'
-                             'KLDiv,'
-                             '}'
-                        ,
-                        type=str)
     parser.add_argument('--EVAL_EE', dest='EVAL_EVERY_EPOCH',
                       choices=['True', 'False'],
                       help='True: evaluate the val split when an epoch finished,'
