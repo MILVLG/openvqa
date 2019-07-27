@@ -112,6 +112,23 @@ class BaseCfgs(PATH):
         # ---- Optimizer Params ----
         # --------------------------
 
+        # Define the loss function
+        '''
+        Loss(case-sensitive): 
+        'ce'    : Cross Entropy -> NLLLoss(LogSoftmax(output), label) = CrossEntropyLoss(output, label)
+        'bce'   : Binary Cross Entropy -> BCELoss(Sigmoid(output), label) = BCEWithLogitsLoss(output, label)
+        'kld'   : Kullback-Leibler Divergence -> KLDivLoss(LogSoftmax(output), Softmax(label))
+        'mse'   : Mean Squared Error -> MSELoss(output, label)
+        
+        Reduction(case-sensitive):
+        'none': no reduction will be applied
+        'elementwise_mean': the sum of the output will be divided by the number of elements in the output
+        'sum': the output will be summed
+        '''
+        self.LOSS_FUNC = ''
+        self.LOSS_REDUCTION = ''
+
+
         # The base learning rate
         self.LR_BASE = 0.0001
 
@@ -136,13 +153,13 @@ class BaseCfgs(PATH):
 
         # Optimizer
         '''
-        Support(case-sensitive): 
-        'Adam': default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0, amsgrad:False}
-        'Adamax': default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0}
-        'RMSprop': default -> {alpha:0.99, eps:1e-8, weight_decay:0, momentum:0, centered:False}
-        'SGD': default -> {momentum:0, dampening:0, weight_decay:0, nesterov:False}
-        'Adadelta': default -> {rho:0.9, eps:1e-6, weight_decay:0}
-        'Adagrad': default -> {lr_decay:0, weight_decay:0, initial_accumulator_value:0}
+        Optimizer(case-sensitive): 
+        'Adam'      : default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0, amsgrad:False}
+        'Adamax'    : default -> {betas:(0.9, 0.999), eps:1e-8, weight_decay:0}
+        'RMSprop'   : default -> {alpha:0.99, eps:1e-8, weight_decay:0, momentum:0, centered:False}
+        'SGD'       : default -> {momentum:0, dampening:0, weight_decay:0, nesterov:False}
+        'Adadelta'  : default -> {rho:0.9, eps:1e-6, weight_decay:0}
+        'Adagrad'   : default -> {lr_decay:0, weight_decay:0, initial_accumulator_value:0}
         
         In YML files:
         If you want to self-define the optimizer parameters, set a dict named OPT_PARAMS contains the keys you want to modify.
@@ -155,8 +172,24 @@ class BaseCfgs(PATH):
             OPT_PARAMS: {betas: '(0.9, 0.98)', eps: '1e-9'}
         '''
         # case-sensitive
-        self.OPT = 'Adam'
+        self.OPT = ''
         self.OPT_PARAMS = {}
+
+
+    def str_to_bool(self, args):
+        bool_list = [
+            'EVAL_EVERY_EPOCH',
+            'TEST_SAVE_PRED',
+            'RESUME',
+            'PIN_MEM',
+            'VERBOSE',
+        ]
+
+        for arg in dir(args):
+            if arg in bool_list and getattr(args, arg) is not None:
+                setattr(args, arg, eval(getattr(args, arg)))
+
+        return args
 
 
     def parse_to_dict(self, args):
@@ -229,6 +262,35 @@ class BaseCfgs(PATH):
 
         # Set small eval batch size will reduce gpu memory usage
         self.EVAL_BATCH_SIZE = int(self.SUB_BATCH_SIZE / 2)
+
+
+        # ------------ Loss process
+        assert self.LOSS_FUNC in ['ce', 'bce', 'kld', 'mse']
+        assert self.LOSS_REDUCTION in ['none', 'elementwise_mean', 'sum']
+
+        self.LOSS_FUNC_NAME_DICT = {
+            'ce': 'CrossEntropyLoss',
+            'bce': 'BCEWithLogitsLoss',
+            'kld': 'KLDivLoss',
+            'mse': 'MSELoss',
+        }
+
+        self.LOSS_FUNC_NONLINEAR = {
+            'ce': [None, 'flat'],
+            'bce': [None, None],
+            'kld': ['log_softmax', None],
+            'mse': [None, None],
+        }
+
+        self.TASK_LOSS_CHECK = {
+            'vqa': ['bce', 'kld'],
+            'gqa': ['ce'],
+            'clevr': ['ce'],
+        }
+
+        assert self.LOSS_FUNC in self.TASK_LOSS_CHECK[self.DATASET], \
+            self.DATASET + 'task only support' + str(self.TASK_LOSS_CHECK[self.DATASET]) + 'loss.' + \
+            'Modify the LOSS_FUNC in configs to get a better score.'
 
 
         # ------------ Optimizer parameters process
