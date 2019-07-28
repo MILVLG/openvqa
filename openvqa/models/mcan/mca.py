@@ -115,16 +115,16 @@ class SA(nn.Module):
         self.dropout2 = nn.Dropout(__C.DROPOUT_R)
         self.norm2 = LayerNorm(__C.HIDDEN_SIZE)
 
-    def forward(self, x, x_mask):
-        x = self.norm1(x + self.dropout1(
-            self.mhatt(x, x, x, x_mask)
+    def forward(self, y, y_mask):
+        y = self.norm1(y + self.dropout1(
+            self.mhatt(y, y, y, y_mask)
         ))
 
-        x = self.norm2(x + self.dropout2(
-            self.ffn(x)
+        y = self.norm2(y + self.dropout2(
+            self.ffn(y)
         ))
 
-        return x
+        return y
 
 
 # -------------------------------
@@ -150,11 +150,11 @@ class SGA(nn.Module):
 
     def forward(self, x, y, x_mask, y_mask):
         x = self.norm1(x + self.dropout1(
-            self.mhatt1(x, x, x, x_mask)
+            self.mhatt1(v=x, k=x, q=x, mask=x_mask)
         ))
 
         x = self.norm2(x + self.dropout2(
-            self.mhatt2(y, y, x, y_mask)
+            self.mhatt2(v=y, k=y, q=x, mask=y_mask)
         ))
 
         x = self.norm3(x + self.dropout3(
@@ -175,14 +175,14 @@ class MCA_ED(nn.Module):
         self.enc_list = nn.ModuleList([SA(__C) for _ in range(__C.LAYER)])
         self.dec_list = nn.ModuleList([SGA(__C) for _ in range(__C.LAYER)])
 
-    def forward(self, x, y, x_mask, y_mask):
+    def forward(self, y, x, y_mask, x_mask):
         # Get encoder last hidden vector
         for enc in self.enc_list:
-            x = enc(x, x_mask)
+            y = enc(y, y_mask)
 
         # Input encoder last hidden vector
         # And obtain decoder last hidden vectors
         for dec in self.dec_list:
-            y = dec(y, x, y_mask, x_mask)
+            x = dec(x, y, x_mask, y_mask)
 
-        return x, y
+        return y, x
