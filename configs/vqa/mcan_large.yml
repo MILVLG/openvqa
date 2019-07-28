@@ -17,5 +17,7 @@ WARMUP_EPOCH: 3
 MAX_EPOCH: 13
 GRAD_NORM_CLIP: -1
 GRAD_ACCU_STEPS: 2 # to reduce GPU memory cost
+LOSS_FUNC: bce
+LOSS_REDUCTION: sum
 OPT: Adam
 OPT_PARAMS: {betas: '(0.9, 0.98)', eps: '1e-9'}

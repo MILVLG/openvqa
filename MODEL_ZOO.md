@@ -30,7 +30,8 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download
 :-: | :-: | :-: |:-: |:-: |:-: | :-:
 [MCAN-small](./configs/vqa/mcan_small.yml) |1e-4| 70.69 | 87.08 | 53.16 | 60.66 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf)
-[MCAN-large](./configs/vqa/mcan_large.yml) |5e-5| | | |  | 
+[MCAN-large](./configs/vqa/mcan_large.yml) |5e-5| 70.82 | 87.19 | 52.56 | 60.98 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA)
+
 ## GQA
 
 

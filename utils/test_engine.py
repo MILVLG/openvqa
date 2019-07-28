@@ -32,6 +32,9 @@ def test_engine(__C, dataset, state_dict=None, validation=False):
         state_dict = torch.load(path)['state_dict']
         print('Finish!')
 
+        if __C.N_GPU > 1:
+            state_dict = ckpt_proc(state_dict)
+
     # Store the prediction list
     # qid_list = [ques['question_id'] for ques in dataset.ques_list]
     ans_ix_list = []
@@ -142,3 +145,12 @@ def test_engine(__C, dataset, state_dict=None, validation=False):
         log_file = __C.LOG_PATH + '/log_run_' + __C.VERSION + '.txt'
 
     EvalLoader(__C).eval(dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, log_file, validation)
+
+
+def ckpt_proc(state_dict):
+    state_dict_new = {}
+    for key in state_dict:
+        state_dict_new['module.' + key] = state_dict[key]
+        # state_dict.pop(key)
+
+    return state_dict_new

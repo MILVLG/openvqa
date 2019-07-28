@@ -276,8 +276,13 @@ class DataSet(BaseDataSet):
             else:
                 ans_prob_dict[ans_proc] += 1
 
-        for ans_ in ans_prob_dict:
-            if ans_ in ans_to_ix:
-                ans_score[ans_to_ix[ans_]] = self.get_score(ans_prob_dict[ans_])
+        if self.__C.LOSS_FUNC in ['kld']:
+            for ans_ in ans_prob_dict:
+                if ans_ in ans_to_ix:
+                    ans_score[ans_to_ix[ans_]] = ans_prob_dict[ans_] / 10.
+        else:
+            for ans_ in ans_prob_dict:
+                if ans_ in ans_to_ix:
+                    ans_score[ans_to_ix[ans_]] = self.get_score(ans_prob_dict[ans_])
 
         return ans_score
