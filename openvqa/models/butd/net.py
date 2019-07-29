@@ -9,6 +9,7 @@ from openvqa.models.butd.adapter import Adapter
 
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn.utils.weight_norm import weight_norm
 import torch
 
 
