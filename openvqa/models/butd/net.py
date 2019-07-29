@@ -31,7 +31,7 @@ class Net(nn.Module):
         if __C.USE_GLOVE:
             self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
 
-        self.lstm = nn.LSTM(
+        self.rnn = nn.LSTM(
             input_size=__C.WORD_EMBED_SIZE,
             hidden_size=__C.HIDDEN_SIZE,
             num_layers=1,
@@ -63,7 +63,7 @@ class Net(nn.Module):
 
         # Backbone Framework
         joint_feat = self.backbone(
-            lang_feat,
+            lang_feat[:, -1],
             img_feat
         )
 

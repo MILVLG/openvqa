@@ -64,7 +64,7 @@ class Net(nn.Module):
 
         # Backbone Framework
         lang_feat = self.backbone(
-            lang_feat[:, -1],
+            lang_feat,
             img_feat
         )
 
