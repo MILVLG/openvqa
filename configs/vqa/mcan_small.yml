@@ -1,4 +1,5 @@
 # Network
+MODEL_USE: mcan
 LAYER: 6
 HIDDEN_SIZE: 512
 FF_SIZE: 2048
