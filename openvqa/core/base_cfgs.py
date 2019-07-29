@@ -49,6 +49,8 @@ class BaseCfgs(PATH):
 
         self.MODEL = ''
 
+        self.MODEL_USE = ''
+
         self.DATASET = ''
 
         # Run as 'train' 'val' or 'test'
@@ -218,8 +220,8 @@ class BaseCfgs(PATH):
         self.check_path(self.DATASET)
 
 
-        # ------------ Model setup
-        self.MODEL_USE = self.MODEL.split('_')[0]
+        # ------------ Model setup (Deprecated)
+        # self.MODEL_USE = self.MODEL.split('_')[0]
 
 
         # ------------ Seed setup

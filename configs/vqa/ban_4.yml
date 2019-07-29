@@ -1,4 +1,5 @@
 # Network
+MODEL_USE: ban
 GLIMPSE: 4
 HIDDEN_SIZE: 1024
 K_TIMES: 3
