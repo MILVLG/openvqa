@@ -29,8 +29,10 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download
 :-: | :-: | :-: |:-: |:-: |:-: | :-:
-[MCAN-small](./configs/vqa/mcan_small.yml) |1e-4| 70.69 | 87.08 | 53.16 | 60.66 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf)
-[MCAN-large](./configs/vqa/mcan_large.yml) |5e-5| 70.82 | 87.19 | 52.56 | 60.98 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA)
+[BAN-4](./configs/vqa/ban_4.yml)           |1.4e-3| 69.31 | 85.42 | 50.15 | 59.91 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ERAUbsBJzcNHjXcINxDoWOQByR0jSbdNp8nonuFdbyc8yA?e=B5iGKU)
+[BAN-8](./configs/vqa/ban_8.yml)           |1.4e-3| 69.48 | 85.40 | 50.82 | 60.14 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EW6v-dZOdJhFoKwT3bIx8M8B_U998hE8YD9zUJsUpo0rjQ?e=znhy2f)
+[MCAN-small](./configs/vqa/mcan_small.yml) |1e-4  | 70.69 | 87.08 | 53.16 | 60.66 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf)
+[MCAN-large](./configs/vqa/mcan_large.yml) |5e-5  | 70.82 | 87.19 | 52.56 | 60.98 |  [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA)
 
 ## GQA
 
