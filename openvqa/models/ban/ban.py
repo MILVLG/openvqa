@@ -127,12 +127,12 @@ class BAN(nn.Module):
         self.b_net = nn.ModuleList(b_net)
         self.q_prj = nn.ModuleList(q_prj)
 
-    def forward(self, x, y):
-        att, logits = self.BiAtt(y, x)  # b x g x v x q
+    def forward(self, q, v):
+        att, logits = self.BiAtt(v, q)  # b x g x v x q
 
         for g in range(self.__C.GLIMPSE):
             bi_emb = self.b_net[g].forward_with_weights(
-                y, x, att[:, g, :, :])  # b x l x h
-            x = self.q_prj[g](bi_emb.unsqueeze(1)) + x
+                v, q, att[:, g, :, :])  # b x l x h
+            q = self.q_prj[g](bi_emb.unsqueeze(1)) + q
 
         return x
