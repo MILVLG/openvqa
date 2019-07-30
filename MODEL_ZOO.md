@@ -20,6 +20,7 @@ We provide two groups of results (including the accuracies of *Overall*, *Yes/No
 
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 :-: | :-: | :-: | :-: | :-: | :-: 
+[BUTD](./configs/vqa/butd.yml) |2e-3| 63.79 | 81.12 | 43.31 | 56.04 |
 [BAN-4](./configs/vqa/ban_4.yml) |2e-3| 65.86 | 83.53 | 46.36 | 57.56 |
 [BAN-8](./configs/vqa/ban_8.yml) |2e-3| 66.00 | 83.61 | 47.04 | 57.62 |
 [MCAN-small](./configs/vqa/mcan_small.yml) |1e-4| 67.17 | 84.82 | 49.31 | 58.48 | 
