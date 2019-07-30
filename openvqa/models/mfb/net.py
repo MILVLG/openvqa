@@ -4,12 +4,10 @@
 # Written by Pengbing Gao https://github.com/nbgao
 # --------------------------------------------------------
 
-from openvqa.models.mfh.mfh import CoAtt
-from openvqa.models.mfh.adapter import Adapter
-
-import torch.nn as nn
-import torch.nn.functional as F
+from openvqa.models.mfb.mfb import CoAtt
+from openvqa.models.mfb.adapter import Adapter
 import torch
+import torch.nn as nn
 
 
 # -------------------------------------------------------
@@ -39,13 +37,13 @@ class Net(nn.Module):
             batch_first=True
         )
         self.dropout = nn.Dropout(0.1)
-        self.lstm_dropout = nn.Dropout(__C.LSTM_DROPOUT_RATIO)
+        self.lstm_dropout = nn.Dropout(__C.LSTM_DROPOUT_R)
         self.backbone = CoAtt(__C)
 
         if __C.HIGH_ORDER:      # MFH
-            self.proj = nn.Linear(2*__C.MFB_OUT_SIZE, answer_size)
+            self.proj = nn.Linear(2*__C.MFB_O, answer_size)
         else:                   # MFB
-            self.proj = nn.Linear(__C.MFB_OUT_SIZE, answer_size)
+            self.proj = nn.Linear(__C.MFB_O, answer_size)
 
     def forward(self, frcn_feat, grid_feat, bbox_feat, ques_ix):
 

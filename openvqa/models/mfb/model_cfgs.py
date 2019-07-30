@@ -12,10 +12,10 @@ class Cfgs(BaseCfgs):
 
         self.HIGH_ORDER = False
         self.HIDDEN_SIZE = 512
-        self.MFB_FACTOR_NUM = 5
-        self.MFB_OUT_SIZE = 1000
+        self.MFB_K = 5
+        self.MFB_O = 1000
         self.LSTM_OUT_SIZE = 1024
-        self.LSTM_DROPOUT_RATIO = 0.1
-        self.MFB_DROPOUT_RATIO = 0.1
-        self.NUM_IMG_GLIMPSES = 2
-        self.NUM_QUES_GLIMPSES = 2
+        self.LSTM_DROPOUT_R = 0.3
+        self.MFB_DROPOUT_R = 0.1
+        self.I_GLIMPSES = 2
+        self.Q_GLIMPSES = 2
