@@ -137,13 +137,14 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    __C = CfgLoader(args.MODEL.split('_')[0]).load()
-    args = __C.str_to_bool(args)
-    args_dict = __C.parse_to_dict(args)
 
     cfg_file = "configs/{}/{}.yml".format(args.DATASET, args.MODEL)
     with open(cfg_file, 'r') as f:
         yaml_dict = yaml.load(f)
+
+    __C = CfgLoader(yaml_dict['MODEL_USE']).load()
+    args = __C.str_to_bool(args)
+    args_dict = __C.parse_to_dict(args)
 
     args_dict = {**yaml_dict, **args_dict}
     __C.add_args(args_dict)
