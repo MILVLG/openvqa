@@ -5,7 +5,6 @@
 
 import torch.nn as nn
 import torch
-import torch.nn.functional as F
 from openvqa.core.base_dataset import BaseAdapter
 from openvqa.utils.make_mask import make_mask
 
@@ -38,9 +37,10 @@ class Adapter(BaseAdapter):
 
         img_feat_mask = make_mask(frcn_feat)
         img_feat = frcn_feat
-        #[N, C, W] = img_feat.shape
-        #img_feat = F.normalize(img_feat.view(N, -1)).view(N, C, W)
+        # img_feat = self.frcn_linear(frcn_feat)
+
         return img_feat, img_feat_mask
+
 
     def gqa_forward(self, feat_dict):
         frcn_feat = feat_dict['FRCN_FEAT']
