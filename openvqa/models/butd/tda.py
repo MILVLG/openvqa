@@ -82,8 +82,8 @@ class TDA(nn.Module):
 
         self.__C = __C
         self.v_att = AttnMap(__C)
-        self.q_net = MLP([__C.HIDDEN_SIZE, __C.HIDDEN_SIZE])
-        self.v_net = MLP([__C.IMG_FEAT_SIZE, __C.HIDDEN_SIZE])
+        self.q_net = MLP([__C.HIDDEN_SIZE, __C.HIDDEN_SIZE], act='')
+        self.v_net = MLP([__C.IMG_FEAT_SIZE, __C.HIDDEN_SIZE], act='')
 
     def forward(self, q, v):
         att = self.v_att(q, v)

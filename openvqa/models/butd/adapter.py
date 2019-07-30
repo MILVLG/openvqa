@@ -1,6 +1,6 @@
 # --------------------------------------------------------
 # OpenVQA
-# Written by Yuhao Cui https://github.com/cuiyuhao1996
+# Written by Zhenwei Shao https://github.com/ParadoxZW
 # --------------------------------------------------------
 
 import torch.nn as nn
