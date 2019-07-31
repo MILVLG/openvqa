@@ -1,7 +1,6 @@
 # --------------------------------------------------------
 # OpenVQA
 # Written by Zhenwei Shao https://github.com/ParadoxZW
-# based on the implementation in https://github.com/hengyuan-hu/bottom-up-attention-vqa
 # --------------------------------------------------------
 
 from openvqa.utils.make_mask import make_mask

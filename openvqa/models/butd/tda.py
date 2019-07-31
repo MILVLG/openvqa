@@ -1,6 +1,9 @@
 # --------------------------------------------------------
 # OpenVQA
 # Written by Zhenwei Shao https://github.com/ParadoxZW
+# based on the implementation in https://github.com/hengyuan-hu/bottom-up-attention-vqa
+# ELU is chosen as the activation function in non-linear layers due to
+# the experiment results that indicate ELU is better than ReLU in BUTD model.
 # --------------------------------------------------------
 
 import torch.nn as nn
@@ -15,10 +18,10 @@ import math
 
 class MLP(nn.Module):
     """
-    Simple class for non-linear fully connect network
+    class for non-linear fully connect network
     """
 
-    def __init__(self, dims, act='ReLU', dropout_r=0.0):
+    def __init__(self, dims, act='ELU', dropout_r=0.0):
         super(MLP, self).__init__()
 
         layers = []
@@ -82,8 +85,8 @@ class TDA(nn.Module):
 
         self.__C = __C
         self.v_att = AttnMap(__C)
-        self.q_net = MLP([__C.HIDDEN_SIZE, __C.HIDDEN_SIZE], act='')
-        self.v_net = MLP([__C.IMG_FEAT_SIZE, __C.HIDDEN_SIZE], act='')
+        self.q_net = MLP([__C.HIDDEN_SIZE, __C.HIDDEN_SIZE])
+        self.v_net = MLP([__C.IMG_FEAT_SIZE, __C.HIDDEN_SIZE])
 
     def forward(self, q, v):
         att = self.v_att(q, v)
