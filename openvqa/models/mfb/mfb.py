@@ -22,7 +22,7 @@ class MFB(nn.Module):
         self.is_first = is_first
         self.proj_i = nn.Linear(img_feat_size, __C.MFB_K * __C.MFB_O)
         self.proj_q = nn.Linear(ques_feat_size, __C.MFB_K * __C.MFB_O)
-        self.dropout = nn.Dropout(__C.MFB_DROPOUT_R)
+        self.dropout = nn.Dropout(__C.DROPOUT_R)
         self.pool = nn.AvgPool1d(__C.MFB_K, stride=__C.MFB_K)
 
     def forward(self, img_feat, ques_feat, exp_in=1):
@@ -53,7 +53,7 @@ class QAtt(nn.Module):
             in_size=__C.LSTM_OUT_SIZE,
             mid_size=__C.HIDDEN_SIZE,
             out_size=__C.Q_GLIMPSES,
-            dropout_r=0.1,
+            dropout_r=__C.DROPOUT_R,
             use_relu=True
         )
 
@@ -80,13 +80,13 @@ class IAtt(nn.Module):
     def __init__(self, __C, img_feat_size, ques_att_feat_size):
         super(IAtt, self).__init__()
         self.__C = __C
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(__C.DROPOUT_R)
         self.mfb = MFB(__C, img_feat_size, ques_att_feat_size, True)
         self.mlp = MLP(
             in_size=__C.MFB_O,
             mid_size=__C.HIDDEN_SIZE,
             out_size=__C.I_GLIMPSES,
-            dropout_r=0.1,
+            dropout_r=__C.DROPOUT_R,
             use_relu=True
         )
 
@@ -119,9 +119,9 @@ class CoAtt(nn.Module):
         super(CoAtt, self).__init__()
         self.__C = __C
 
-        img_feat_size = __C.FEAT_SIZE[__C.DATASET]['FRCN_FEAT_SIZE']    # 2048
-        img_att_feat_size = img_feat_size * __C.I_GLIMPSES              # 4096
-        ques_att_feat_size = __C.LSTM_OUT_SIZE * __C.Q_GLIMPSES         # 2048
+        img_feat_size = __C.FEAT_SIZE[__C.DATASET]['FRCN_FEAT_SIZE']
+        img_att_feat_size = img_feat_size * __C.I_GLIMPSES
+        ques_att_feat_size = __C.LSTM_OUT_SIZE * __C.Q_GLIMPSES
 
         self.q_att = QAtt(__C)
         self.i_att = IAtt(__C, img_feat_size, ques_att_feat_size)

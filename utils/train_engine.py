@@ -177,7 +177,6 @@ def train_engine(__C, dataset, dataset_eval=None):
                     sub_ques_ix_iter
                 )
 
-
                 loss_item = [pred, sub_ans_iter]
                 loss_nonlinear_list = __C.LOSS_FUNC_NONLINEAR[__C.LOSS_FUNC]
                 for item_ix, loss_nonlinear in enumerate(loss_nonlinear_list):
@@ -185,7 +184,6 @@ def train_engine(__C, dataset, dataset_eval=None):
                         loss_item[item_ix] = loss_item[item_ix].view(-1)
                     elif loss_nonlinear:
                         loss_item[item_ix] = eval('F.' + loss_nonlinear + '(loss_item[item_ix], dim=1)')
-
 
                 loss = loss_fn(loss_item[0], loss_item[1])
                 loss /= __C.GRAD_ACCU_STEPS

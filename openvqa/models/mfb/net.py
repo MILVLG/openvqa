@@ -36,8 +36,7 @@ class Net(nn.Module):
             num_layers=1,
             batch_first=True
         )
-        self.dropout = nn.Dropout(0.1)
-        self.lstm_dropout = nn.Dropout(__C.LSTM_DROPOUT_R)
+        self.dropout = nn.Dropout(__C.DROPOUT_R)
         self.backbone = CoAtt(__C)
 
         if __C.HIGH_ORDER:      # MFH
@@ -53,7 +52,7 @@ class Net(nn.Module):
         ques_feat = self.embedding(ques_ix)     # (N, T, WORD_EMBED_SIZE)
         ques_feat = self.dropout(ques_feat)
         ques_feat, _ = self.lstm(ques_feat)     # (N, T, LSTM_OUT_SIZE)
-        ques_feat = self.lstm_dropout(ques_feat)
+        ques_feat = self.dropout(ques_feat)
 
         z = self.backbone(img_feat, ques_feat)  # MFH:(N, 2*O) / MFB:(N, O)
         proj_feat = self.proj(z)                # (N, answer_size)
