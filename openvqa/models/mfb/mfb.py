@@ -53,7 +53,7 @@ class QAtt(nn.Module):
             in_size=__C.LSTM_OUT_SIZE,
             mid_size=__C.HIDDEN_SIZE,
             out_size=__C.Q_GLIMPSES,
-            dropout_r=__C.DROPOUT_R,
+            #dropout_r=__C.DROPOUT_R,
             use_relu=True
         )
 
@@ -86,7 +86,7 @@ class IAtt(nn.Module):
             in_size=__C.MFB_O,
             mid_size=__C.HIDDEN_SIZE,
             out_size=__C.I_GLIMPSES,
-            dropout_r=__C.DROPOUT_R,
+            #dropout_r=__C.DROPOUT_R,
             use_relu=True
         )
 
@@ -97,7 +97,7 @@ class IAtt(nn.Module):
             iatt_feat.size() -> (N, MFB_O * I_GLIMPSES)
         '''
         ques_att_feat = ques_att_feat.unsqueeze(1)      # (N, 1, LSTM_OUT_SIZE * Q_GLIMPSES)
-        img_feat = self.dropout(img_feat)
+        # img_feat = self.dropout(img_feat)
         z, _ = self.mfb(img_feat, ques_att_feat)        # (N, C, O)
 
         iatt_maps = self.mlp(z)                         # (N, C, I_GLIMPSES)
