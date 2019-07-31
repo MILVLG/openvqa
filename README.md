@@ -20,7 +20,7 @@ Results and models are available in [MODEL_ZOO.md](MODEL_ZOO.md).
 
 |                    | [VQA-v2](https://visualqa.org/)   | [GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html)  | [CLEVR](https://cs.stanford.edu/people/jcjohns/clevr/)  |
 |--------------------|:--------:|:--------:|:--------:|
-| [BUTD](https://arxiv.org/abs/1707.07998)      |         |         |         |
+| [BUTD](https://arxiv.org/abs/1707.07998)      |   ✓      |         |         |
 | [MFB](https://arxiv.org/abs/1708.01471v1)       |         |         |         |
 | [MFH](https://arxiv.org/abs/1708.03619)       |         |         |         |
 | [BAN](https://arxiv.org/abs/1805.07932)       |  ✓       |        |          |
