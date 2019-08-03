@@ -8,7 +8,6 @@ from openvqa.models.mfb.mfb import CoAtt
 from openvqa.models.mfb.adapter import Adapter
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 # -------------------------------------------------------
@@ -21,29 +20,24 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.__C = __C
         self.adapter = Adapter(__C)
-        self.pretrained_emb = pretrained_emb
-        self.embedding1 = nn.Embedding(
-            num_embeddings=token_size,
-            embedding_dim=__C.WORD_EMBED_SIZE
-        )
-        self.embedding2 = nn.Embedding(
+
+        self.embedding = nn.Embedding(
             num_embeddings=token_size,
             embedding_dim=__C.WORD_EMBED_SIZE
         )
 
         # Loading the GloVe embedding weights
         if __C.USE_GLOVE:
-            self.embedding2.weight.data.copy_(torch.from_numpy(pretrained_emb))
-            self.embedding2.weight.requires_grad = False
+            self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
 
         self.lstm = nn.LSTM(
-            input_size=__C.WORD_EMBED_SIZE*2,
+            input_size=__C.WORD_EMBED_SIZE,
             hidden_size=__C.LSTM_OUT_SIZE,
             num_layers=1,
             batch_first=True
         )
         self.dropout = nn.Dropout(__C.DROPOUT_R)
-        self.dropout_lstm = nn.Dropout(0.3)
+        self.dropout_lstm = nn.Dropout(__C.DROPOUT_R)
         self.backbone = CoAtt(__C)
 
         if __C.HIGH_ORDER:      # MFH
@@ -56,9 +50,7 @@ class Net(nn.Module):
         img_feat, _ = self.adapter(frcn_feat, grid_feat, bbox_feat)  # (N, C, FRCN_FEAT_SIZE)
 
         # Pre-process Language Feature
-        ques_feat1 = F.tanh(self.embedding1(ques_ix))     # (N, T, WORD_EMBED_SIZE)
-        ques_feat2 = self.embedding2(ques_ix)     # (N, T, WORD_EMBED_SIZE)
-        ques_feat = torch.cat((ques_feat1, ques_feat2), 2)     # (N, T, WORD_EMBED_SIZE*2)
+        ques_feat = self.embedding(ques_ix)     # (N, T, WORD_EMBED_SIZE)
         ques_feat = self.dropout(ques_feat)
         ques_feat, _ = self.lstm(ques_feat)     # (N, T, LSTM_OUT_SIZE)
         ques_feat = self.dropout_lstm(ques_feat)
