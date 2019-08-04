@@ -104,11 +104,14 @@ class FFN(nn.Module):
 # ------------------------
 
 class SA(nn.Module):
-    def __init__(self, __C):
+    def __init__(self, __C, i):
         super(SA, self).__init__()
 
         self.mhatt = MHAtt(__C)
-        self.ffn = FFN(__C)
+        if i == 2:
+            self.ffn = Memory()
+        else:
+            self.ffn = FFN(__C)
 
         self.dropout1 = nn.Dropout(__C.DROPOUT_R)
         self.norm1 = LayerNorm(__C.HIDDEN_SIZE)
@@ -133,12 +136,15 @@ class SA(nn.Module):
 # -------------------------------
 
 class SGA(nn.Module):
-    def __init__(self, __C):
+    def __init__(self, __C, i):
         super(SGA, self).__init__()
 
         self.mhatt1 = MHAtt(__C)
         self.mhatt2 = MHAtt(__C)
-        self.ffn = FFN(__C)
+        if i == 2:
+            self.ffn = Memory()
+        else:
+            self.ffn = FFN(__C)
 
         self.dropout1 = nn.Dropout(__C.DROPOUT_R)
         self.norm1 = LayerNorm(__C.HIDDEN_SIZE)
@@ -173,12 +179,10 @@ class MCA_ED(nn.Module):
     def __init__(self, __C):
         super(MCA_ED, self).__init__()
 
-        enc_list = [SA(__C) for _ in range(__C.LAYER - 1)]
-        enc_list.insert(-2, Memory(__C))
-        dec_list = [SGA(__C) for _ in range(__C.LAYER - 1)]
-        dec_list.insert(-2, Memory(__C))
-        self.enc_list = nn.ModuleList([SA(__C) for _ in range(__C.LAYER)])
-        self.dec_list = nn.ModuleList([SGA(__C) for _ in range(__C.LAYER)])
+        enc_list = [SA(__C, i) for i in range(__C.LAYER)]
+        dec_list = [SGA(__C, i) for i in range(__C.LAYER)]
+        self.enc_list = nn.ModuleList(enc_list[::-1])
+        self.dec_list = nn.ModuleList(dec_list[::-1])
 
     def forward(self, y, x, y_mask, x_mask):
         # Get encoder last hidden vector

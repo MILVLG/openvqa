@@ -22,6 +22,7 @@ class Cfgs(BaseCfgs):
         self.FLAT_OUT_SIZE = 1024
 
         # memory parameters
+        self.MEM_SHARE_VALUES = False
         self.MEM_SPARSE = False
         self.SUB_SIZE = 512
         self.MEM_SIZE = self.SUB_SIZE * self.SUB_SIZE

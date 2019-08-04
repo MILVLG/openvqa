@@ -28,35 +28,36 @@ def get_uniform_keys(n_keys, dim, normalized, seed):
     return X.astype(np.float32)
 
 class QueryMLP(nn.Module):
-    def __init__(self, __C, act='ReLU'):
+    def __init__(self, __C, num, act='ReLU'):
         super().__init__()
-
+        self.__C = __C
         layers = []
         if __C.INPUT_DROPOUT > 0:
-            layers.append(nn.Dropout(dropout_r))
+            layers.append(nn.Dropout(__C.INPUT_DROPOUT))
         layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE // 2))
         layers.append(getattr(nn, act)())
         layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
         
         self.mlp = nn.Sequential(*layers)
-        self.bs = nn.BatchNorm1d(__C.K_DIM)
+        self.bs = nn.BatchNorm1d(num)
 
     def forward(self, x):
-        n_batches = q.size(0)
-        x = self.mlp(x).view(
+        n_batches = x.size(0)
+        x = self.mlp(x)
+        x = self.bs(x)
+        return x.view(
             n_batches,
             -1,
             self.__C.MEM_HEAD,
             self.__C.HIDDEN_SIZE // 2
-        ).transpose(1, 2)
-        return self.bs(x)
+        )
 
 class Memory(nn.Module):
 
     VALUES = None
     _ids = itertools.count(0)
 
-    def __init__(self, __C):
+    def __init__(self, __C, num):
 
         super().__init__()
         self.__C = __C
@@ -65,8 +66,13 @@ class Memory(nn.Module):
         # initialize keys
         self.init_keys()
 
-        self.values = nn.EmbeddingBag(
-            __C.MEM_SIZE, __C.HIDDEN_SIZE, mode='sum', sparse=__C.MEM_SPARSE).half()
+        values = nn.EmbeddingBag(
+            __C.MEM_SIZE, __C.HIDDEN_SIZE, mode='sum', sparse=__C.MEM_SPARSE)
+        
+        # values initialization
+        nn.init.normal_(values.weight, mean=0,
+                        std=__C.HIDDEN_SIZE ** -0.5)
+        self.values = values.half()
 
         # optionally use the same values for all memories
         if __C.MEM_SHARE_VALUES:
@@ -75,10 +81,7 @@ class Memory(nn.Module):
             else:
                 self.values.weight = HashingMemory.VALUES
 
-        # values initialization
-        nn.init.normal_(self.values.weight, mean=0,
-                        std=__C.HIDDEN_SIZE ** -0.5)
-
+        
         # # no query network
         # if len(params.mem_query_layer_sizes) == 0:
         #     assert self.heads == 1 or self.use_different_keys or self.shuffle_query
@@ -86,7 +89,7 @@ class Memory(nn.Module):
         #     self.query_proj = QueryIdentity(self.input_dim, self.heads, self.shuffle_query)
 
         # query network
-        self.query_proj = QueryMLP(__C)
+        self.query_proj = QueryMLP(__C, num)
         self.bs = None
 
         # # shuffle indices for different heads
@@ -133,7 +136,7 @@ class Memory(nn.Module):
         # (..., v_dim)
         output = output.view(self.prefix_shape + (self.__C.HIDDEN_SIZE,))
 
-        return output.sum(1)
+        return output.sum(2)
 
     def create_keys(self):
         """
