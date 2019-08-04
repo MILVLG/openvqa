@@ -5,6 +5,9 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+from openvqa.ops.gelu import GeLU
+
+
 def get_gaussian_keys(n_keys, dim, normalized, seed):
     """
     Generate random Gaussian keys.
@@ -35,7 +38,8 @@ class QueryMLP(nn.Module):
         if __C.INPUT_DROPOUT > 0:
             layers.append(nn.Dropout(__C.INPUT_DROPOUT))
         layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE // 2))
-        layers.append(getattr(nn, act)())
+        # layers.append(getattr(nn, act)())
+        layers.append(GeLU())
         layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
         
         self.mlp = nn.Sequential(*layers)
@@ -90,7 +94,6 @@ class Memory(nn.Module):
 
         # query network
         self.query_proj = QueryMLP(__C, num)
-        self.bs = None
 
         # # shuffle indices for different heads
         # if self.shuffle_indices:
@@ -110,9 +113,8 @@ class Memory(nn.Module):
         # if self.query_detach_input:
         #     input = input.detach()
 
-        if self.bs is None:
-            self.prefix_shape = input.shape[:-1]
-            self.bs = np.prod(self.prefix_shape)
+        prefix_shape = input.shape[:-1]
+        bs = np.prod(prefix_shape)
 
         # (bs * heads, k_dim)
         query = self.query_proj(input)
@@ -123,8 +125,8 @@ class Memory(nn.Module):
         scores = F.softmax(scores, dim=-1)
 
         # merge heads / knn (since we sum heads)
-        indices = indices.view(self.bs, self.__C.MEM_HEAD * self.__C.KNN)              # (bs, heads * knn)
-        scores = scores.view(self.bs, self.__C.MEM_HEAD * self.__C.KNN)                # (bs, heads * knn)
+        indices = indices.view(bs, self.__C.MEM_HEAD * self.__C.KNN)              # (bs, heads * knn)
+        scores = scores.view(bs, self.__C.MEM_HEAD * self.__C.KNN)                # (bs, heads * knn)
 
         # weighted sum of values
         output = self.values(
@@ -134,7 +136,7 @@ class Memory(nn.Module):
 
         # reshape output
         # (..., v_dim)
-        output = output.view(self.prefix_shape + (self.__C.HIDDEN_SIZE,))
+        output = output.view(prefix_shape + (self.__C.HIDDEN_SIZE,))
 
         return output
 

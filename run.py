@@ -27,6 +27,7 @@ def parse_args():
                            'ban_8',
                            'mfb',
                            'mfh',
+                           'mem',
                            'butd'
                            ]
                         ,

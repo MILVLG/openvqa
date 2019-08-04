@@ -4,6 +4,7 @@
 # --------------------------------------------------------
 
 from openvqa.ops.fc import FC, MLP
+from openvqa.ops.gelu import GeLU
 from openvqa.ops.layer_norm import LayerNorm
 from openvqa.models.mem.memory import Memory
 
@@ -92,7 +93,7 @@ class FFN(nn.Module):
             mid_size=__C.FF_SIZE,
             out_size=__C.HIDDEN_SIZE,
             dropout_r=__C.DROPOUT_R,
-            use_relu=True
+            act=GeLU
         )
 
     def forward(self, x):

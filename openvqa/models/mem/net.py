@@ -5,6 +5,7 @@
 
 from openvqa.utils.make_mask import make_mask
 from openvqa.ops.fc import FC, MLP
+from openvqa.ops.gelu import GeLU
 from openvqa.ops.layer_norm import LayerNorm
 from openvqa.models.mem.mca import MCA_ED
 from openvqa.models.mem.adapter import Adapter
@@ -28,7 +29,7 @@ class AttFlat(nn.Module):
             mid_size=__C.FLAT_MLP_SIZE,
             out_size=__C.FLAT_GLIMPSES,
             dropout_r=__C.DROPOUT_R,
-            use_relu=True
+            act=GeLU
         )
 
         self.linear_merge = nn.Linear(
