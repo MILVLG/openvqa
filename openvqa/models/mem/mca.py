@@ -108,8 +108,8 @@ class SA(nn.Module):
         super(SA, self).__init__()
 
         self.mhatt = MHAtt(__C)
-        if i == 2:
-            self.ffn = Memory()
+        if i == 1:
+            self.ffn = Memory(__C, 14)
         else:
             self.ffn = FFN(__C)
 
@@ -141,8 +141,8 @@ class SGA(nn.Module):
 
         self.mhatt1 = MHAtt(__C)
         self.mhatt2 = MHAtt(__C)
-        if i == 2:
-            self.ffn = Memory()
+        if i == 1:
+            self.ffn = Memory(__C, 100)
         else:
             self.ffn = FFN(__C)
 

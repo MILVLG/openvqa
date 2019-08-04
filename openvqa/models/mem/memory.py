@@ -72,7 +72,7 @@ class Memory(nn.Module):
         # values initialization
         nn.init.normal_(values.weight, mean=0,
                         std=__C.HIDDEN_SIZE ** -0.5)
-        self.values = values.half()
+        self.values = values
 
         # optionally use the same values for all memories
         if __C.MEM_SHARE_VALUES:
@@ -136,7 +136,7 @@ class Memory(nn.Module):
         # (..., v_dim)
         output = output.view(self.prefix_shape + (self.__C.HIDDEN_SIZE,))
 
-        return output.sum(2)
+        return output
 
     def create_keys(self):
         """
