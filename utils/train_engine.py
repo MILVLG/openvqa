@@ -51,7 +51,7 @@ def train_engine(__C, dataset, dataset_eval=None):
 
         # Load the network parameters
         print('Loading ckpt from {}'.format(path))
-        ckpt = torch.load(path)
+        ckpt = torch.load(path, map_location='cpu')
         print('Finish!')
 
         if __C.N_GPU > 1:
@@ -274,6 +274,7 @@ def train_engine(__C, dataset, dataset_eval=None):
         logfile.close()
 
         # Eval after every epoch
+
         if dataset_eval is not None:
             test_engine(
                 __C,

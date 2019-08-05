@@ -84,7 +84,7 @@ class Memory(nn.Module):
                 HashingMemory.VALUES = self.values.weight
             else:
                 self.values.weight = HashingMemory.VALUES
-
+        __C.VALUE_WEIGHT.append(self.values.weight)
         
         # # no query network
         # if len(params.mem_query_layer_sizes) == 0:

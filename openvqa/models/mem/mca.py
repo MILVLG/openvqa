@@ -93,7 +93,7 @@ class FFN(nn.Module):
             mid_size=__C.FF_SIZE,
             out_size=__C.HIDDEN_SIZE,
             dropout_r=__C.DROPOUT_R,
-            act=GeLU
+            act=nn.ReLU
         )
 
     def forward(self, x):

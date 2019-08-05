@@ -12,6 +12,7 @@ from openvqa.datasets.dataset_loader import EvalLoader
 
 
 # Evaluation
+@torch.no_grad()
 def test_engine(__C, dataset, state_dict=None, validation=False):
 
     # Load parameters
