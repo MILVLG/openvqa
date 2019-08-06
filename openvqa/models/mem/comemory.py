@@ -43,16 +43,12 @@ class QueryMLP(nn.Module):
         layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
         
         self.mlp = nn.Sequential(*layers)
-        self.bs1 = nn.BatchNorm1d(14)
-        self.bs1 = nn.BatchNorm1d(100)
+        self.bs = nn.BatchNorm1d(num)
 
-    def forward(self, x, mod):
+    def forward(self, x):
         n_batches = x.size(0)
         x = self.mlp(x)
-        if mod == 'lang':
-            x = self.bs1(x)
-        else:
-            x = self.bs2(x)
+        x = self.bs(x)
         return x.view(
             n_batches,
             -1,
@@ -102,7 +98,9 @@ class Memory(nn.Module):
         #     self.query_proj = QueryIdentity(self.input_dim, self.heads, self.shuffle_query)
 
         # query network
-        self.query_proj = QueryMLP(__C)
+        self.query_proj_l = QueryMLP(__C, 14)
+        self.query_proj_v = QueryMLP(__C, 100)
+
 
         # # shuffle indices for different heads
         # if self.shuffle_indices:
@@ -126,7 +124,10 @@ class Memory(nn.Module):
         bs = np.prod(prefix_shape)
 
         # (bs * heads, k_dim)
-        query = self.query_proj(input, mod)
+        if mod == 'lang':
+            query = self.query_proj_l(input)
+        else:
+            query = self.query_proj_v(input)
 
         # get indices  (bs * heads, knn) ** 2
         scores, indices = self.get_indices(query, mod)
@@ -213,8 +214,10 @@ class Memory(nn.Module):
         scores2 = F.linear(q2, keys2, bias=None)                                                                      # (bs, n_keys ** 0.5)
         
         if mod == 'lang':
-            self.s1 = F.softmax(scores1.sum(dim=0)/2.0, dim=-1).unsqueeze(0) + 1.0
-            self.s2 = F.softmax(scores2.sum(dim=0)/2.0, dim=-1).unsqueeze(0) + 1.0
+            self.s1 = F.softmax(scores1.sum(dim=0) / 2.0,
+                                dim=-1).unsqueeze(0).detach() + 1.0
+            self.s2 = F.softmax(scores2.sum(dim=0) / 2.0,
+                                dim=-1).unsqueeze(0).detach() + 1.0
             scores1, indices1 = scores1.topk(knn, dim=1, largest=True, sorted=True)                                       # (bs, knn) ** 2
             scores2, indices2 = scores2.topk(knn, dim=1, largest=True, sorted=True)
         else:

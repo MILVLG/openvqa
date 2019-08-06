@@ -22,10 +22,10 @@ class Cfgs(BaseCfgs):
         self.FLAT_OUT_SIZE = 1024
 
         # memory parameters
-        self.VALUE_LR_TIMES = 4
+        self.VALUE_LR_TIMES = 2
         self.MEM_SHARE_VALUES = False
         self.MEM_SPARSE = False
-        self.SUB_SIZE = 1024
+        self.SUB_SIZE = 512
         self.MEM_SIZE = self.SUB_SIZE ** 2
         # self.modulo_size = False
         # self.n_indices = params.n_indices
