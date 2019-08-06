@@ -96,7 +96,7 @@ class FFN(nn.Module):
             act=nn.ReLU
         )
 
-    def forward(self, x):
+    def forward(self, x, mod):
         return self.mlp(x)
 
 
@@ -126,7 +126,7 @@ class SA(nn.Module):
         ))
 
         y = self.norm2(y + self.dropout2(
-            self.ffn(y)
+            self.ffn(y, 'lang')
         ))
 
         return y
@@ -166,7 +166,7 @@ class SGA(nn.Module):
         ))
 
         x = self.norm3(x + self.dropout3(
-            self.ffn(x)
+            self.ffn(x, 'visual')
         ))
 
         return x

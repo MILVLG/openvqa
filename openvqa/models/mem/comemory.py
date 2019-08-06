@@ -172,17 +172,23 @@ class Memory(nn.Module):
         """
         Initialize keys.
         """
-        keys = self.create_keys()
-        self.keys = nn.Parameter(keys)
+        keys_v = self.create_keys()
+        self.keys_v = nn.Parameter(keys_v)
+        keys_l = self.create_keys()
+        self.keys_l = nn.Parameter(keys_l)
 
     def get_indices(self, query, mod):
         """
         Generate scores and indices given unnormalized queries.
         """
         query = query.view(-1, self.__C.MEM_HEAD, self.__C.K_DIM)
+        if mod == 'lang':
+            keys = self.keys_l
+        else:
+            keys = self.keys_v
         outputs = [
             self._get_indices(query[:, i], self.__C.KNN,
-                              self.keys[i][0], self.keys[i][1])
+                              keys[i][0], keys[i][1])
             for i in range(self.__C.MEM_HEAD)
         ]
         scores = torch.cat([s.unsqueeze(1)
