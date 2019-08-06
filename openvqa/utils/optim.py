@@ -15,14 +15,19 @@ class WarmupOptimizer(object):
         self.data_size = data_size
         self.batch_size = batch_size
         self.warmup_epoch = warmup_epoch
+        self.lr_list = []
+        for p in self.optimizer.param_groups:
+            self.lr_list.append(p['lr'])
 
 
     def step(self):
         self._step += 1
 
         rate = self.rate()
+        i = 0
         for p in self.optimizer.param_groups:
-            p['lr'] *= rate
+            p['lr'] = rate * self.lr_list
+            i += 1
         self._rate = self.lr_base * rate
 
         self.optimizer.step()
@@ -53,13 +58,19 @@ def get_optim(__C, model, data_size, lr_base=None):
         lr_base = __C.LR_BASE
 
     std_optim = getattr(Optim, __C.OPT)
-    if __C.MODEL_USE == 'mem':
-        value_params = list(map(id, __C.VALUE_WEIGHT))
-        normal_params = filter(lambda p: id(p) not in value_params, net.parameters())
-        params = [
+    if len(__C.SPRCIAL_W)  != 0:
+        params = []
+        l_id = []
+        for k in __C.SPRCIAL_W.keys():
+            l_id += __C.SPRCIAL_W[k]
+            params.append(
+                {"params": __C.SPRCIAL_W[k], "lr": lr_base * __C.SPRCIAL_LR[k]}
+            )
+        l_id = list(map(id, l_id))
+        normal_params = filter(lambda p: id(p) not in l_id, model.parameters())
+        params.append(
             {"params": normal_params, "lr": lr_base},
-            {"params": __C.VALUE_WEIGHT, "lr": lr_base * 4},
-        ]
+        )
         eval_str = 'params'
     else:
         params = filter(lambda p: p.requires_grad, model.parameters())

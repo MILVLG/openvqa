@@ -22,6 +22,7 @@ class Cfgs(BaseCfgs):
         self.FLAT_OUT_SIZE = 1024
 
         # memory parameters
+        self.VALUE_LR_TIMES = 4
         self.MEM_SHARE_VALUES = False
         self.MEM_SPARSE = False
         self.SUB_SIZE = 512
@@ -34,7 +35,6 @@ class Cfgs(BaseCfgs):
         self.KNN = 32
         # self.shuffle_indices = params.mem_shuffle_indices
         self.KEYS_NORMALIZED_INIT = False
-        self.VALUE_WEIGHT = []
         # self.product_quantization = params.mem_product_quantization
         # assert self.modulo_size == - \
         #     1 and self.size == self.n_indices or self.n_indices > self.size == self.modulo_size >= 1

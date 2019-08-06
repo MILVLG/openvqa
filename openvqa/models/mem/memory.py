@@ -84,7 +84,13 @@ class Memory(nn.Module):
                 HashingMemory.VALUES = self.values.weight
             else:
                 self.values.weight = HashingMemory.VALUES
-        __C.VALUE_WEIGHT.append(self.values.weight)
+        
+        # for different lr
+        if not __C.SPRCIAL_W.has_key('value'):
+            __C.SPRCIAL_W['value'] = []
+            __C.SPRCIAL_LR['value'] = []
+        __C.SPRCIAL_W['value'].append(self.values.weight)
+        __C.SPRCIAL_LR['value'].append(__C.VALUE_LR_TIMES)
         
         # # no query network
         # if len(params.mem_query_layer_sizes) == 0:
