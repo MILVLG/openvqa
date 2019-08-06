@@ -26,7 +26,7 @@ class WarmupOptimizer(object):
         rate = self.rate()
         i = 0
         for p in self.optimizer.param_groups:
-            p['lr'] = rate * self.lr_list
+            p['lr'] = rate * self.lr_list[i]
             i += 1
         self._rate = self.lr_base * rate
 
@@ -58,13 +58,13 @@ def get_optim(__C, model, data_size, lr_base=None):
         lr_base = __C.LR_BASE
 
     std_optim = getattr(Optim, __C.OPT)
-    if len(__C.SPRCIAL_W)  != 0:
+    if len(__C.SPECIAL_W)  != 0:
         params = []
         l_id = []
-        for k in __C.SPRCIAL_W.keys():
-            l_id += __C.SPRCIAL_W[k]
+        for k in __C.SPECIAL_W.keys():
+            l_id += __C.SPECIAL_W[k]
             params.append(
-                {"params": __C.SPRCIAL_W[k], "lr": lr_base * __C.SPRCIAL_LR[k]}
+                {"params": __C.SPECIAL_W[k], "lr": lr_base * __C.SPECIAL_LR[k]}
             )
         l_id = list(map(id, l_id))
         normal_params = filter(lambda p: id(p) not in l_id, model.parameters())

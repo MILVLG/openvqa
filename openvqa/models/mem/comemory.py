@@ -31,7 +31,7 @@ def get_uniform_keys(n_keys, dim, normalized, seed):
     return X.astype(np.float32)
 
 class QueryMLP(nn.Module):
-    def __init__(self, __C, num, act='ReLU'):
+    def __init__(self, __C, act='ReLU'):
         super().__init__()
         self.__C = __C
         layers = []
@@ -39,16 +39,20 @@ class QueryMLP(nn.Module):
             layers.append(nn.Dropout(__C.INPUT_DROPOUT))
         layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE // 2))
         # layers.append(getattr(nn, act)())
-        layers.append(GeLU())
+        layers.append(nn.ELU())
         layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
         
         self.mlp = nn.Sequential(*layers)
-        self.bs = nn.BatchNorm1d(num)
+        self.bs1 = nn.BatchNorm1d(14)
+        self.bs1 = nn.BatchNorm1d(100)
 
-    def forward(self, x):
+    def forward(self, x, mod):
         n_batches = x.size(0)
         x = self.mlp(x)
-        x = self.bs(x)
+        if mod == 'lang':
+            x = self.bs1(x)
+        else:
+            x = self.bs2(x)
         return x.view(
             n_batches,
             -1,
@@ -61,7 +65,7 @@ class Memory(nn.Module):
     VALUES = None
     _ids = itertools.count(0)
 
-    def __init__(self, __C, num):
+    def __init__(self, __C):
 
         super().__init__()
         self.__C = __C
@@ -98,7 +102,7 @@ class Memory(nn.Module):
         #     self.query_proj = QueryIdentity(self.input_dim, self.heads, self.shuffle_query)
 
         # query network
-        self.query_proj = QueryMLP(__C, num)
+        self.query_proj = QueryMLP(__C)
 
         # # shuffle indices for different heads
         # if self.shuffle_indices:
@@ -110,7 +114,7 @@ class Memory(nn.Module):
         #     for p in self.query_proj.parameters():
         #         p.requires_grad = False
 
-    def forward(self, input):
+    def forward(self, input, mod):
         """
         Read from the memory.
         """
@@ -122,10 +126,10 @@ class Memory(nn.Module):
         bs = np.prod(prefix_shape)
 
         # (bs * heads, k_dim)
-        query = self.query_proj(input)
+        query = self.query_proj(input, mod)
 
         # get indices  (bs * heads, knn) ** 2
-        scores, indices = self.get_indices(query)
+        scores, indices = self.get_indices(query, mod)
         # scores = F.softmax(scores.float(), dim=-1).type_as(scores)            # (bs * heads, knn)
         scores = F.softmax(scores, dim=-1)
 
@@ -171,7 +175,7 @@ class Memory(nn.Module):
         keys = self.create_keys()
         self.keys = nn.Parameter(keys)
 
-    def get_indices(self, query):
+    def get_indices(self, query, mod):
         """
         Generate scores and indices given unnormalized queries.
         """
@@ -187,7 +191,7 @@ class Memory(nn.Module):
                              for _, idx in outputs], 1).view(-1, self.__C.KNN)
         return scores, indices
 
-    def _get_indices(self, query, knn, keys1, keys2):
+    def _get_indices(self, query, knn, keys1, keys2, mod):
         """
         Generate scores and indices given keys and unnormalized queries.
         """
@@ -199,10 +203,24 @@ class Memory(nn.Module):
         q2 = query[:, half:]                                                                                          # (bs, half)
 
         # compute indices with associated scores
-        scores1 = F.linear(q1, keys1, bias=None)                                                                      # (bs, n_keys ** 0.5)
+        scores1 = F.linear(q1, keys1, bias=None)                                                                     # (bs, n_keys ** 0.5)
         scores2 = F.linear(q2, keys2, bias=None)                                                                      # (bs, n_keys ** 0.5)
-        scores1, indices1 = scores1.topk(knn, dim=1, largest=True, sorted=True)                                       # (bs, knn) ** 2
-        scores2, indices2 = scores2.topk(knn, dim=1, largest=True, sorted=True)                                       # (bs, knn) ** 2
+        
+        if mod == 'lang':
+            self.s1 = F.softmax(scores1.sum(dim=0)/2.0, dim=-1).unsqueeze(0) + 1.0
+            self.s2 = F.softmax(scores2.sum(dim=0)/2.0, dim=-1).unsqueeze(0) + 1.0
+            scores1, indices1 = scores1.topk(knn, dim=1, largest=True, sorted=True)                                       # (bs, knn) ** 2
+            scores2, indices2 = scores2.topk(knn, dim=1, largest=True, sorted=True)
+        else:
+            # (bs, knn) ** 2
+            scores1 = torch.mul(scores1, self.s1)
+            scores2 = torch.mul(scores2, self.s2)
+            # (bs, knn) ** 2
+            scores1, indices1 = scores1.topk(
+                knn, dim=1, largest=True, sorted=True)
+            scores2, indices2 = scores2.topk(
+                knn, dim=1, largest=True, sorted=True)
+
         # scores1, indices1 = get_knn_faiss(keys1, q1.contiguous(), knn, distance='dot_product')                        # (bs, knn) ** 2
         # scores2, indices2 = get_knn_faiss(keys2, q2.contiguous(), knn, distance='dot_product')                        # (bs, knn) ** 2
 

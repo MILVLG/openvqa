@@ -6,7 +6,7 @@
 from openvqa.ops.fc import FC, MLP
 from openvqa.ops.gelu import GeLU
 from openvqa.ops.layer_norm import LayerNorm
-from openvqa.models.mem.memory import Memory
+from openvqa.models.mem.comemory import Memory
 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -105,12 +105,12 @@ class FFN(nn.Module):
 # ------------------------
 
 class SA(nn.Module):
-    def __init__(self, __C, i):
+    def __init__(self, __C, i, mem):
         super(SA, self).__init__()
 
         self.mhatt = MHAtt(__C)
         if i == 1:
-            self.ffn = Memory(__C, 14)
+            self.ffn = mem
         else:
             self.ffn = FFN(__C)
 
@@ -137,13 +137,13 @@ class SA(nn.Module):
 # -------------------------------
 
 class SGA(nn.Module):
-    def __init__(self, __C, i):
+    def __init__(self, __C, i, mem):
         super(SGA, self).__init__()
 
         self.mhatt1 = MHAtt(__C)
         self.mhatt2 = MHAtt(__C)
         if i == 1:
-            self.ffn = Memory(__C, 100)
+            self.ffn = mem
         else:
             self.ffn = FFN(__C)
 
@@ -180,8 +180,9 @@ class MCA_ED(nn.Module):
     def __init__(self, __C):
         super(MCA_ED, self).__init__()
 
-        enc_list = [SA(__C, i) for i in range(__C.LAYER)]
-        dec_list = [SGA(__C, i) for i in range(__C.LAYER)]
+        self.mem = Memory(__C)
+        enc_list = [SA(__C, i, self.mem) for i in range(__C.LAYER)]
+        dec_list = [SGA(__C, i, self.mem) for i in range(__C.LAYER)]
         self.enc_list = nn.ModuleList(enc_list[::-1])
         self.dec_list = nn.ModuleList(dec_list[::-1])
 
