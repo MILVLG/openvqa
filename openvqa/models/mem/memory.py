@@ -39,7 +39,7 @@ class QueryMLP(nn.Module):
             layers.append(nn.Dropout(__C.INPUT_DROPOUT))
         layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE // 2))
         # layers.append(getattr(nn, act)())
-        layers.append(GeLU())
+        layers.append(nn.ELU())
         layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
         
         self.mlp = nn.Sequential(*layers)
@@ -85,11 +85,6 @@ class Memory(nn.Module):
             else:
                 self.values.weight = HashingMemory.VALUES
         
-        # for different lr
-        if 'value' not in __C.SPECIAL_W:
-            __C.SPECIAL_W['value'] = []
-            __C.SPECIAL_LR['value'] = __C.VALUE_LR_TIMES
-        __C.SPECIAL_W['value'].append(self.values.weight)
         
         # # no query network
         # if len(params.mem_query_layer_sizes) == 0:
@@ -136,8 +131,8 @@ class Memory(nn.Module):
         # weighted sum of values
         output = self.values(
             indices,
-            per_sample_weights=scores.to(self.values.weight.data)
-        ).to(scores)                                                              # (bs, v_dim)
+            per_sample_weights=scores
+        )                                                            # (bs, v_dim)
 
         # reshape output
         # (..., v_dim)
