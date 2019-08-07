@@ -62,8 +62,7 @@ def get_optim(__C, model, data_size, lr_base=None):
         params = []
         pl = []
         for name, param in model.named_parameters():
-            print(name)
-            if name.endswith('value'):
+            if name.endswith('values.weight'):
                 pl.append(param)
         params.append(
             {"params": pl, "lr": lr_base * __C.VALUE_LR_TIMES}
