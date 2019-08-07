@@ -150,9 +150,6 @@ class BaseCfgs(PATH):
         # (default: -1 means not using)
         self.GRAD_NORM_CLIP = -1
 
-        self.SPECIAL_W = {}
-        self.SPECIAL_LR = {}
-
         # Optimizer
         '''
         Optimizer(case-sensitive): 

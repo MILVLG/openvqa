@@ -58,15 +58,17 @@ def get_optim(__C, model, data_size, lr_base=None):
         lr_base = __C.LR_BASE
 
     std_optim = getattr(Optim, __C.OPT)
-    if len(__C.SPECIAL_W)  != 0:
+    if __C.MODEL_USE == 'mem':
         params = []
-        l_id = []
-        for k in __C.SPECIAL_W.keys():
-            l_id += __C.SPECIAL_W[k]
-            params.append(
-                {"params": __C.SPECIAL_W[k], "lr": lr_base * __C.SPECIAL_LR[k]}
-            )
-        l_id = list(map(id, l_id))
+        pl = []
+        for name, param in model.named_parameters():
+            print(name)
+            if name.endswith('value'):
+                pl.append(param)
+        params.append(
+            {"params": pl, "lr": lr_base * __C.VALUE_LR_TIMES}
+        )
+        l_id = list(map(id, pl))
         normal_params = filter(lambda p: id(p) not in l_id, model.parameters())
         params.append(
             {"params": normal_params, "lr": lr_base},
@@ -91,3 +93,5 @@ def get_optim(__C, model, data_size, lr_base=None):
 
 def adjust_lr(optim, decay_r):
     optim.lr_base *= decay_r
+    for i in range(len(optim.lr_list)):
+            optim.lr_list[i] *= decay_r

@@ -31,7 +31,7 @@ def get_uniform_keys(n_keys, dim, normalized, seed):
     return X.astype(np.float32)
 
 class QueryMLP(nn.Module):
-    def __init__(self, __C, act='ReLU'):
+    def __init__(self, __C, num, act='ReLU'):
         super().__init__()
         self.__C = __C
         layers = []
@@ -85,11 +85,6 @@ class Memory(nn.Module):
             else:
                 self.values.weight = HashingMemory.VALUES
         
-        # for different lr
-        if 'value' not in __C.SPECIAL_W:
-            __C.SPECIAL_W['value'] = []
-            __C.SPECIAL_LR['value'] = __C.VALUE_LR_TIMES
-        __C.SPECIAL_W['value'].append(self.values.weight)
         
         # # no query network
         # if len(params.mem_query_layer_sizes) == 0:
@@ -141,8 +136,8 @@ class Memory(nn.Module):
         # weighted sum of values
         output = self.values(
             indices,
-            per_sample_weights=scores.to(self.values.weight.data)
-        ).to(scores)                                                              # (bs, v_dim)
+            per_sample_weights=scores
+        )                                                             # (bs, v_dim)
 
         # reshape output
         # (..., v_dim)
@@ -189,7 +184,7 @@ class Memory(nn.Module):
             keys = self.keys_v
         outputs = [
             self._get_indices(query[:, i], self.__C.KNN,
-                              keys[i][0], keys[i][1])
+                              keys[i][0], keys[i][1], mod)
             for i in range(self.__C.MEM_HEAD)
         ]
         scores = torch.cat([s.unsqueeze(1)
