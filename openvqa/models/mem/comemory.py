@@ -69,6 +69,7 @@ class Memory(nn.Module):
 
         # initialize keys
         self.init_keys()
+        self.elu = nn.ELU()
 
         values = nn.EmbeddingBag(
             __C.MEM_SIZE, __C.HIDDEN_SIZE, mode='sum', sparse=__C.MEM_SPARSE)
@@ -209,10 +210,10 @@ class Memory(nn.Module):
         scores2 = F.linear(q2, keys2, bias=None)                                                                      # (bs, n_keys ** 0.5)
         
         if mod == 'lang':
-            self.s1 = F.softmax(scores1.sum(dim=0) / 2.0,
-                                dim=-1).unsqueeze(0).detach() + 1.0
-            self.s2 = F.softmax(scores2.sum(dim=0) / 2.0,
-                                dim=-1).unsqueeze(0).detach() + 1.0
+            self.s1 = self.elu(scores1.sum(dim=0),
+                                ).unsqueeze(0).detach() / 10.0
+            self.s2 = self.elu(scores2.sum(dim=0),
+                                ).unsqueeze(0).detach() / 10.0
             scores1, indices1 = scores1.topk(knn, dim=1, largest=True, sorted=True)                                       # (bs, knn) ** 2
             scores2, indices2 = scores2.topk(knn, dim=1, largest=True, sorted=True)
         else:
