@@ -228,7 +228,7 @@ def train_engine(__C, dataset, dataset_eval=None):
                 #        str(norm_v)))
 
             optim.step()
-            torch.cuda.empty_cache()
+            # torch.cuda.empty_cache()
 
         time_end = time.time()
         elapse_time = time_end-time_start

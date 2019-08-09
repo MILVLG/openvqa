@@ -37,17 +37,25 @@ class QueryMLP(nn.Module):
         layers = []
         if __C.INPUT_DROPOUT > 0:
             layers.append(nn.Dropout(__C.INPUT_DROPOUT))
-        layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE // 2))
+        layers.append(nn.Linear(__C.HIDDEN_SIZE, __C.HIDDEN_SIZE))
         # layers.append(getattr(nn, act)())
-        layers.append(nn.ELU())
-        layers.append(nn.Linear(__C.HIDDEN_SIZE // 2, __C.HIDDEN_SIZE * 2))
+        layers.append(GeLU())
+        self.l1 = nn.Linear(__C.HIDDEN_SIZE // 4, __C.HIDDEN_SIZE // 2)
+        self.l2 = nn.Linear(__C.HIDDEN_SIZE // 4, __C.HIDDEN_SIZE // 2)
+        self.l3 = nn.Linear(__C.HIDDEN_SIZE // 4, __C.HIDDEN_SIZE // 2)
+        self.l4 = nn.Linear(__C.HIDDEN_SIZE // 4, __C.HIDDEN_SIZE // 2)
         
         self.mlp = nn.Sequential(*layers)
-        self.bs = nn.BatchNorm1d(num)
+        self.bs = nn.BatchNorm1d(num * __C.HIDDEN_SIZE * 2)
 
     def forward(self, x):
         n_batches = x.size(0)
         x = self.mlp(x)
+        y1 = self.l1(x[:, :, 0: __C.HIDDEN_SIZE // 4])
+        y2 = self.l2(x[:, :, __C.HIDDEN_SIZE // 4: __C.HIDDEN_SIZE // 2])
+        y3 = self.l3(x[:, :, __C.HIDDEN_SIZE // 2: 3 * __C.HIDDEN_SIZE // 4])
+        y4 = self.l4(x[:, :, 3 * __C.HIDDEN_SIZE // 4 : __C.HIDDEN_SIZE])
+        x = torch.cat([y1, y2, y3, y4], -1).view(n_batches, -1)
         x = self.bs(x)
         return x.view(
             n_batches,
