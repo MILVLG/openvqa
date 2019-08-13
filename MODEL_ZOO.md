@@ -24,7 +24,6 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 
 #### Train -> Val
 
-
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 :-: | :-: | :-: | :-: | :-: | :-: 
 [BUTD](./configs/vqa/butd.yml) |2e-3| 63.84 | 81.40 | 43.81 | 55.78 |
@@ -37,15 +36,15 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 
 #### Train+val -> Test-dev
 
-|                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) |                           Download                           |
-| :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :----------------------------------------------------------: |
-|       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |                                                              |
-|        [MFB](./configs/vqa/mfb.yml)        |         |             |            |            |           |                                                              |
-|        [MFH](./configs/vqa/mfh.yml)        |         |             |            |            |           |                                                              |
-|      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |                                                              |
-|      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |                                                              |
+|                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download |
+| :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :------: |
+|       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |          |
+|        [MFB](./configs/vqa/mfb.yml)        |  7e-4   |    68.29    |    84.64   |   48.29    |   58.89   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ET-B23hG7UNPrQ0hha77V5kBMxAokIr486lB3YwMt-zhow?e=XBk7co)  |
+|        [MFH](./configs/vqa/mfh.yml)        |  7e-4   |    69.11    |    85.56   |   48.81    |   59.69   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EUpvJD3c7NZJvBAbFOXTS0IBk1jCSz46bi7Pfq1kzJ35PA?e=be97so)  |
+|      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |          |
+|      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |          |
 | [MCAN-small](./configs/vqa/mcan_small.yml) |  1e-4   |    70.33    |   86.77    |   52.14    |   60.40   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcFeQCi_9MVBn6MeESly8OYBZCeBEuaPQqZjT-oXidgKKg?e=5dGjUt) |
-| [MCAN-large](./configs/vqa/mcan_large.yml) |         |             |            |            |           |                                                              |
+| [MCAN-large](./configs/vqa/mcan_large.yml) |         |             |            |            |           |          |
 
 #### Train+val+vg -> Test-dev
 
