@@ -37,15 +37,15 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 
 #### Train+val -> Test-dev
 
-|                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download |
-| :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :------: |
-|       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |          |
-|        [MFB](./configs/vqa/mfb.yml)        |         |             |            |            |           |          |
-|        [MFH](./configs/vqa/mfh.yml)        |         |             |            |            |           |          |
-|      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |          |
-|      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |          |
-| [MCAN-small](./configs/vqa/mcan_small.yml) |         |             |            |            |           |          |
-| [MCAN-large](./configs/vqa/mcan_large.yml) |         |             |            |            |           |          |
+|                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) |                           Download                           |
+| :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :----------------------------------------------------------: |
+|       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |                                                              |
+|        [MFB](./configs/vqa/mfb.yml)        |         |             |            |            |           |                                                              |
+|        [MFH](./configs/vqa/mfh.yml)        |         |             |            |            |           |                                                              |
+|      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |                                                              |
+|      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |                                                              |
+| [MCAN-small](./configs/vqa/mcan_small.yml) |  1e-4   |    70.33    |   86.77    |   52.14    |   60.40   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcFeQCi_9MVBn6MeESly8OYBZCeBEuaPQqZjT-oXidgKKg?e=5dGjUt) |
+| [MCAN-large](./configs/vqa/mcan_large.yml) |         |             |            |            |           |                                                              |
 
 #### Train+val+vg -> Test-dev
 
