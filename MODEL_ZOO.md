@@ -40,8 +40,8 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 |                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download |
 | :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :------: |
 |       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |          |
-|        [MFB](./configs/vqa/mfb.yml)        |         |             |            |            |           |          |
-|        [MFH](./configs/vqa/mfh.yml)        |         |             |            |            |           |          |
+|        [MFB](./configs/vqa/mfb.yml)        |  7e-4   |    68.29    |    84.64   |   48.29    |   58.89   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ET-B23hG7UNPrQ0hha77V5kBMxAokIr486lB3YwMt-zhow?e=XBk7co)  |
+|        [MFH](./configs/vqa/mfh.yml)        |  7e-4   |    69.11    |    85.56   |   48.81    |   59.69   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EUpvJD3c7NZJvBAbFOXTS0IBk1jCSz46bi7Pfq1kzJ35PA?e=be97so)  |
 |      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |          |
 |      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |          |
 | [MCAN-small](./configs/vqa/mcan_small.yml) |         |             |            |            |           |          |
