@@ -118,9 +118,6 @@ def test_engine(__C, dataset, state_dict=None, validation=False):
 
             pred_list.append(pred_np)
 
-    del (net)
-    torch.cuda.empty_cache()
-    
     print('')
     ans_ix_list = np.array(ans_ix_list).reshape(-1)
 

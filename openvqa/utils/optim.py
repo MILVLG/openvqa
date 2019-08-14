@@ -15,20 +15,15 @@ class WarmupOptimizer(object):
         self.data_size = data_size
         self.batch_size = batch_size
         self.warmup_epoch = warmup_epoch
-        self.lr_list = []
-        for p in self.optimizer.param_groups:
-            self.lr_list.append(p['lr'])
 
 
     def step(self):
         self._step += 1
 
         rate = self.rate()
-        i = 0
         for p in self.optimizer.param_groups:
-            p['lr'] = rate * self.lr_list[i]
-            i += 1
-        self._rate = self.lr_base * rate
+            p['lr'] = rate
+        self._rate = rate
 
         self.optimizer.step()
 
@@ -42,13 +37,13 @@ class WarmupOptimizer(object):
             step = self._step
 
         if step <= int(self.data_size / self.batch_size * (self.warmup_epoch + 1) * 0.25):
-            r = 1/(self.warmup_epoch + 1)
+            r = self.lr_base * 1/(self.warmup_epoch + 1)
         elif step <= int(self.data_size / self.batch_size * (self.warmup_epoch + 1) * 0.5):
-            r = 2/(self.warmup_epoch + 1)
+            r = self.lr_base * 2/(self.warmup_epoch + 1)
         elif step <= int(self.data_size / self.batch_size * (self.warmup_epoch + 1) * 0.75):
-            r = 3/(self.warmup_epoch + 1)
+            r = self.lr_base * 3/(self.warmup_epoch + 1)
         else:
-            r = 1
+            r = self.lr_base
 
         return r
 
@@ -58,24 +53,8 @@ def get_optim(__C, model, data_size, lr_base=None):
         lr_base = __C.LR_BASE
 
     std_optim = getattr(Optim, __C.OPT)
-    if __C.MODEL_USE == 'mem':
-        params = []
-        pl = []
-        for name, param in model.named_parameters():
-            if name.endswith('values.weight'):
-                pl.append(param)
-        params.append(
-            {"params": pl, "lr": lr_base * __C.VALUE_LR_TIMES}
-        )
-        l_id = list(map(id, pl))
-        normal_params = filter(lambda p: id(p) not in l_id, model.parameters())
-        params.append(
-            {"params": normal_params, "lr": lr_base},
-        )
-        eval_str = 'params'
-    else:
-        params = filter(lambda p: p.requires_grad, model.parameters())
-        eval_str = 'params, lr=lr_base'
+    params = filter(lambda p: p.requires_grad, model.parameters())
+    eval_str = 'params, lr=0'
     for key in __C.OPT_PARAMS:
         eval_str += ' ,' + key + '=' + str(__C.OPT_PARAMS[key])
 
@@ -92,5 +71,3 @@ def get_optim(__C, model, data_size, lr_base=None):
 
 def adjust_lr(optim, decay_r):
     optim.lr_base *= decay_r
-    for i in range(len(optim.lr_list)):
-            optim.lr_list[i] *= decay_r
