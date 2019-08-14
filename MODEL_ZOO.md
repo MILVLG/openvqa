@@ -38,11 +38,11 @@ Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 
 |                   Model                    | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) |                           Download                           |
 | :----------------------------------------: | :-----: | :---------: | :--------: | :--------: | :-------: | :----------------------------------------------------------: |
-|       [BUTD](./configs/vqa/butd.yml)       |         |             |            |            |           |                                                              |
+|       [BUTD](./configs/vqa/butd.yml)       |  2e-3   |    66.98    |   83.28    |   46.19    |      57.85   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSOkcCVGMpAot9ol0IJP3ABv3cWFRvGFB67980PHiCk3Q?e=OkjDhj) |
 |        [MFB](./configs/vqa/mfb.yml)        |  7e-4   |    68.29    |   84.64    |   48.29    |   58.89   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ET-B23hG7UNPrQ0hha77V5kBMxAokIr486lB3YwMt-zhow?e=XBk7co) |
 |        [MFH](./configs/vqa/mfh.yml)        |  7e-4   |    69.11    |   85.56    |   48.81    |   59.69   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EUpvJD3c7NZJvBAbFOXTS0IBk1jCSz46bi7Pfq1kzJ35PA?e=be97so) |
-|      [BAN-4](./configs/vqa/ban_4.yml)      |         |             |            |            |           |                                                              |
-|      [BAN-8](./configs/vqa/ban_8.yml)      |         |             |            |            |           |                                                              |
+|      [BAN-4](./configs/vqa/ban_4.yml)      | 1.4e-3  |    68.9     |   85.0     |   49.5     |      59.56   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EVUabhYppDBImgV6b0DdGr0BrxTdSLm7ux9rN65T_8DZ0Q?e=zSGIYg) |
+|      [BAN-8](./configs/vqa/ban_8.yml)      | 1.4e-3  |    69.07    |   85.2     |   49.63    |      59.71   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbJgyL7FPTFAqzMm3HB1xDIBjXpWygOoXrdnDZKEIu34rg?e=kxCVue) |
 | [MCAN-small](./configs/vqa/mcan_small.yml) |  1e-4   |    70.33    |   86.77    |   52.14    |   60.40   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcFeQCi_9MVBn6MeESly8OYBZCeBEuaPQqZjT-oXidgKKg?e=5dGjUt) |
 | [MCAN-large](./configs/vqa/mcan_large.yml) |  5e-5   |    70.48    |   86.90    |   52.11    |   60.63   | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/Ee6HdFN_FcZAsQEm85WesHgBZBkY8dZ-278dDYG_ty_IwA?e=WK4SX4) |
 

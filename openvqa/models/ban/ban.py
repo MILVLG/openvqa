@@ -135,4 +135,4 @@ class BAN(nn.Module):
                 v, q, att[:, g, :, :])  # b x l x h
             q = self.q_prj[g](bi_emb.unsqueeze(1)) + q
 
-        return x
+        return q
