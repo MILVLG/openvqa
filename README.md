@@ -2,7 +2,7 @@
 
 <div>
 	<a href="https://openvqa.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/openvqa/badge/?version=latest"/></a>
-	<a href="http://mil.hdu.edu.cn"><img alt="powered-by MILVLG" src="https://img.shields.io/badge/powered%20by-MILVLG-orange.svg?style=flat&amp;colorA=E1523D&amp;colorB=007D8A"/></a>
+	<a href="https://github.com/MILVLG"><img alt="powered-by MILVLG" src="https://img.shields.io/badge/powered%20by-MILVLG-orange.svg?style=flat&amp;colorA=E1523D&amp;colorB=007D8A"/></a>
 </div>
 
 OpenVQA is a general platform for visual question ansering (VQA) research, with implementing state-of-the-art approaches (e.g., [BUTD](https://arxiv.org/abs/1707.07998), [MFH](https://arxiv.org/abs/1708.03619), [BAN](https://arxiv.org/abs/1805.07932) and [MCAN](https://arxiv.org/abs/1906.10770)) on different benchmark datasets like [VQA-v2](https://visualqa.org/), [GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html) and [CLEVR](https://cs.stanford.edu/people/jcjohns/clevr/). Supports for more methods and datasets will be updated continuously.
@@ -16,7 +16,7 @@ OpenVQA is a general platform for visual question ansering (VQA) research, with 
 
 ## Documentation
 
-Learn more about OpenVQA [here](https://openvqa.readthedocs.io/en/latest/).
+Getting started and learn more about OpenVQA [here](https://openvqa.readthedocs.io/en/latest/).
 
 ## Benchmark and Model Zoo
 

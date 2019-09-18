@@ -89,13 +89,13 @@ There are two ways to start:
 (Recommend)
 
 ```bash
-$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_V=str --CKPT_E=int
+$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clevr}' --CKPT_V=str --CKPT_E=int
 ```
 
 or use the absolute path instead:
 
 ```bash
-$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_PATH=str
+$ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clevr}' --CKPT_PATH=str
 ```
 
 - For VQA-v2, the results on *val* split
@@ -105,7 +105,7 @@ $ python3 run.py --RUN='val' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_PATH
 All the evaluations on the test split of VQA-v2, GQA and CLEVR benchmarks can be achieved by using 
 
 ```bash
-$ python3 run.py --RUN='test' --MODEL=str --DATASET='{vqa,gqa,clecr}' --CKPT_V=str --CKPT_E=int
+$ python3 run.py --RUN='test' --MODEL=str --DATASET='{vqa,gqa,clevr}' --CKPT_V=str --CKPT_E=int
 ```
 
 Result file are saved at: ```results/result_test/result_run_<CKPT_V>_<CKPT_E>.json```

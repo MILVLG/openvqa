@@ -14,7 +14,7 @@ OpenVQA Documentation
     <a href="https://openvqa.readthedocs.io/en/latest/?badge=latest">
         <img alt="Documentation Status" src="https://readthedocs.org/projects/openvqa/badge/?version=latest"/>
     </a>
-    <a href="http://mil.hdu.edu.cn">
+    <a href="https://github.com/MILVLG">
         <img alt="powered-by MILVLG" src="https://img.shields.io/badge/powered%20by-MILVLG-orange.svg?style=flat&amp;colorA=E1523D&amp;colorB=007D8A"/>
     </a>
 
