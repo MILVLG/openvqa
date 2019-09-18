@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -10,21 +13,40 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../..'))
 
+RELEASE = os.environ.get('RELEASE', False)
 
 # -- Project information -----------------------------------------------------
 
-project = 'OpenVQA'
-copyright = '2019, MILVLG'
-author = 'MILVLG'
+project = u'OpenVQA'
+copyright = u'2019, MILVLG'
+author = u'MILVLG'
+
+# The version info for the project you're documenting, acts as replacement for
+# |version| and |release|, also used in various other places throughout the
+# built documents.
+#
+# The short X.Y version.
+# version = '1.0'
+# The full version, including alpha/beta/rc tags.
+# release = '0.0'
 
 
 # -- General configuration ---------------------------------------------------
 
 master_doc =  'index'
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+#
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -38,7 +60,8 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'sphinxcontrib.katex',
+    'sphinx_markdown_tables',
+    'recommonmark',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -61,3 +84,25 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Add cusotm css overrides
+def setup(app):
+  app.add_stylesheet( "custom.css" )
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ['_templates']
+if RELEASE:
+    templates_path = ['_templates-stable']
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+# Disable docstring inheritance
+autodoc_inherit_docstrings = False
+
+
+# -- Other Options ------------------------------------------------------------
+
+# intersphinx_mapping = {
+#     'python': ('https://docs.python.org/3', None)
+# }

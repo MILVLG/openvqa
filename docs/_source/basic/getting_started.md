@@ -1,7 +1,7 @@
 # Getting Started
 
 This page provides basic tutorials about the usage of mmdetection.
-For installation instructions, please see [INSTALL.md](INSTALL.md).
+For installation instructions, please see [Installation](install).
 
 ## Training
 

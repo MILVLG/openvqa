@@ -33,7 +33,7 @@ The image features are extracted using the [bottom-up-attention](https://github.
 
 All the image feature files are unzipped and placed in the `data/vqa/feats` folder to form the following tree structure:
 
-```angular2html
+```
 |-- data
 	|-- vqa
 	|  |-- feats
@@ -61,7 +61,7 @@ We provide our processed vg questions and annotations files, you can download th
 
 All the QA annotation files are unzipped and placed in the `data/vqa/raw` folder to form the following tree structure:
 
-```angular2html
+```
 |-- data
 	|-- vqa
 	|  |-- raw
