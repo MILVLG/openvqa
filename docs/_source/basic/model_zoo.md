@@ -1,3 +1,5 @@
+.. _model-zoo:
+
 # Benchmark and Model Zoo
 
 ## Environment
@@ -26,13 +28,13 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 
 Model | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%)
 :-: | :-: | :-: | :-: | :-: | :-: 
-[BUTD](./configs/vqa/butd.yml) |2e-3| 63.84 | 81.40 | 43.81 | 55.78 |
-[MFB](./configs/vqa/mfb.yml) |7e-4| 65.35 | 83.23 | 45.31 | 57.05 |
-[MFH](./configs/vqa/mfh.yml) |7e-4| 66.18 | 84.07 | 46.55 | 57.78 |
-[BAN-4](./configs/vqa/ban_4.yml) |2e-3| 65.86 | 83.53 | 46.36 | 57.56 |
-[BAN-8](./configs/vqa/ban_8.yml) |2e-3| 66.00 | 83.61 | 47.04 | 57.62 |
-[MCAN-small](./configs/vqa/mcan_small.yml) |1e-4| 67.17 | 84.82 | 49.31 | 58.48 | 
-[MCAN-large](./configs/vqa/mcan_large.yml) |7e-5| 67.50 | 85.14 | 49.66 | 58.80 | 
+[BUTD](./configs/vqa/butd.yml) |2e-3| 63.84 | 81.40 | 43.81 | 55.78 
+[MFB](./configs/vqa/mfb.yml) |7e-4| 65.35 | 83.23 | 45.31 | 57.05 
+[MFH](./configs/vqa/mfh.yml) |7e-4| 66.18 | 84.07 | 46.55 | 57.78 
+[BAN-4](./configs/vqa/ban_4.yml) |2e-3| 65.86 | 83.53 | 46.36 | 57.56 
+[BAN-8](./configs/vqa/ban_8.yml) |2e-3| 66.00 | 83.61 | 47.04 | 57.62 
+[MCAN-small](./configs/vqa/mcan_small.yml) |1e-4| 67.17 | 84.82 | 49.31 | 58.48 
+[MCAN-large](./configs/vqa/mcan_large.yml) |7e-5| 67.50 | 85.14 | 49.66 | 58.80 
 
 #### Train+val -> Test-dev
 
