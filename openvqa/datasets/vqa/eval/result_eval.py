@@ -11,7 +11,8 @@ def eval(__C, dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, 
     ans_size = dataset.ans_size
 
     result = [{
-        'answer': dataset.ix_to_ans[ans_ix_list[qix]],
+        'answer': dataset.ix_to_ans[str(ans_ix_list[qix])],
+        # 'answer': dataset.ix_to_ans[ans_ix_list[qix]],
         'question_id': int(qid_list[qix])
     } for qix in range(qid_list.__len__())]
 
