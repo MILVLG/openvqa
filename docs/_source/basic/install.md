@@ -78,6 +78,73 @@ All the QA annotation files are unzipped and placed in the `data/vqa/raw` folder
 
 ### GQA
 
+- Image Features
+  
+Download the [spatial features](https://nlp.stanford.edu/data/gqa/spatialFeatures.zip) and [object features](https://nlp.stanford.edu/data/gqa/objectFeatures.zip) for GQA from its official website. **Spatial Features Files** include `gqa_spatial_*.h5` and `gqa_spatial_info.json`. **Object Features Files** include `gqa_objects_*.h5` and `gqa_objects_info.json`.  
+To make the input features consistent with those for VQA-v2, we provide a [script](data/gqa/gqa_feat_preproc.py) to transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
+
+```bash
+$ unzip spatialFeatures.zip
+$ python gqa_feat_preproc.py --mode=spatial --spatial_dir=./spatialFeatures --out_dir=./feats/gqa-grid
+$ rm -r spatialFeatures.zip ./spatialFeatures
+
+$ unzip objectFeatures.zip
+$ python gqa_feat_preproc.py --mode=object --object_dir=./objectFeatures --out_dir=./feats/gqa-frcn
+$ rm -r objectFeatures.zip ./objectFeatures
+```
+
+All the processed feature files are placed in the `data/gqa/feats` folder to form the following tree structure:
+
+```
+|-- data
+	|-- gqa
+	|  |-- feats
+	|  |  |-- gqa-frcn
+	|  |  |  |-- 1.npz
+	|  |  |  |-- ...
+	|  |  |-- gqa-grid
+	|  |  |  |-- 1.npz
+	|  |  |  |-- ...
+```
+
+- Questions and Scene Graphs
+
+Download all the GQA [QA files](https://nlp.stanford.edu/data/gqa/questions1.2.zip) from the official site, including all the splits needed for training, validation and testing.  
+Download the [scene graphs files](https://nlp.stanford.edu/data/gqa/sceneGraphs.zip) for `train` and `val` splits from the official site.  
+Download  the [evaluation files](https://nlp.stanford.edu/data/gqa/eval.zip) from the official site, including the `train` and `val` choices supporting files for the evaluation.  
+
+All the question files and scene graph files are unzipped and placed in the `data/gqa/raw` folder to form the following tree structure:
+
+```
+|-- data
+	|-- gqa
+	|  |-- raw
+	|  |  |-- questions1.2
+	|  |  |  |-- train_all_questions
+	|  |  |  |  |-- train_all_questions_0.json
+	|  |  |  |  |-- ...
+	|  |  |  |  |-- train_all_questions_9.json
+	|  |  |  |-- train_balanced_questions.json
+	|  |  |  |-- val_all_questions.json
+	|  |  |  |-- val_balanced_questions.json
+	|  |  |  |-- testdev_all_questions.json
+	|  |  |  |-- testdev_balanced_questions.json
+	|  |  |  |-- test_all_questions.json
+	|  |  |  |-- test_balanced_questions.json
+	|  |  |  |-- challenge_all_questions.json
+	|  |  |  |-- challenge_balanced_questions.json
+	|  |  |  |-- submission_all_questions.json
+	|  |  |-- eval
+	|  |  |  |-- train_choices
+	|  |  |  |  |-- train_all_questions_0.json
+	|  |  |  |  |-- ...
+	|  |  |  |  |-- train_all_questions_9.json
+	|  |  |  |-- val_choices.json
+	|  |  |-- sceneGraphs
+	|  |  |  |-- train_sceneGraphs.json
+	|  |  |  |-- val_sceneGraphs.json
+```
+
 ### CLEVR
 
 
