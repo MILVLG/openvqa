@@ -81,7 +81,7 @@ All the QA annotation files are unzipped and placed in the `data/vqa/raw` folder
 - Image Features
   
 Download the [spatial features](https://nlp.stanford.edu/data/gqa/spatialFeatures.zip) and [object features](https://nlp.stanford.edu/data/gqa/objectFeatures.zip) for GQA from its official website. **Spatial Features Files** include `gqa_spatial_*.h5` and `gqa_spatial_info.json`. **Object Features Files** include `gqa_objects_*.h5` and `gqa_objects_info.json`.  
-To make the input features consistent with those for VQA-v2, we provide a [script](data/gqa/gqa_h52npz.py) to transform  `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
+To make the input features consistent with those for VQA-v2, we provide a [script](data/gqa/gqa_h52npz.py) to transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
 
 ```bash
 $ unzip spatialFeatures.zip
