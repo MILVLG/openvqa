@@ -12,24 +12,25 @@ from openvqa.utils.make_mask import make_mask
 class Adapter(BaseAdapter):
     def __init__(self, __C):
         super(Adapter, self).__init__(__C)
+        self.__C = __C
 
 
     def vqa_init(self, __C):
         pass
-        #self.frcn_linear = nn.Linear(__C.FEAT_SIZE['vqa']['FRCN_FEAT_SIZE'], __C.HIDDEN_SIZE)
+        #self.frcn_linear = nn.Linear(__C.FEAT_SIZE['vqa']['FRCN_FEAT_SIZE'][1], __C.HIDDEN_SIZE)
 
 
     def gqa_init(self, __C):
         self.bbox_linear = nn.Linear(5, __C.BBOXFEAT_EMB_SIZE)
         self.frcn_linear = nn.Linear(
-            __C.FEAT_SIZE['gqa']['FRCN_FEAT_SIZE'] + __C.BBOXFEAT_EMB_SIZE,
+            __C.FEAT_SIZE['gqa']['FRCN_FEAT_SIZE'][1] + __C.BBOXFEAT_EMB_SIZE,
             __C.HIDDEN_SIZE
         )
-        self.grid_linear = nn.Linear(__C.FEAT_SIZE['gqa']['GRID_FEAT_SIZE'], __C.HIDDEN_SIZE)
+        self.grid_linear = nn.Linear(__C.FEAT_SIZE['gqa']['GRID_FEAT_SIZE'][1], __C.HIDDEN_SIZE)
 
 
     def clevr_init(self, __C):
-        self.grid_linear = nn.Linear(__C.FEAT_SIZE['clevr']['GRID_FEAT_SIZE'], __C.HIDDEN_SIZE)
+        self.grid_linear = nn.Linear(__C.FEAT_SIZE['clevr']['GRID_FEAT_SIZE'][1], __C.HIDDEN_SIZE)
 
 
     def vqa_forward(self, feat_dict):

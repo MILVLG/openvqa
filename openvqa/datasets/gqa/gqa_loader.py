@@ -180,7 +180,7 @@ class DataSet(BaseDataSet):
 
     def load_img_feats(self, idx, iid):
         frcn_feat = np.load(self.iid_to_frcn_feat_path[iid])
-        frcn_feat_iter = self.proc_img_feat(frcn_feat['x'], img_feat_pad_size=100)
+        frcn_feat_iter = self.proc_img_feat(frcn_feat['x'], img_feat_pad_size=self.__C.FEAT_SIZE['gqa']['FRCN_FEAT_SIZE'][0])
 
         grid_feat = np.load(self.iid_to_grid_feat_path[iid])
         grid_feat_iter = grid_feat['x']
@@ -190,7 +190,7 @@ class DataSet(BaseDataSet):
                 frcn_feat['bbox'],
                 (frcn_feat['height'], frcn_feat['width'])
             ),
-            img_feat_pad_size=100
+            img_feat_pad_size=self.__C.FEAT_SIZE['gqa']['BBOX_FEAT_SIZE'][0]
         )
 
         return frcn_feat_iter, grid_feat_iter, bbox_feat_iter
