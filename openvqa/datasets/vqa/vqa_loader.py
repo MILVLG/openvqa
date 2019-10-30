@@ -193,14 +193,14 @@ class DataSet(BaseDataSet):
     def load_img_feats(self, idx, iid):
         frcn_feat = np.load(self.iid_to_frcn_feat_path[iid])
         frcn_feat_x = frcn_feat['x'].transpose((1, 0))
-        frcn_feat_iter = self.proc_img_feat(frcn_feat_x, img_feat_pad_size=100)
+        frcn_feat_iter = self.proc_img_feat(frcn_feat_x, img_feat_pad_size=self.__C.FEAT_SIZE['vqa']['FRCN_FEAT_SIZE'][0])
 
         bbox_feat_iter = self.proc_img_feat(
             self.proc_bbox_feat(
                 frcn_feat['bbox'],
                 (frcn_feat['image_h'], frcn_feat['image_w'])
             ),
-            img_feat_pad_size=100
+            img_feat_pad_size=self.__C.FEAT_SIZE['vqa']['BBOX_FEAT_SIZE'][0]
         )
 
         return frcn_feat_iter, np.zeros(1), bbox_feat_iter

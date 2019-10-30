@@ -119,7 +119,7 @@ class CoAtt(nn.Module):
         super(CoAtt, self).__init__()
         self.__C = __C
 
-        img_feat_size = __C.FEAT_SIZE[__C.DATASET]['FRCN_FEAT_SIZE']
+        img_feat_size = __C.FEAT_SIZE[__C.DATASET]['FRCN_FEAT_SIZE'][1]
         img_att_feat_size = img_feat_size * __C.I_GLIMPSES
         ques_att_feat_size = __C.LSTM_OUT_SIZE * __C.Q_GLIMPSES
 

@@ -80,16 +80,16 @@ class BaseCfgs(PATH):
         # All features size
         self.FEAT_SIZE = {
             'vqa': {
-                'FRCN_FEAT_SIZE': 2048,
-                'BBOX_FEAT_SIZE': 5,
+                'FRCN_FEAT_SIZE': (100, 2048),
+                'BBOX_FEAT_SIZE': (100, 5),
             },
             'gqa': {
-                'FRCN_FEAT_SIZE': 2048,
-                'GRID_FEAT_SIZE': 2048,
-                'BBOX_FEAT_SIZE': 5,
+                'FRCN_FEAT_SIZE': (100, 2048),
+                'GRID_FEAT_SIZE': (49, 2048),
+                'BBOX_FEAT_SIZE': (100, 5),
             },
             'clevr': {
-                'GRID_FEAT_SIZE': 1024,
+                'GRID_FEAT_SIZE': (196, 1024),
             },
         }
 
