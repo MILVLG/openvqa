@@ -30,19 +30,19 @@ class DataSet(BaseDataSet):
         grid_feat_path_list = glob.glob(__C.FEATS_PATH[__C.DATASET]['default-grid'] + '/*.npz')
 
         # Loading question word list
-        stat_ques_dict = {
-            **ques_dict_preread['train'],
-            **ques_dict_preread['val'],
-            **ques_dict_preread['testdev'],
-            **ques_dict_preread['test'],
-        }
+        # stat_ques_dict = {
+        #     **ques_dict_preread['train'],
+        #     **ques_dict_preread['val'],
+        #     **ques_dict_preread['testdev'],
+        #     **ques_dict_preread['test'],
+        # }
 
         # Loading answer word list
-        stat_ans_dict = {
-            **ques_dict_preread['train'],
-            **ques_dict_preread['val'],
-            **ques_dict_preread['testdev'],
-        }
+        # stat_ans_dict = {
+        #     **ques_dict_preread['train'],
+        #     **ques_dict_preread['val'],
+        #     **ques_dict_preread['testdev'],
+        # }
 
         # Loading question and answer list
         self.ques_dict = {}
@@ -76,7 +76,7 @@ class DataSet(BaseDataSet):
         self.qid_list = list(self.ques_dict.keys())
 
         # Tokenize
-        self.token_to_ix, self.pretrained_emb, max_token = self.tokenize(stat_ques_dict, __C.USE_GLOVE)
+        self.token_to_ix, self.pretrained_emb, max_token = self.tokenize('openvqa/datasets/gqa/dicts.json', __C.USE_GLOVE)
         self.token_size = self.token_to_ix.__len__()
         print(' ========== Question token vocab size:', self.token_size)
 
@@ -86,7 +86,7 @@ class DataSet(BaseDataSet):
         print('Max token length:', max_token, 'Trimmed to:', self.max_token)
 
         # Answers statistic
-        self.ans_to_ix, self.ix_to_ans = self.ans_stat(stat_ans_dict)
+        self.ans_to_ix, self.ix_to_ans = self.ans_stat('openvqa/datasets/gqa/dicts.json')
         self.ans_size = self.ans_to_ix.__len__()
         print(' ========== Answer token vocab size:', self.ans_size)
         print('Finished!')
@@ -104,55 +104,76 @@ class DataSet(BaseDataSet):
         return iid_to_path
 
 
-    def tokenize(self, stat_ques_dict, use_glove):
-        token_to_ix = {
-            'PAD': 0,
-            'UNK': 1,
-            'CLS': 2,
-        }
+    # def tokenize(self, stat_ques_dict, use_glove):
+    #     token_to_ix = {
+    #         'PAD': 0,
+    #         'UNK': 1,
+    #         'CLS': 2,
+    #     }
+    #
+    #     spacy_tool = None
+    #     pretrained_emb = []
+    #     if use_glove:
+    #         spacy_tool = en_vectors_web_lg.load()
+    #         pretrained_emb.append(spacy_tool('PAD').vector)
+    #         pretrained_emb.append(spacy_tool('UNK').vector)
+    #         pretrained_emb.append(spacy_tool('CLS').vector)
+    #
+    #     max_token = 0
+    #     for qid in stat_ques_dict:
+    #         ques = stat_ques_dict[qid]['question']
+    #         words = re.sub(
+    #             r"([.,'!?\"()*#:;])",
+    #             '',
+    #             ques.lower()
+    #         ).replace('-', ' ').replace('/', ' ').split()
+    #
+    #         if len(words) > max_token:
+    #             max_token = len(words)
+    #
+    #         for word in words:
+    #             if word not in token_to_ix:
+    #                 token_to_ix[word] = len(token_to_ix)
+    #                 if use_glove:
+    #                     pretrained_emb.append(spacy_tool(word).vector)
+    #
+    #     pretrained_emb = np.array(pretrained_emb)
+    #
+    #     return token_to_ix, pretrained_emb, max_token
+    #
+    #
+    # def ans_stat(self, stat_ans_dict):
+    #     ans_to_ix = {}
+    #     ix_to_ans = {}
+    #
+    #     for qid in stat_ans_dict:
+    #         ans = stat_ans_dict[qid]['answer']
+    #         ans = prep_ans(ans)
+    #
+    #         if ans not in ans_to_ix:
+    #             ix_to_ans[ans_to_ix.__len__()] = ans
+    #             ans_to_ix[ans] = ans_to_ix.__len__()
+    #
+    #     return ans_to_ix, ix_to_ans
 
+
+    def tokenize(self, json_file, use_glove):
+        token_to_ix, max_token = json.load(open(json_file, 'r'))[2:]
         spacy_tool = None
-        pretrained_emb = []
         if use_glove:
             spacy_tool = en_vectors_web_lg.load()
-            pretrained_emb.append(spacy_tool('PAD').vector)
-            pretrained_emb.append(spacy_tool('UNK').vector)
-            pretrained_emb.append(spacy_tool('CLS').vector)
 
-        max_token = 0
-        for qid in stat_ques_dict:
-            ques = stat_ques_dict[qid]['question']
-            words = re.sub(
-                r"([.,'!?\"()*#:;])",
-                '',
-                ques.lower()
-            ).replace('-', ' ').replace('/', ' ').split()
-
-            if len(words) > max_token:
-                max_token = len(words)
-
-            for word in words:
-                if word not in token_to_ix:
-                    token_to_ix[word] = len(token_to_ix)
-                    if use_glove:
-                        pretrained_emb.append(spacy_tool(word).vector)
-
+        pretrained_emb = []
+        for word in token_to_ix:
+            if use_glove:
+                pretrained_emb.append(spacy_tool(word).vector)
         pretrained_emb = np.array(pretrained_emb)
 
         return token_to_ix, pretrained_emb, max_token
 
 
-    def ans_stat(self, stat_ans_dict):
-        ans_to_ix = {}
-        ix_to_ans = {}
-
-        for qid in stat_ans_dict:
-            ans = stat_ans_dict[qid]['answer']
-            ans = prep_ans(ans)
-
-            if ans not in ans_to_ix:
-                ix_to_ans[ans_to_ix.__len__()] = ans
-                ans_to_ix[ans] = ans_to_ix.__len__()
+    def ans_stat(self, json_file):
+        ans_to_ix, ix_to_ans = json.load(open(json_file, 'r'))[:2]
 
         return ans_to_ix, ix_to_ans
 
