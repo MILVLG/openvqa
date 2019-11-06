@@ -16,7 +16,7 @@ def eval(__C, dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, 
 
     result = [{
         'questionId': qid_list[ix],
-        'prediction': dataset.ix_to_ans[ans_ix_list[ix]],
+        'prediction': dataset.ix_to_ans[str(ans_ix_list[ix])],
     } for ix in range(len(qid_list))]
 
     print('Save the result to file: {}'.format(result_eval_file))
