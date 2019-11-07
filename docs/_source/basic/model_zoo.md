@@ -11,7 +11,7 @@ We use the following environment to run all the experiments in this page.
 
 ## VQA-v2
 
-We provide three groups of results (including the accuracies of *Overall*, *Yes/No*, *Number* and *Other*) for each model on VQA-v2 using different training schemes as follows. We provide pre-trained models for the latter two schemes. 
+We provide three groups of results (including the accuracies of *Overall*, *Yes/No*, *Number* and *Other*) for each model on VQA-v2 using different training schemas as follows. We provide pre-trained models for the latter two schemas. 
 
 - **Train -> Val**: trained on the `train` split and evaluated on the `val` split. 
 - **Train+val -> Test-dev**: trained on the `train+val` splits and evaluated on the `test-dev` split. 
@@ -59,6 +59,20 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.82       | 87.19      | 52.56      | 60.98     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA) |
 
 ## GQA
+We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity*, *Plausibility*, *Consistency*, *Distribution*) for each model on GQA as follows.  
+
+- **Train(balance)+val(balance) -> Test-dev(all)**: trained on the `train(balance)+val(balance)` splits and evaluated on the `test-dev(all)` split. 
+
+    **Note that the local Test-dev result is *balanced*, while we report the *on-line Test-dev* result, so it's different from the local Test-dev result.**
+
+#### Train(balance)+val(balance) -> Test-dev(all)
+
+| Model | Base lr | Accuracy (%) | Binary (%) | Open (%) | Validity (%) | Plausibility (%) | Consistency (%) | Distribution | Download |
+| ------| ------- | ----------- | ---------- | ---------- | ---------- | ---------- |--------- | --------- | --------- |
+| [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model]() |
+| [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model]() |
+| [MCAN-small (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.38       | 76.49      | 42.45      | 96.98     | 84.47     | 87.36     | 1.29     | [model]() |
+| [MCAN-large (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_largel.yml) | 5e-5    | 58.10       | 76.98      | 41.50      | 97.01     | 85.43     | 87.34     | 1.20     | [model]() |
 
 
 ## CLEVR
