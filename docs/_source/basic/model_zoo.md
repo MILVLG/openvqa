@@ -55,23 +55,24 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [MFH](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfh.yml)               | 7e-4    | 68.86       | 85.38      | 49.27      | 59.21     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EXGNuWmba8JOnQkkpfqokqcBzJ6Yw1ID6hl7hj2nyJaNJA?e=3TL5HC) |
 | [BAN-4](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_4.yml)           | 1.4e-3  | 69.31       | 85.42      | 50.15      | 59.91     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ERAUbsBJzcNHjXcINxDoWOQByR0jSbdNp8nonuFdbyc8yA?e=B5iGKU) |
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 1.4e-3  | 69.48       | 85.40      | 50.82      | 60.14     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EW6v-dZOdJhFoKwT3bIx8M8B_U998hE8YD9zUJsUpo0rjQ?e=znhy2f) |
-| [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 70.69       | 87.08      | 53.16      | 60.66     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf) |
+| [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1 e-4    | 70.69       | 87.08      | 53.16      | 60.66     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf) |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.82       | 87.19      | 52.56      | 60.98     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA) |
 
 ## GQA
 We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity*, *Plausibility*, *Consistency*, *Distribution*) for each model on GQA as follows.  
 
-- **Train(balance)+val(balance) -> Test-dev(all)**: trained on the `train(balance)+val(balance)` splits and evaluated on the `test-dev(all)` split. 
+- **Train+val -> Test-dev**: trained on the `train(balance) + val(balance)` splits and evaluated on the `test-dev(all)` split. 
 
-    **Note that the local Test-dev result is *balanced*, while we report the *on-line Test-dev* result, so it's different from the local Test-dev result.**
+    *Note that the *offline* Test-dev result corresponds to the *balanced* version, while the *online* *Test-dev* result corresponds to the *all* version. These results in slight performance difference. The reported results in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview ).
 
-#### Train(balance)+val(balance) -> Test-dev(all)
+#### Train+val -> Test-dev
 
 | Model | Base lr | Accuracy (%) | Binary (%) | Open (%) | Validity (%) | Plausibility (%) | Consistency (%) | Distribution | Download |
-| ------| ------- | ----------- | ---------- | ---------- | ---------- | ---------- |--------- | --------- | --------- |
-| [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model]() |
-| [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model]() |
-| [MCAN-small (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.38       | 76.49      | 42.45      | 96.98     | 84.47     | 87.36     | 1.29     | [model]() |
+| ------| ------- | ------------ | ---------- | -------- | ------------ | ---------------- |---------------- | ------------ | -------- |
+| [MCAN-small (frcn)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 53.41       | 70.29      | 38.56      | 96.77     | 85.32     | 82.29     | 1.40     | [model]() |
+| [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbsPhIGkvpNKtqBbFmIFIucBQO_dM6lDgQL-gdd3RnzziQ?e=4uKDlw) |
+| [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQCUNFPnpC1HliLDFCSDUc4BUdbdq40iPZVi5tLOCrVaQA?e=2aldJS) |
+| [MCAN-small (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.38       | 76.49      | 42.45      | 96.98     | 84.47     | 87.36     | 1.29     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcrY2vDlzERLksouT5_cbcIBM1BCPkPdg4MyPmci8xrQig?e=UpPTao) |
 | [MCAN-large (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_largel.yml) | 5e-5    | 58.10       | 76.98      | 41.50      | 97.01     | 85.43     | 87.34     | 1.20     | [model]() |
 
 
