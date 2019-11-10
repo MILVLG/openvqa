@@ -11,14 +11,14 @@ We use the following environment to run all the experiments in this page.
 
 ## VQA-v2
 
-We provide three groups of results (including the accuracies of *Overall*, *Yes/No*, *Number* and *Other*) for each model on VQA-v2 using different training schemas as follows. We provide pre-trained models for the latter two schemas. 
+We provide three groups of results (including the accuracies of *Overall*, *Yes/No*, *Number* and *Other*) for each model on VQA-v2 using different training schemes as follows. We provide pre-trained models for the latter two schemes. 
 
 - **Train -> Val**: trained on the `train` split and evaluated on the `val` split. 
 - **Train+val -> Test-dev**: trained on the `train+val` splits and evaluated on the `test-dev` split. 
 
 - **Train+val+vg -> Test-dev**: trained on the `train+val+vg` splits and evaluated on the `test-dev` split.  
 
-**Note that for one model, the used base learning rate in the two schemas may be different, you should modify this setting in the config file to reproduce the results.**
+**Note that for one model, the used base learning rate in the two schemes may be different, you should modify this setting in the config file to reproduce the results.**
 
 
 
@@ -55,7 +55,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [MFH](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfh.yml)               | 7e-4    | 68.86       | 85.38      | 49.27      | 59.21     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EXGNuWmba8JOnQkkpfqokqcBzJ6Yw1ID6hl7hj2nyJaNJA?e=3TL5HC) |
 | [BAN-4](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_4.yml)           | 1.4e-3  | 69.31       | 85.42      | 50.15      | 59.91     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ERAUbsBJzcNHjXcINxDoWOQByR0jSbdNp8nonuFdbyc8yA?e=B5iGKU) |
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 1.4e-3  | 69.48       | 85.40      | 50.82      | 60.14     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EW6v-dZOdJhFoKwT3bIx8M8B_U998hE8YD9zUJsUpo0rjQ?e=znhy2f) |
-| [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1 e-4    | 70.69       | 87.08      | 53.16      | 60.66     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf) |
+| [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 70.69       | 87.08      | 53.16      | 60.66     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf) |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.82       | 87.19      | 52.56      | 60.98     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA) |
 
 ## GQA
