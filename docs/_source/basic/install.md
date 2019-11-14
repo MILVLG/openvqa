@@ -109,7 +109,7 @@ All the processed feature files are placed in the `data/gqa/feats` folder to for
 
 - Questions and Scene Graphs
 
-Download all the GQA [QA files](https://nlp.stanford.edu/data/gqa/questions1.2.zip) from the official site, including all the splits needed for training, validation and testing. Download the [scene graphs files](https://nlp.stanford.edu/data/gqa/sceneGraphs.zip) for `train` and `val` splits from the official site. Download  the [evaluation files](https://nlp.stanford.edu/data/gqa/eval.zip) from the official site, including the `train` and `val` choices supporting files for the evaluation.  
+Download all the GQA [QA files](https://nlp.stanford.edu/data/gqa/questions1.2.zip) from the official site, including all the splits needed for training, validation and testing. Download the [scene graphs files](https://nlp.stanford.edu/data/gqa/sceneGraphs.zip) for `train` and `val` splits from the official site. Download  the [supporting files](https://nlp.stanford.edu/data/gqa/eval.zip) from the official site, including the `train` and `val` choices supporting files for the evaluation.  
 
 All the question files and scene graph files are unzipped and placed in the `data/gqa/raw` folder to form the following tree structure:
 
