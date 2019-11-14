@@ -18,7 +18,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 
 - **Train+val+vg -> Test-dev**: trained on the `train+val+vg` splits and evaluated on the `test-dev` split.  
 
-**Note that for one model, the used base learning rate in the two schemas may be different, you should modify this setting in the config file to reproduce the results.**
+**Note that for one model, the used base learning rate in the two schemes may be different, you should modify this setting in the config file to reproduce the results.**
 
 
 
@@ -59,6 +59,21 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.82       | 87.19      | 52.56      | 60.98     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA) |
 
 ## GQA
+We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity*, *Plausibility*, *Consistency*, *Distribution*) for each model on GQA as follows.  
+
+- **Train+val -> Test-dev**: trained on the `train(balance) + val(balance)` splits and evaluated on the `test-dev(all)` split. 
+
+    *Note that the *offline* Test-dev result corresponds to the *balanced* version, while the *online* *Test-dev* result corresponds to the *all* version. These results in slight performance difference. The reported results in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview ).
+
+#### Train+val -> Test-dev
+
+| Model | Base lr | Accuracy (%) | Binary (%) | Open (%) | Validity (%) | Plausibility (%) | Consistency (%) | Distribution | Download |
+| ------| ------- | ------------ | ---------- | -------- | ------------ | ---------------- |---------------- | ------------ | -------- |
+| [MCAN-small (frcn)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 53.41       | 70.29      | 38.56      | 96.77     | 85.32     | 82.29     | 1.40     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ER_i5xbPuXNCiC15iVtxBvgBTe7IBRpqpWTmeAY5svv3Ew?e=w8iJpv) |
+| [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbsPhIGkvpNKtqBbFmIFIucBQO_dM6lDgQL-gdd3RnzziQ?e=4uKDlw) |
+| [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQCUNFPnpC1HliLDFCSDUc4BUdbdq40iPZVi5tLOCrVaQA?e=2aldJS) |
+| [MCAN-small (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.38       | 76.49      | 42.45      | 96.98     | 84.47     | 87.36     | 1.29     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcrY2vDlzERLksouT5_cbcIBM1BCPkPdg4MyPmci8xrQig?e=UpPTao) |
+| [MCAN-large (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_largel.yml) | 5e-5    | 58.10       | 76.98      | 41.50      | 97.01     | 85.43     | 87.34     | 1.20     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/Ed6PBjIDEHpDot3vY__T-OIBJGdW51RFo2u_pm-7S5TMPA?e=zTSwPZ) |
 
 
 ## CLEVR
