@@ -73,7 +73,7 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 | [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbsPhIGkvpNKtqBbFmIFIucBQO_dM6lDgQL-gdd3RnzziQ?e=4uKDlw) |
 | [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQCUNFPnpC1HliLDFCSDUc4BUdbdq40iPZVi5tLOCrVaQA?e=2aldJS) |
 | [MCAN-small (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.38       | 76.49      | 42.45      | 96.98     | 84.47     | 87.36     | 1.29     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcrY2vDlzERLksouT5_cbcIBM1BCPkPdg4MyPmci8xrQig?e=UpPTao) |
-| [MCAN-large (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_largel.yml) | 4e-5    | 58.17       | 76.47      | 42.09      | 96.88     | 85.44     | 87.57     | 1.34     | [model]() |
+| [MCAN-large (frcn+bbox+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_largel.yml) | 5e-5    | 58.10       | 76.98      | 41.50      | 97.01     | 85.43     | 87.34     | 1.20     | [model]() |
 
 
 ## CLEVR
