@@ -37,7 +37,7 @@ Supports for more methods and datasets will be updated continuously.
     :maxdepth: 1
 
     Contributing                   <advanced/contributing>
-
+    Custom Model                   <advanced/adding_model>
 
 ------
 
