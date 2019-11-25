@@ -66,7 +66,7 @@ clevr:{
 }
 ```
 
-More detailed examples can be referred to the adapter for the [MCAN](https://github.com/MILVLG/openvqa/openvqa/models/mcan/adapter.py) model.
+More detailed examples can be referred to the adapter for the [MCAN](https://github.com/MILVLG/openvqa/tree/master/openvqa/models/mcan/adapter.py) model.
 
 
 
@@ -154,8 +154,7 @@ LOSS_FUNC: bce
 LOSS_REDUCTION: sum
 ```
 
-Finally, to register the added model to the running script,  you can modify `<openvqa/run.py>` by adding your `<YOUR_CONFIG_NAME>` into the arguments for models [here](https://github.com/MILVLG/openvqa/run.py#L22). 
-
+Finally, to register the added model to the running script,  you can modify `<openvqa/run.py>` by adding your `<YOUR_CONFIG_NAME>` into the arguments for models [here](https://github.com/MILVLG/openvqa/tree/master/run.py#L22). 
 
 
 By doing all the steps above, you are able to use ```--MODEL=<YOUR_CONFIG_NAME>```  to train/val/test your model like other provided models. For more information about the usage of the running script, please refer to the [Getting Started](https://openvqa.readthedocs.io/en/latest/basic/getting_started.html) page.   
