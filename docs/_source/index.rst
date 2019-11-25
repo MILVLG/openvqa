@@ -36,8 +36,8 @@ Supports for more methods and datasets will be updated continuously.
     :name: advanced-topics
     :maxdepth: 1
 
+    Adding a Model                 <advanced/adding_model>
     Contributing                   <advanced/contributing>
-
 
 ------
 
