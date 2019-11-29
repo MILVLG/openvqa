@@ -8,7 +8,8 @@ from openvqa.ops.layer_norm import LayerNorm
 
 import torch.nn as nn
 import torch.nn.functional as F
-import torch, math
+import torch
+import math
 
 
 # ------------------------------
@@ -34,7 +35,7 @@ class MHAtt(nn.Module):
             n_batches,
             -1,
             self.__C.MULTI_HEAD,
-            int(self.__C.HIDDEN_SIZE/self.__C.MULTI_HEAD)
+            int(self.__C.HIDDEN_SIZE / self.__C.MULTI_HEAD)
         ).transpose(1, 2)
 
         k = self.linear_k(k).view(
