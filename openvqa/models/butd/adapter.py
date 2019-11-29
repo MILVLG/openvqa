@@ -56,12 +56,6 @@ class Adapter(BaseAdapter):
             frcn_feat = torch.cat((frcn_feat, bbox_feat), dim=-1)
         img_feat = self.frcn_linear(frcn_feat)
 
-        if self.__C.USE_AUX_FEAT:
-            grid_feat_mask = make_mask(grid_feat)
-            img_feat_mask = torch.cat((img_feat_mask, grid_feat_mask), dim=-1)
-            grid_feat = self.grid_linear(grid_feat)
-            img_feat = torch.cat((img_feat, grid_feat), dim=1)
-
         return img_feat, img_feat_mask
 
 
