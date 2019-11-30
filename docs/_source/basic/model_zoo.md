@@ -63,15 +63,15 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 
 - **Train+val -> Test-dev**: trained on the `train(balance) + val(balance)` splits and evaluated on the `test-dev(balance)` split. 
 
-    * The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference with the online result due to some unknow reasons.
+*The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference with the online result due to some unknow reasons.
 
 #### Train+val -> Test-dev
 
 | Model | Base lr | Accuracy (%) | Binary (%) | Open (%) | Validity (%) | Plausibility (%) | Consistency (%) | Distribution | Download |
 | ------| ------- | ------------ | ---------- | -------- | ------------ | ---------------- |---------------- | ------------ | -------- |
 | [BUTD (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/butd.yml)        | 2e-4    | 53.38       | 67.78      | 40.72      | 96.62     | 84.81     | 77.62     | 1.26     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EaalaQ6VmBJCgeoZiPp45_gBn20g7tpkp-Uq8IVFcun64w?e=WgRMEj) |
-| [BAN-4 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban4.yml)        | 2e-4    | 55.01       | 72.02      | 40.06      | 96.94     | 85.67     | 81.85     | 1.04     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EdRIuVXaJqBJoXg3T7N0xfYBsPl-GlgW2hq2toqm2gOxXg?e=hPng3c) |
-| [BAN-8 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban8.yml)        | 1e-4    | 56.19       | 73.31      | 41.13      | 96.77     | 85.58     | 84.64     | 1.09     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ES8FCQxFsqJBnvdoOcF_724BJgJml6iStYYK9UeUbI8Uyw?e=Pcff9r) |
+| [BAN-4 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban_4.yml)        | 2e-4    | 55.01       | 72.02      | 40.06      | 96.94     | 85.67     | 81.85     | 1.04     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EdRIuVXaJqBJoXg3T7N0xfYBsPl-GlgW2hq2toqm2gOxXg?e=hPng3c) |
+| [BAN-8 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban_8.yml)        | 1e-4    | 56.19       | 73.31      | 41.13      | 96.77     | 85.58     | 84.64     | 1.09     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ES8FCQxFsqJBnvdoOcF_724BJgJml6iStYYK9UeUbI8Uyw?e=Pcff9r) |
 | [MCAN-small (frcn)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 53.41       | 70.29      | 38.56      | 96.77     | 85.32     | 82.29     | 1.40     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ER_i5xbPuXNCiC15iVtxBvgBTe7IBRpqpWTmeAY5svv3Ew?e=w8iJpv) |
 | [MCAN-small (frcn+grid)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 54.28       | 71.68      | 38.97      | 96.79     | 85.11     | 84.49     | 1.20     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbsPhIGkvpNKtqBbFmIFIucBQO_dM6lDgQL-gdd3RnzziQ?e=4uKDlw) |
 | [MCAN-small (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/mcan_small.yml) | 1e-4    | 58.20       | 75.87      | 42.66      | 97.01     | 85.41     | 87.99     | 1.25     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQCUNFPnpC1HliLDFCSDUc4BUdbdq40iPZVi5tLOCrVaQA?e=2aldJS) |
