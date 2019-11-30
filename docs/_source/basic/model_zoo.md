@@ -63,7 +63,7 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 
 - **Train+val -> Test-dev**: trained on the `train(balance) + val(balance)` splits and evaluated on the `test-dev(balance)` split. 
 
-    *The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference with the online result due to some unknow reasons.
+*The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference with the online result due to some unknow reasons.
 
 #### Train+val -> Test-dev
 
