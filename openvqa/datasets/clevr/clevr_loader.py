@@ -19,10 +19,10 @@ class DataSet(BaseDataSet):
         # --------------------------
 
         # Loading all image paths
-        grid_feat_path_list = \
-            glob.glob(__C.FEATS_PATH[__C.DATASET]['train'] + '/*.npz') + \
-            glob.glob(__C.FEATS_PATH[__C.DATASET]['val'] + '/*.npz') + \
-            glob.glob(__C.FEATS_PATH[__C.DATASET]['test'] + '/*.npz')
+        # grid_feat_path_list = \
+        #     glob.glob(__C.FEATS_PATH[__C.DATASET]['train'] + '/*.npz') + \
+        #     glob.glob(__C.FEATS_PATH[__C.DATASET]['val'] + '/*.npz') + \
+        #     glob.glob(__C.FEATS_PATH[__C.DATASET]['test'] + '/*.npz')
 
         # Loading question word list
         stat_ques_list = \
@@ -37,10 +37,12 @@ class DataSet(BaseDataSet):
 
         # Loading question and answer list
         self.ques_list = []
+        grid_feat_path_list = []
 
         split_list = __C.SPLIT[__C.RUN_MODE].split('+')
         for split in split_list:
             self.ques_list += json.load(open(__C.RAW_PATH[__C.DATASET][split], 'r'))['questions']
+            grid_feat_path_list += glob.glob(__C.FEATS_PATH[__C.DATASET][split] + '/*.npz')
 
         # Define run data size
         self.data_size = self.ques_list.__len__()
