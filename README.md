@@ -29,7 +29,7 @@ Results and models are available in [MODEL ZOO](https://openvqa.readthedocs.io/e
 | [MFB](https://arxiv.org/abs/1708.01471v1) | ✓                               |                                                              |                                                        |
 | [MFH](https://arxiv.org/abs/1708.03619)   | ✓                               |                                                              |                                                        |
 | [BAN](https://arxiv.org/abs/1805.07932)   | ✓                               |       ✓                                                       |                                                        |
-| [MCAN](https://arxiv.org/abs/1906.10770)  | ✓                               | ✓                                                            |                                                        |
+| [MCAN](https://arxiv.org/abs/1906.10770)  | ✓                               | ✓                                                            | ✓                                                      |
 
 ## News & Updates
 

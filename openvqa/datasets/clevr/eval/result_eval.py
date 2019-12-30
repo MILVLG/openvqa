@@ -60,10 +60,46 @@ def eval(__C, dataset, ans_ix_list, pred_list, result_eval_file, ensemble_file, 
 
         print('Write to log file: {}'.format(log_file))
         logfile = open(log_file, 'a+')
+        q_dict = {}
         for q_type, vals in sorted(correct_by_q_type.items()):
             vals = np.asarray(vals)
-            print(q_type, '%d / %d = %.2f' % (vals.sum(), vals.shape[0], 100.0 * vals.mean()))
-            logfile.write(q_type + ' : ' + '%d / %d = %.2f\n' % (vals.sum(), vals.shape[0], 100.0 * vals.mean()))
+            q_dict[q_type] = [vals.sum(), vals.shape[0]]
+            # print(q_type, '%d / %d = %.2f' % (vals.sum(), vals.shape[0], 100.0 * vals.mean()))
+            # logfile.write(q_type + ' : ' + '%d / %d = %.2f\n' % (vals.sum(), vals.shape[0], 100.0 * vals.mean()))
+
+        # Score Summary
+        score_type = ['Overall', 'Count', 'Exist', 'Compare_Numbers', 'Query_Attribute', 'Compare_Attribute']
+        compare_numbers_type = ['greater_than', 'less_than']
+        query_attribute_type = ['query_color', 'query_material', 'query_shape', 'query_size']
+        compare_attribute_type =  ['equal_color', 'equal_integer', 'equal_material', 'equal_shape', 'equal_size']
+        score_dict = {}
+        score_dict['Overall'] = q_dict['Overall']
+        score_dict['Count'] = q_dict['count']
+        score_dict['Exist'] = q_dict['exist']
+
+        correct_num, total_num = 0, 0
+        for q_type in compare_numbers_type:
+            correct_num += q_dict[q_type][0]
+            total_num += q_dict[q_type][1]
+        score_dict['Compare_Numbers'] = [correct_num, total_num]
+
+        correct_num, total_num = 0, 0
+        for q_type in query_attribute_type:
+            correct_num += q_dict[q_type][0]
+            total_num += q_dict[q_type][1]
+        score_dict['Query_Attribute'] = [correct_num, total_num]
+
+        correct_num, total_num = 0, 0
+        for q_type in compare_attribute_type:
+            correct_num += q_dict[q_type][0]
+            total_num += q_dict[q_type][1]
+        score_dict['Compare_Attribute'] = [correct_num, total_num]
+
+        for q_type in score_type:
+            val, tol = score_dict[q_type]
+            print(q_type, '%d / %d = %.2f' % (val, tol, 100.0 * val / tol))
+            logfile.write(q_type + ' : ' + '%d / %d = %.2f\n' % (val, tol, 100.0 * val / tol))
+
         logfile.write("\n")
         logfile.close()
 

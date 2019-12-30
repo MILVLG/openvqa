@@ -25,7 +25,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 #### Train -> Val
 
 | Model                                                                                  | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) |
-| -------------------------------------------------------------------------------------- | ------- | ----------- | ---------- | ---------- | --------- |
+|:--------------------------------------------------------------------------------------:|:-------:|:-----------:|:----------:|:----------:|:---------:|
 | [BUTD](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/butd.yml)             | 2e-3    | 63.84       | 81.40      | 43.81      | 55.78     |
 | [MFB](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfb.yml)               | 7e-4    | 65.35       | 83.23      | 45.31      | 57.05     |
 | [MFH](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfh.yml)               | 7e-4    | 66.18       | 84.07      | 46.55      | 57.78     |
@@ -37,7 +37,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 #### Train+val -> Test-dev
 
 | Model                                                                                  | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download                                                                                                                  |
-| -------------------------------------------------------------------------------------- | ------- | ----------- | ---------- | ---------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------------------------------------------------------------------:|:-------:|:-----------:|:----------:|:----------:|:---------:|:-------------------------------------------------------------------------------------------------------------------------:|
 | [BUTD](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/butd.yml)             | 2e-3    | 66.98       | 83.28      | 46.19      | 57.85     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSOkcCVGMpAot9ol0IJP3ABv3cWFRvGFB67980PHiCk3Q?e=OkjDhj) |
 | [MFB](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfb.yml)               | 7e-4    | 68.29       | 84.64      | 48.29      | 58.89     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ET-B23hG7UNPrQ0hha77V5kBMxAokIr486lB3YwMt-zhow?e=XBk7co) |
 | [MFH](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfh.yml)               | 7e-4    | 69.11       | 85.56      | 48.81      | 59.69     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EUpvJD3c7NZJvBAbFOXTS0IBk1jCSz46bi7Pfq1kzJ35PA?e=be97so) |
@@ -49,7 +49,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 #### Train+val+vg -> Test-dev
 
 | Model                                                                                  | Base lr | Overall (%) | Yes/No (%) | Number (%) | Other (%) | Download                                                                                                                  |
-| -------------------------------------------------------------------------------------- | ------- | ----------- | ---------- | ---------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------------------------------------------------------------------:|:-------:|:-----------:|:----------:|:----------:|:---------:|:-------------------------------------------------------------------------------------------------------------------------:|
 | [BUTD](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/butd.yml)             | 2e-3    | 67.54       | 83.48      | 46.97      | 58.62     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbLMhJsx9AVJi-ipqtkzHckBS5TWo_au3T8wHPEdDKMgPQ?e=kozuxV) |
 | [MFB](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfb.yml)               | 7e-4    | 68.25       | 84.79      | 48.24      | 58.68     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EfLYkv1XBgNJgOMU5PAo04YBHxAVmpeJtnZecqJztJdNig?e=OVPJSk) |
 | [MFH](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mfh.yml)               | 7e-4    | 68.86       | 85.38      | 49.27      | 59.21     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EXGNuWmba8JOnQkkpfqokqcBzJ6Yw1ID6hl7hj2nyJaNJA?e=3TL5HC) |
@@ -63,12 +63,12 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 
 - **Train+val -> Test-dev**: trained on the `train(balance) + val(balance)` splits and evaluated on the `test-dev(balance)` split. 
 
-*The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference with the online result due to some unknow reasons.
+**The results shown in the following are obtained from the [online server](https://evalai.cloudcv.org/web/challenges/challenge-page/225/overview). Note that the offline Test-dev result is evaluated by the provided offical script, which results in slight difference compared to the online result due to some unknown reasons.**
 
 #### Train+val -> Test-dev
 
 | Model | Base lr | Accuracy (%) | Binary (%) | Open (%) | Validity (%) | Plausibility (%) | Consistency (%) | Distribution | Download |
-| ------| ------- | ------------ | ---------- | -------- | ------------ | ---------------- |---------------- | ------------ | -------- |
+|:------:|:-------:|:------------:|:----------:|:--------:|:------------:|:----------------:|:----------------:|:------------:|:--------:|
 | [BUTD (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/butd.yml)        | 2e-4    | 53.38       | 67.78      | 40.72      | 96.62     | 84.81     | 77.62     | 1.26     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EaalaQ6VmBJCgeoZiPp45_gBn20g7tpkp-Uq8IVFcun64w?e=WgRMEj) |
 | [BAN-4 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban_4.yml)        | 2e-4    | 55.01       | 72.02      | 40.06      | 96.94     | 85.67     | 81.85     | 1.04     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EdRIuVXaJqBJoXg3T7N0xfYBsPl-GlgW2hq2toqm2gOxXg?e=hPng3c) |
 | [BAN-8 (frcn+bbox)](https://github.com/MILVLG/openvqa/tree/master/configs/gqa/ban_8.yml)        | 1e-4    | 56.19       | 73.31      | 41.13      | 96.77     | 85.58     | 84.64     | 1.09     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ES8FCQxFsqJBnvdoOcF_724BJgJml6iStYYK9UeUbI8Uyw?e=Pcff9r) |
@@ -81,3 +81,12 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 
 ## CLEVR
 
+We provide a group of results (including *Overall*, *Count*, *Exist*, *Compare Numbers*, *Query Attribute*, *Compare Attribute*) for each model on CLEVR as follows.  
+
+- **Train -> Val**: trained on the `train` split and evaluated on the `val` split. 
+
+#### Train -> Val
+
+| Model | Base lr | Overall (%) | Count (%) | Exist (%) | Compare Numbers (%) | Query Attribute (%) | Compare Attribute (%) | Download |
+|:-----:|:-------:|:-------------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
+| [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/clevr/mcan_small.yml) | 4e-5 | 98.74 | 96.81 | 99.27 | 98.89 | 99.53 | 99.19 | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ERtwnuAoeHNKjs0qTkWC3cYBWVuUk7BLk88cnCKNFxYYlQ?e=lTRULt) |
