@@ -83,9 +83,10 @@ We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity
 
 We provide a group of results (including *Overall*, *Count*, *Exist*, *Compare Numbers*, *Query Attribute*, *Compare Attribute*) for each model on CLEVR as follows.  
 
+- **Train -> Val**: trained on the `train` split and evaluated on the `val` split. 
+
 #### Train -> Val
 
 | Model | Base lr | Overall (%) | Count (%) | Exist (%) | Compare Numbers (%) | Query Attribute (%) | Compare Attribute (%) | Download |
 | ----- | ------- | ------------- | -------- |  -------- |  -------- |  -------- | -------- | -------- |
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/clevr/mcan_small.yml) | 4e-5 | 98.74 | 96.81 | 99.27 | 98.89 | 99.53 | 99.19 | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/ERtwnuAoeHNKjs0qTkWC3cYBWVuUk7BLk88cnCKNFxYYlQ?e=lTRULt) |
-| [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/clevr/mcan_large.yml) | 2e-5 |  |  |  |  |  |  | [model]() |
