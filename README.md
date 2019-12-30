@@ -33,19 +33,20 @@ Results and models are available in [MODEL ZOO](https://openvqa.readthedocs.io/e
 
 ## News & Updates
 
-### v0.7.5 (30/12.2019)
+#### v0.7.5 (30/12/2019)
 - Add supports and pre-trained models for the approaches on CLEVR.
 
-### v0.7 (29/11/2019)
+#### v0.7 (29/11/2019)
 - Add supports and pre-trained models for the approaches on GQA.
 - Add an document to tell developers how to add a new model to OpenVQA.
 
-### v0.6 (18/09/2019)
+#### v0.6 (18/09/2019)
 - Refactoring the documents and using Sphinx to build the whole documents. 
 
-### v0.5 (31/07/2019)
+#### v0.5 (31/07/2019)
 - Implement the basic framework for OpenVQA.
 - Add supports and pre-trained models for BUTD, MFB, MFH, BAN, MCAN on VQA-v2. 
+
 ## License
 
 This project is released under the [Apache 2.0 license](LICENSE).
