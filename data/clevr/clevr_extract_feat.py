@@ -19,6 +19,7 @@ import torch
 import torchvision
 torch.set_num_threads(5)
 
+
 def build_model(args):
     if not hasattr(torchvision.models, args.model):
         raise ValueError('Invalid model "%s"' % args.model)
@@ -55,7 +56,7 @@ def batch_feat(cur_batch, model):
     return feats
 
 
-def extract_feature(args, images_path, npz_path):
+def extract_feature(args, images_path, feats_npz_path):
     input_paths = []
     idx_set = set()
     for file in os.listdir(images_path):
@@ -64,6 +65,7 @@ def extract_feature(args, images_path, npz_path):
         idx = int(os.path.splitext(file)[0].split('_')[-1])
         input_paths.append((os.path.join(images_path, file), idx))
         idx_set.add(idx)
+
     input_paths.sort(key=lambda x: x[1])
     assert len(idx_set) == len(input_paths)
     assert min(idx_set) == 0 and max(idx_set) == len(idx_set) - 1
@@ -71,9 +73,9 @@ def extract_feature(args, images_path, npz_path):
 
     model = build_model(args)
 
-    if not os.path.exists(npz_path):
-        os.mkdir(npz_path)
-        print('Create dir:', npz_path)
+    if not os.path.exists(feats_npz_path):
+        os.mkdir(feats_npz_path)
+        print('Create dir:', feats_npz_path)
 
     img_size = (args.image_height, args.image_width)
     ix = 0
@@ -86,7 +88,7 @@ def extract_feature(args, images_path, npz_path):
         if len(cur_batch) == args.batch_size:
             feats = batch_feat(cur_batch, model)
             for j in range(feats.shape[0]):
-                np.savez(npz_path + str(ix) + '.npz', x=feats[j].reshape(1024, 196).transpose(1, 0))
+                np.savez(feats_npz_path + str(ix) + '.npz', x=feats[j].reshape(1024, 196).transpose(1, 0))
                 ix += 1
             print('Processed %d/%d images' % (ix, len(input_paths)), end='\r')
             cur_batch = []
@@ -94,7 +96,7 @@ def extract_feature(args, images_path, npz_path):
     if len(cur_batch) > 0:
         feats = batch_feat(cur_batch, model)
         for j in range(feats.shape[0]):
-            np.savez(npz_path + str(ix) + '.npz', x=feats[j].reshape(1024, 196).transpose(1, 0))
+            np.savez(feats_npz_path + str(ix) + '.npz', x=feats[j].reshape(1024, 196).transpose(1, 0))
             ix += 1
         print('Processed %d/%d images' % (ix, len(input_paths)), end='\r')
     
@@ -122,8 +124,6 @@ if __name__ == '__main__':
     test_feats_npz_path = './feats/test/'
 
     args = parser.parse_args()
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-
     print('mode:', args.mode)
     print('gpu:', args.gpu)
     print('model:', args.model)
@@ -131,22 +131,21 @@ if __name__ == '__main__':
     print('batch_size:', args.batch_size)
     print('image_height:', args.image_height)
     print('image_width:', args.image_width)
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     
     # process train images features
     if args.mode in ['train', 'all']:
         print('\nProcess [train] images features:')
         extract_feature(args, train_images_path, train_feats_npz_path)
     
-
     # process val images features
     if args.mode in ['val', 'all']:
         print('\nProcess [val] images features:')
         extract_feature(args, val_images_path, val_feats_npz_path)
-    
 
     # processs test images features
     if args.mode in ['test', 'all']:
         print('\nProcess [test] images features:')
         extract_feature(args, test_images_path, test_feats_npz_path)
-    
     
