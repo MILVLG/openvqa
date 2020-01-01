@@ -181,7 +181,7 @@ All the image files, question files and scene graph files are unzipped and place
 
 - Image Features
   
-To make the input features consistent with those for VQA-v2, we provide a [script](https://github.com/MILVLG/openvqa/tree/master/data/clevr/clevr_extract_feat.py). This script use pre-trained CNN model (`ResNet-101`) to extract image features and generate `train/val/test.h5` files. And then it transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
+To make the input features consistent with those for VQA-v2, we provide a [script](https://github.com/MILVLG/openvqa/tree/master/data/clevr/clevr_extract_feat.py). This script use pre-trained CNN model (ResNet-101) to extract image features and generate `train/val/test.h5` files. And then it transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
 
 ```bash
 $ cd data/clevr
