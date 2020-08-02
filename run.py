@@ -28,7 +28,8 @@ def parse_args():
                            'mfb',
                            'mfh',
                            'mem',
-                           'butd'
+                           'butd',
+                           'mmnasnet'
                            ]
                         ,
                       help='{'
@@ -39,6 +40,7 @@ def parse_args():
                            'mfb,'
                            'mfh,'
                            'butd,'
+                           'mmnasnet,'
                            '}'
                         ,
                       type=str, required=True)

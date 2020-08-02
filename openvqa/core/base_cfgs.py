@@ -93,6 +93,9 @@ class BaseCfgs(PATH):
             },
         }
 
+        # Set if bbox_feat need be normalize by image size, default: False
+        self.BBOX_NORMALIZE = False
+
         # Default training batch size: 64
         self.BATCH_SIZE = 64
 
