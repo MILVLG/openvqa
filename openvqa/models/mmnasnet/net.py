@@ -83,7 +83,7 @@ class Net(nn.Module):
 
         self.adapter = Adapter(__C)
 
-        self.backbone = MCA_ED(__C)
+        self.backbone = NAS_ED(__C)
 
         # Projection of relation embedding
         self.linear_rel = nn.Linear(4, __C.REL_SIZE)

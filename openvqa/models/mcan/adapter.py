@@ -16,7 +16,7 @@ class Adapter(BaseAdapter):
 
     def bbox_proc(self, bbox):
         area = (bbox[:, :, 2] - bbox[:, :, 0]) * (bbox[:, :, 3] - bbox[:, :, 1])
-        return torch.cat((bbox, area), -1)
+        return torch.cat((bbox, area.unsqueeze(2)), -1)
 
     def vqa_init(self, __C):
         imgfeat_linear_size = __C.FEAT_SIZE['vqa']['FRCN_FEAT_SIZE'][1]

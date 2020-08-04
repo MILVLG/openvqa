@@ -228,7 +228,7 @@ class DataSet(BaseDataSet):
 
     def proc_bbox_feat(self, bbox, img_shape):
         if self.__C.BBOX_NORMALIZE:
-            bbox_nm = np.zeros((bbox.shape[0], 5), dtype=np.float32)
+            bbox_nm = np.zeros((bbox.shape[0], 4), dtype=np.float32)
 
             bbox_nm[:, 0] = bbox[:, 0] / float(img_shape[1])
             bbox_nm[:, 1] = bbox[:, 1] / float(img_shape[0])
