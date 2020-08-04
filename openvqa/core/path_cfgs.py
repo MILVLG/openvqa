@@ -19,17 +19,23 @@ class PATH:
         # self.DATA_ROOT = '/home/features'
 
         self.DATA_PATH = {
-            'vqa': self.DATA_ROOT + '/vqa',
+            'vqa': '/data-ssd/shaozw/dataset/vqa/',  # self.DATA_ROOT + '/vqa',
             'gqa': self.DATA_ROOT + '/gqa',
             'clevr': self.DATA_ROOT + '/clevr',
         }
 
+        self.IMGFEAT_ROOT_PATH = '/data-ssd/cuiyh/features/'
 
         self.FEATS_PATH = {
+            # 'vqa': {
+            #     'train': self.DATA_PATH['vqa'] + '/feats' + '/train2014',
+            #     'val': self.DATA_PATH['vqa'] + '/feats' + '/val2014',
+            #     'test': self.DATA_PATH['vqa'] + '/feats' + '/test2015',
+            # },
             'vqa': {
-                'train': self.DATA_PATH['vqa'] + '/feats' + '/train2014',
-                'val': self.DATA_PATH['vqa'] + '/feats' + '/val2014',
-                'test': self.DATA_PATH['vqa'] + '/feats' + '/test2015',
+                'train': self.IMGFEAT_ROOT_PATH + 'roisfeat_resnet101_10-100/train2014/',
+                'val': self.IMGFEAT_ROOT_PATH + 'roisfeat_resnet101_10-100/val2014/',
+                'test': self.IMGFEAT_ROOT_PATH + 'roisfeat_resnet101_10-100/test2015/',
             },
             'gqa': {
                 'default-frcn': self.DATA_PATH['gqa'] + '/feats' + '/gqa-frcn',
