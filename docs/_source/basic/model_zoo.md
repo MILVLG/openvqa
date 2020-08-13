@@ -33,6 +33,8 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 2e-3    | 66.00       | 83.61      | 47.04      | 57.62     |
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 67.17       | 84.82      | 49.31      | 58.48     |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 7e-5    | 67.50       | 85.14      | 49.66      | 58.80     |
+| [MMNasNet-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_small.yml) | 1.2e-4    | 67.79       | 85.02      | 52.25      | 58.80     |
+| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 7e-5    | 69.09       | 85.22      | 52.04      | 59.09     |
 
 #### Train+val -> Test-dev
 
@@ -45,6 +47,8 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 1.4e-3  | 69.07       | 85.2       | 49.63      | 59.71     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbJgyL7FPTFAqzMm3HB1xDIBjXpWygOoXrdnDZKEIu34rg?e=kxCVue) |
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 70.33       | 86.77      | 52.14      | 60.40     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcFeQCi_9MVBn6MeESly8OYBZCeBEuaPQqZjT-oXidgKKg?e=5dGjUt) |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.48       | 86.90      | 52.11      | 60.63     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/Ee6HdFN_FcZAsQEm85WesHgBZBkY8dZ-278dDYG_ty_IwA?e=WK4SX4) |
+| [MMNasNet-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_small.yml) | 1e-4    | 71.24       | 87.11      | 56.15      | 61.08     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EaUf4tRcw0FPghbwRoVcMo8BQT9SWzgiZBpD2CrFRfS54w?e=mthO4l) |
+| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 5e-5    | 71.45       | 87.29      | 55.71      | 61.45     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQwNsq0AVehGqhWS4iwuWsYBPtP78xEqRgFKuRGKodkQWA?e=ZVsBVO) |
 
 #### Train+val+vg -> Test-dev
 

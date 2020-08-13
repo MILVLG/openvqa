@@ -15,7 +15,7 @@ FLAT_OUT_SIZE: 1024
 
 # Execution
 BATCH_SIZE: 64
-LR_BASE: 0.00012
+LR_BASE: 0.00012  # 1e-4 for train+val+vg->test
 LR_DECAY_R: 0.2
 LR_DECAY_LIST: [10, 12]
 WARMUP_EPOCH: 3
