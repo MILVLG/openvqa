@@ -202,8 +202,9 @@ class DataSet(BaseDataSet):
             ),
             img_feat_pad_size=self.__C.FEAT_SIZE['vqa']['BBOX_FEAT_SIZE'][0]
         )
+        grid_feat_iter = np.zeros(1)
 
-        return frcn_feat_iter, np.zeros(1), bbox_feat_iter
+        return frcn_feat_iter, grid_feat_iter, bbox_feat_iter
 
 
 
@@ -226,15 +227,17 @@ class DataSet(BaseDataSet):
 
 
     def proc_bbox_feat(self, bbox, img_shape):
-        bbox_feat = np.zeros((bbox.shape[0], 5), dtype=np.float32)
+        if self.__C.BBOX_NORMALIZE:
+            bbox_nm = np.zeros((bbox.shape[0], 4), dtype=np.float32)
 
-        bbox_feat[:, 0] = bbox[:, 0] / float(img_shape[1])
-        bbox_feat[:, 1] = bbox[:, 1] / float(img_shape[0])
-        bbox_feat[:, 2] = bbox[:, 2] / float(img_shape[1])
-        bbox_feat[:, 3] = bbox[:, 3] / float(img_shape[0])
-        bbox_feat[:, 4] = (bbox[:, 2] - bbox[:, 0]) * (bbox[:, 3] - bbox[:, 1]) / float(img_shape[0] * img_shape[1])
+            bbox_nm[:, 0] = bbox[:, 0] / float(img_shape[1])
+            bbox_nm[:, 1] = bbox[:, 1] / float(img_shape[0])
+            bbox_nm[:, 2] = bbox[:, 2] / float(img_shape[1])
+            bbox_nm[:, 3] = bbox[:, 3] / float(img_shape[0])
+            return bbox_nm
+        # bbox_feat[:, 4] = (bbox[:, 2] - bbox[:, 0]) * (bbox[:, 3] - bbox[:, 1]) / float(img_shape[0] * img_shape[1])
 
-        return bbox_feat
+        return bbox
 
 
     def proc_ques(self, ques, token_to_ix, max_token):

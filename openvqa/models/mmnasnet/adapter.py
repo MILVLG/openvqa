@@ -1,6 +1,6 @@
 # --------------------------------------------------------
 # OpenVQA
-# Written by Yuhao Cui https://github.com/cuiyuhao1996
+# Written by Zhenwei Shao https://github.com/ParadoxZW
 # --------------------------------------------------------
 
 import torch.nn as nn
@@ -14,9 +14,35 @@ class Adapter(BaseAdapter):
         super(Adapter, self).__init__(__C)
         self.__C = __C
 
-    def bbox_proc(self, bbox):
-        area = (bbox[:, :, 2] - bbox[:, :, 0]) * (bbox[:, :, 3] - bbox[:, :, 1])
-        return torch.cat((bbox, area.unsqueeze(2)), -1)
+    
+    def relation_embedding(self, f_g):
+        x_min, y_min, x_max, y_max = torch.chunk(f_g, 4, dim=2)  # [bs, n_obj, 1]
+
+        cx = (x_min + x_max) * 0.5  # [bs, n_obj, 1]
+        cy = (y_min + y_max) * 0.5  # [bs, n_obj, 1]
+        w = (x_max - x_min) + 1.  # [bs, n_obj, 1]
+        h = (y_max - y_min) + 1.  # [bs, n_obj, 1]
+
+        delta_x = cx - cx.transpose(-1, -2)
+        delta_x = torch.clamp(torch.abs(delta_x / w), min=1e-3)
+        delta_x = torch.log(delta_x)  # [bs, n_obj, n_obj]
+
+        delta_y = cy - cy.transpose(-1, -2)
+        delta_y = torch.clamp(torch.abs(delta_y / h), min=1e-3)
+        delta_y = torch.log(delta_y)  # [bs, n_obj, n_obj]
+
+        delta_w = torch.log(w / w.transpose(-1, -2))  # [bs, n_obj, n_obj]
+        delta_h = torch.log(h / h.transpose(-1, -2))  # [bs, n_obj, n_obj]
+        size = delta_h.size()
+
+        delta_x = delta_x.view(size[0], size[1], size[2], 1)
+        delta_y = delta_y.view(size[0], size[1], size[2], 1)
+        delta_w = delta_w.view(size[0], size[1], size[2], 1)
+        delta_h = delta_h.view(size[0], size[1], size[2], 1)  # [bs, n_obj, n_obj, 1]
+        position_mat = torch.cat(
+            (delta_x, delta_y, delta_w, delta_h), -1)  # [bs, n_obj, n_obj, 4]
+
+        return position_mat
 
     def vqa_init(self, __C):
         imgfeat_linear_size = __C.FEAT_SIZE['vqa']['FRCN_FEAT_SIZE'][1]
@@ -52,8 +78,9 @@ class Adapter(BaseAdapter):
             bbox_feat = self.bbox_linear(bbox_feat)
             frcn_feat = torch.cat((frcn_feat, bbox_feat), dim=-1)
         img_feat = self.frcn_linear(frcn_feat)
+        rel_embed = self.relation_embedding(bbox_feat)
 
-        return img_feat, img_feat_mask
+        return img_feat, rel_embed, img_feat_mask
 
 
     def gqa_forward(self, feat_dict):
@@ -64,7 +91,6 @@ class Adapter(BaseAdapter):
         img_feat_mask = make_mask(frcn_feat)
 
         if self.__C.USE_BBOX_FEAT:
-            bbox_feat = self.bbox_proc(bbox_feat)
             bbox_feat = self.bbox_linear(bbox_feat)
             frcn_feat = torch.cat((frcn_feat, bbox_feat), dim=-1)
         img_feat = self.frcn_linear(frcn_feat)
@@ -75,7 +101,9 @@ class Adapter(BaseAdapter):
             grid_feat = self.grid_linear(grid_feat)
             img_feat = torch.cat((img_feat, grid_feat), dim=1)
 
-        return img_feat, img_feat_mask
+        rel_embed = self.relation_embedding(bbox_feat)
+
+        return img_feat, rel_embed, img_feat_mask
 
 
     def clevr_forward(self, feat_dict):
@@ -84,7 +112,9 @@ class Adapter(BaseAdapter):
         img_feat_mask = make_mask(grid_feat)
         img_feat = self.grid_linear(grid_feat)
 
-        return img_feat, img_feat_mask
+        rel_embed = self.relation_embedding(bbox_feat)
+
+        return img_feat, rel_embed, img_feat_mask
 
 
 
