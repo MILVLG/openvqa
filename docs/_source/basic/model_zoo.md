@@ -47,8 +47,6 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 1.4e-3  | 69.07       | 85.2       | 49.63      | 59.71     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EbJgyL7FPTFAqzMm3HB1xDIBjXpWygOoXrdnDZKEIu34rg?e=kxCVue) |
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 70.33       | 86.77      | 52.14      | 60.40     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EcFeQCi_9MVBn6MeESly8OYBZCeBEuaPQqZjT-oXidgKKg?e=5dGjUt) |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.48       | 86.90      | 52.11      | 60.63     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/Ee6HdFN_FcZAsQEm85WesHgBZBkY8dZ-278dDYG_ty_IwA?e=WK4SX4) |
-| [MMNasNet-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_small.yml) | 1e-4    | 71.24       | 87.11      | 56.15      | 61.08     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EaUf4tRcw0FPghbwRoVcMo8BQT9SWzgiZBpD2CrFRfS54w?e=mthO4l) |
-| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 5e-5    | 71.45       | 87.29      | 55.71      | 61.45     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQwNsq0AVehGqhWS4iwuWsYBPtP78xEqRgFKuRGKodkQWA?e=ZVsBVO) |
 
 #### Train+val+vg -> Test-dev
 
@@ -61,6 +59,8 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [BAN-8](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/ban_8.yml)           | 1.4e-3  | 69.48       | 85.40      | 50.82      | 60.14     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EW6v-dZOdJhFoKwT3bIx8M8B_U998hE8YD9zUJsUpo0rjQ?e=znhy2f) |
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 70.69       | 87.08      | 53.16      | 60.66     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EWSniKgB8Y9PropErzcAedkBKwJCeBP6b5x5oT_I4LiWtg?e=HZiGuf) |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 5e-5    | 70.82       | 87.19      | 52.56      | 60.98     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQvT2mjBm4ZGnE-jBgAJCbIBC9RBiHwl-XEDr8T63DS10w?e=HjYsOA) |
+| [MMNasNet-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_small.yml) | 1e-4    | 71.24       | 87.11      | 56.15      | 61.08     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EaUf4tRcw0FPghbwRoVcMo8BQT9SWzgiZBpD2CrFRfS54w?e=mthO4l) |
+| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 5e-5    | 71.45       | 87.29      | 55.71      | 61.45     | [model](https://awma1-my.sharepoint.com/:u:/g/personal/yuz_l0_tn/EQwNsq0AVehGqhWS4iwuWsYBPtP78xEqRgFKuRGKodkQWA?e=ZVsBVO) |
 
 ## GQA
 We provide a group of results (including *Accuracy*, *Binary*, *Open*, *Validity*, *Plausibility*, *Consistency*, *Distribution*) for each model on GQA as follows.  
