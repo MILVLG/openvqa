@@ -34,7 +34,7 @@ We provide three groups of results (including the accuracies of *Overall*, *Yes/
 | [MCAN-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_small.yml) | 1e-4    | 67.17       | 84.82      | 49.31      | 58.48     |
 | [MCAN-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mcan_large.yml) | 7e-5    | 67.50       | 85.14      | 49.66      | 58.80     |
 | [MMNasNet-small](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_small.yml) | 1.2e-4    | 67.79       | 85.02      | 52.25      | 58.80     |
-| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 7e-5    | 69.09       | 85.22      | 52.04      | 59.09     |
+| [MMNasNet-large](https://github.com/MILVLG/openvqa/tree/master/configs/vqa/mmnasnet_large.yml) | 7e-5    | 67.98       | 85.22      | 52.04      | 59.09     |
 
 #### Train+val -> Test-dev
 
