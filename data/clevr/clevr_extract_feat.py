@@ -13,12 +13,18 @@ python clevr_extract_feat.py --mode=train --gpu=0 --model=resnet101 --model_stag
 
 import argparse, os, json
 import numpy as np
-from scipy.misc import imread, imresize
-
+#from scipy.misc import imread, imresize
 import torch
 import torchvision
 torch.set_num_threads(5)
 
+from imageio import imread
+from PIL import Image
+
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+def imresize(img, img_size, interp='bicubic'):
+    if interp=='bicubic':
+        return np.array(Image.fromarray(obj=img).resize(size=img_size, resample=Image.BICUBIC))
 
 def build_model(args):
     if not hasattr(torchvision.models, args.model):
@@ -36,7 +42,9 @@ def build_model(args):
         layers.append(getattr(cnn, name))
 
     model = torch.nn.Sequential(*layers)
-    model.cuda()
+    #model.cuda()
+    
+    model.to(DEVICE)
     model.eval()
     return model
 
@@ -47,8 +55,10 @@ def batch_feat(cur_batch, model):
 
     image_batch = np.concatenate(cur_batch, 0).astype(np.float32)
     image_batch = (image_batch / 255.0 - mean) / std
-    image_batch = torch.FloatTensor(image_batch).cuda()
-    image_batch = torch.autograd.Variable(image_batch, volatile=True)
+    #image_batch = torch.FloatTensor(image_batch).cuda()
+    image_batch =torch.FloatTensor(image_batch).to(DEVICE)
+    with torch.no_grad():
+        image_batch = torch.autograd.Variable(image_batch) #, volatile=True
 
     feats = model(image_batch)
     feats = feats.data.cpu().clone().numpy()
@@ -81,7 +91,7 @@ def extract_feature(args, images_path, feats_npz_path):
     ix = 0
     cur_batch = []
     for i, (path, idx) in enumerate(input_paths):
-        img = imread(path, mode='RGB')
+        img = imread(path, pilmode='RGB')# mode='RGB'
         img = imresize(img, img_size, interp='bicubic')
         img = img.transpose(2, 0, 1)[None]
         cur_batch.append(img)
@@ -116,9 +126,10 @@ parser.add_argument('--image_width', '-image_width', default=224, type=int)
 
 
 if __name__ == '__main__':
-    train_images_path = './raws/images/train/'
-    val_images_path = './raws/images/val/'
-    test_images_path = './raws/images/test/'
+    # raws to raw
+    train_images_path = './raw/images/train/'
+    val_images_path = './raw/images/val/'
+    test_images_path = './raw/images/test/'
     train_feats_npz_path = './feats/train/'
     val_feats_npz_path = './feats/val/'
     test_feats_npz_path = './feats/test/'
@@ -132,8 +143,13 @@ if __name__ == '__main__':
     print('image_height:', args.image_height)
     print('image_width:', args.image_width)
 
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    
+    #print('args.gpu:', args.gpu)
+    if args.gpu=='1':
+        DEVICE = torch.device('cuda')
+    else:
+        DEVICE=torch.device('cpu')
+    #os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+
     # process train images features
     if args.mode in ['train', 'all']:
         print('\nProcess [train] images features:')
