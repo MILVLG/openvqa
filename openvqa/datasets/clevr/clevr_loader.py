@@ -4,7 +4,7 @@
 # --------------------------------------------------------
 
 import numpy as np
-import glob, json, re, en_vectors_web_lg
+import glob, json, re, en_core_web_md #en_vectors_web_lg
 from openvqa.core.base_dataset import BaseDataSet
 from openvqa.utils.ans_punct import prep_ans
 
@@ -96,7 +96,7 @@ class DataSet(BaseDataSet):
         spacy_tool = None
         pretrained_emb = []
         if use_glove:
-            spacy_tool = en_vectors_web_lg.load()
+            spacy_tool = en_core_web_md.load()
             pretrained_emb.append(spacy_tool('PAD').vector)
             pretrained_emb.append(spacy_tool('UNK').vector)
             pretrained_emb.append(spacy_tool('CLS').vector)
