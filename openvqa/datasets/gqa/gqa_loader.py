@@ -237,13 +237,12 @@ class DataSet(BaseDataSet):
 
 
     def proc_bbox_feat(self, bbox, img_shape):
-        bbox_feat = np.zeros((bbox.shape[0], 5), dtype=np.float32)
+        bbox_feat = np.zeros((bbox.shape[0], 4), dtype=np.float32)
 
         bbox_feat[:, 0] = bbox[:, 0] / float(img_shape[1])
         bbox_feat[:, 1] = bbox[:, 1] / float(img_shape[0])
         bbox_feat[:, 2] = bbox[:, 2] / float(img_shape[1])
         bbox_feat[:, 3] = bbox[:, 3] / float(img_shape[0])
-        bbox_feat[:, 4] = (bbox[:, 2] - bbox[:, 0]) * (bbox[:, 3] - bbox[:, 1]) / float(img_shape[0] * img_shape[1])
 
         return bbox_feat
 
